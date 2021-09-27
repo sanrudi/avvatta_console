@@ -19,7 +19,7 @@ class GameReportController extends Controller
 
     public function index()
     {
-        $game_content = DB::table('game_played_content')
+        $game_content = DB::connection('mysql2')->table('game_played_content')
         ->join('game_content', 'game_content.id', '=','game_played_content.game_id')
         ->join('users', 'users.id', '=', 'game_played_content.user_id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
@@ -36,7 +36,7 @@ class GameReportController extends Controller
 
     public function repeatedGameBySingleUser(Type $var = null)
     {
-        $repeated_game = DB::table('game_played_content')
+        $repeated_game = DB::connection('mysql2')->table('game_played_content')
         ->join('game_content', 'game_played_content.game_id','=', 'game_content.id')
         ->join('users', 'game_played_content.user_id', '=', 'users.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
@@ -54,7 +54,7 @@ class GameReportController extends Controller
 
     public function mostPlayedGames(Type $var = null)
     {
-        $most_played_games = DB::table('game_played_content')
+        $most_played_games = DB::connection('mysql2')->table('game_played_content')
         ->join('game_content', 'game_played_content.game_id','=', 'game_content.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->select(DB::raw("game_played_content.user_id, game_played_content.game_id, game_name, sub_categories.name as category_name,COUNT(*)"))

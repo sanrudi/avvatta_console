@@ -14,18 +14,15 @@ class SubscriptionReportController extends Controller
 
     public function index()
     {
-        $subscriptions = DB::connection('mysql2')
-        ->table('user_payments')
-        ->groupBy('subscription_id')
-        ->select('subscription_id',count('subscription_id'))
-        ->orderBy('subscription_id')
-        ->get();
-        foreach($subscriptions as $subscription){
-            print_r($subscription->subscription_id." - ".$subscription->subscription_id."<br>");
-        }
-        //dd($subscriptions);
-
-        dd("test");
-        return view('dashboard');
+        $subscriptionsQuery = DB::connection('mysql2')->table('user_payments');
+        $subscriptionsQuery->rightjoin('subscriptions', 'user_payments.subscription_id', '=', 'subscriptions.id');
+        $subscriptionsQuery->groupBy('subscriptions.plan');
+        $subscriptionsQuery->select('subscriptions.plan',  DB::raw("count('subscriptions.plan') as sub_plan_count"));
+        $subscriptionsQuery->orderByRaw('CONVERT(subscriptions.plan, SIGNED)');
+        $subscriptions = $subscriptionsQuery->get();
+        return view('subscription-report')
+        ->with([
+            'subscriptions'=>$subscriptions
+        ]);
     }
 }
