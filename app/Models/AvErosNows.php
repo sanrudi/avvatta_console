@@ -17,4 +17,33 @@ class AvErosNows extends Model
     {
         return $this->morphMany('App\Models\UserLog', 'loggable');
     }
+    
+    public function erosnow()
+    {
+        return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id');
+    }
+
+    public function erosnow_watches()
+    {
+        return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id')->where('action','=', 'play');      
+    }
+
+    public function erosnow_unique_watches()
+    {
+        return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id')
+        ->where('action','=', 'play')
+        ->groupBy('user_id');
+    }
+
+    public function erosnow_wishlist()
+    {
+        return $this->hasMany('App\Models\Wishlist', 'content_id', 'content_id');      
+    }
+
+    public function erosnow_avg_watch()
+    {
+        return $this->erosnow_watches()
+        ->selectRaw('avg(duration) as aggregate')
+        ->first('content_id');
+    }
 }

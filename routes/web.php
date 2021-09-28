@@ -38,6 +38,7 @@ Route::get('register', function () {
 Route::get('subscription-report', [App\Http\Controllers\SubscriptionReportController::class, 'index'])->name('subscription-report');
 // Video Content Report
 Route::get('video-content-report', [App\Http\Controllers\VideoContentReportController::class, 'index'])->name('video-content-report');
+Route::get('video-articles-report', [App\Http\Controllers\VideoContentReportController::class, 'videoArticles'])->name('video-articles-report');
 // Activity Report
 Route::get('activity-report', [App\Http\Controllers\ActivityReportController::class, 'index'])->name('activity-report');
 // Game Report
