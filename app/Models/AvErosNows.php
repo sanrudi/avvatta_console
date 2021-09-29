@@ -25,14 +25,13 @@ class AvErosNows extends Model
 
     public function erosnow_watches()
     {
-        return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id')->where('action','=', 'play');      
+        return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id');      
     }
 
     public function erosnow_unique_watches()
     {
-        return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id')
-        ->where('action','=', 'play')
-        ->groupBy('user_id');
+        $query = $this->hasMany('App\Models\UserLog', 'content_id', 'content_id');
+        return $query->groupBy('user_id');
     }
 
     public function erosnow_wishlist()
