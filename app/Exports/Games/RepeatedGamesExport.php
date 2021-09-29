@@ -15,14 +15,14 @@ class RepeatedGamesExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        $repeated_game = DB::table('game_played_content')
-        ->join('game_content', 'game_played_content.game_id','=', 'game_content.id')
-        ->join('users', 'game_played_content.user_id', '=', 'users.id')
+        $repeated_game = DB::connection('mysql2')->table('user_logs')
+        ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
+        ->join('users', 'user_logs.user_id', '=', 'users.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->select(DB::raw("CONCAT(users.firstname,' ',users.lastname) as full_name"), 'game_name', 'sub_categories.name as category_name')
-        ->groupBy('game_played_content.user_id','game_played_content.game_id')
+        ->groupBy('user_logs.user_id','user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 1")->get();
-        
+
         return $repeated_game;
     }
 
