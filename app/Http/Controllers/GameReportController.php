@@ -19,11 +19,12 @@ class GameReportController extends Controller
 
     public function index()
     {
-        $game_content = DB::connection('mysql2')->table('game_played_content')
-        ->join('game_content', 'game_content.id', '=','game_played_content.game_id')
-        ->join('users', 'users.id', '=', 'game_played_content.user_id')
+        $game_content = DB::connection('mysql2')->table('user_logs')
+        ->join('game_content', 'game_content.id', '=','user_logs.loggable_id')
+        ->join('users', 'users.id', '=', 'user_logs.user_id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
-        ->select('users.firstname', 'users.lastname', 'game_name', 'sub_categories.name as category_name', 'game_played_content.created_at')->get();
+        ->where('sub_cat', 'game')
+        ->select('users.firstname', 'users.lastname', 'game_name', 'sub_categories.name as category_name', 'user_logs.date_time')->get();
         
         return view('dashboard', ['game_contents' => $game_content]);
     }
@@ -36,12 +37,13 @@ class GameReportController extends Controller
 
     public function repeatedGameBySingleUser(Type $var = null)
     {
-        $repeated_game = DB::connection('mysql2')->table('game_played_content')
-        ->join('game_content', 'game_played_content.game_id','=', 'game_content.id')
-        ->join('users', 'game_played_content.user_id', '=', 'users.id')
+        $repeated_game = DB::connection('mysql2')->table('user_logs')
+        ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
+        ->join('users', 'user_logs.user_id', '=', 'users.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
-        ->select(DB::raw("game_played_content.user_id, game_played_content.game_id, firstname, lastname, game_name, sub_categories.name as category_name,COUNT(*)"))
-        ->groupBy('game_played_content.user_id','game_played_content.game_id')
+        ->where('sub_cat', 'game')
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, game_name, sub_categories.name as category_name,COUNT(*)"))
+        ->groupBy('user_logs.user_id','user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 1")->get();
 
         return view('dashboard', ['repeated_games' => $repeated_game]);
@@ -54,11 +56,12 @@ class GameReportController extends Controller
 
     public function mostPlayedGames(Type $var = null)
     {
-        $most_played_games = DB::connection('mysql2')->table('game_played_content')
-        ->join('game_content', 'game_played_content.game_id','=', 'game_content.id')
+        $most_played_games = DB::connection('mysql2')->table('user_logs')
+        ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
-        ->select(DB::raw("game_played_content.user_id, game_played_content.game_id, game_name, sub_categories.name as category_name,COUNT(*)"))
-        ->groupBy('game_played_content.game_id')
+        ->where('sub_cat', 'game')
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*)"))
+        ->groupBy('user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 2")->get();
 
         return view('dashboard', ['most_played_games' => $most_played_games]);
