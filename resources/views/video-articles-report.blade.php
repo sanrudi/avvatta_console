@@ -1,19 +1,7 @@
-  <!DOCTYPE html>
-  <html>
-
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Laravel Pagination Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.3/css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css">
- </head>
-
-  <body>
-    <div class="container mt-5">
+@extends('layout.template')
+@section('content')
+<div class="container">
+<h6>Video Article Report</h6><hr>
      <form action="" method="GET">
       <div class="form-row">
         <div class="form-group col-md-2">
@@ -41,6 +29,7 @@
         </div>
       </div>
     </form>
+    <hr>
     <div class="table-responsive">
     <table class="table table-bordered mb-5">
       <thead>
@@ -75,11 +64,12 @@
       </tbody>
     </table>
   </div>  
-
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center mt-4">
       {!! $videoArticles->withQueryString()->links() !!}
     </div>
   </div>
-</body>
-
-</html>
+@endsection
+@push('js-links')
+@endpush
+@section('js-content')
+@endsection
