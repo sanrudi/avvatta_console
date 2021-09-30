@@ -67,7 +67,7 @@
 
                     <li class="menu">
                         <a href="#games" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">                                  
+                            <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                                 <span>Games</span>
                             </div>
@@ -112,7 +112,7 @@
                         </ul>
                         
                         <a href="#video-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">                                  
+                            <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                                 <span>Video Reports</span>
                             </div>
@@ -131,8 +131,22 @@
                                 <a href="{{ route('video-top-repeat-user-report') }}">Top repeat watched </a>
                             </li>
                         </ul>
+                        <a href="#user-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                                <span>User Reports</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled" id="user-reports" data-parent="#accordionExample">
+                            <li>
+                                <a href="{{ route('user-report') }}"> User Report </a>
+                            </li>
+                        </ul>
                         <a href="#subscription-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">                                  
+                            <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                                 <span>Subscription Reports</span>
                             </div>
