@@ -21,4 +21,9 @@ class UserLog extends Model
     {
         return $this->hasOne('App\Models\AvErosNows', 'content_id', 'loggable_id');
     }
+
+    public function avvatta_user()
+    {
+        return $this->hasOne('App\Models\AvvattaUser', 'id', 'user_id');
+    }
 }

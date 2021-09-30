@@ -41,6 +41,8 @@ Route::get('subscription-report', [App\Http\Controllers\SubscriptionReportContro
 Route::get('video-content-report', [App\Http\Controllers\VideoContentReportController::class, 'index'])->name('video-content-report');
 Route::get('video-articles-report', [App\Http\Controllers\VideoContentReportController::class, 'videoArticles'])->name('video-articles-report');
 Route::get('video-most-watched-report', [App\Http\Controllers\VideoContentReportController::class, 'mostWatched'])->name('video-most-watched-report');
+Route::get('video-top-repeat-user-report', [App\Http\Controllers\VideoContentReportController::class, 'topRepeatedBySingleUser'])->name('video-top-repeat-user-report');
+
 
 // Activity Report
 Route::get('activity-report', [App\Http\Controllers\ActivityReportController::class, 'index'])->name('activity-report');

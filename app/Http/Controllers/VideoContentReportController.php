@@ -121,8 +121,24 @@ class VideoContentReportController extends Controller
         $logQuery->groupBy('user_logs.loggable_id');
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
-        $logs = $logQuery->get();
+        $logs = $logQuery->get()->take(10);
         return view('video-most-watched-report')
+        ->with([
+            'logs'=>$logs
+        ]);
+    }
+    
+    public function topRepeatedBySingleUser()
+    {
+        $logQuery = UserLog::with('loggable','erosnow','avvatta_user');
+        $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
+        $logQuery->where('type','=', 'video');
+        $logQuery->where('action','=', 'play');
+        $logQuery->groupBy('user_logs.user_id');
+        $logQuery->groupBy('user_logs.loggable_id');
+        $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
+        $logs = $logQuery->get()->take(10);
+        return view('video-top-repeat-user-report')
         ->with([
             'logs'=>$logs
         ]);

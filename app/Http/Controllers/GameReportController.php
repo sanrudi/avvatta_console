@@ -23,10 +23,10 @@ class GameReportController extends Controller
         ->join('game_content', 'game_content.id', '=','user_logs.loggable_id')
         ->join('users', 'users.id', '=', 'user_logs.user_id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
-        ->where('sub_cat', 'game')
+        ->where('type', 'game')
         ->select('users.firstname', 'users.lastname', 'game_name', 'sub_categories.name as category_name', 'user_logs.date_time')->get();
         
-        return view('dashboard', ['game_contents' => $game_content]);
+        return view('game-report', ['game_contents' => $game_content]);
     }
 
     public function exportGameContent(Type $var = null)
@@ -41,12 +41,12 @@ class GameReportController extends Controller
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('users', 'user_logs.user_id', '=', 'users.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
-        ->where('sub_cat', 'game')
+        ->where('type', 'game')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, game_name, sub_categories.name as category_name,COUNT(*)"))
         ->groupBy('user_logs.user_id','user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 1")->get();
 
-        return view('dashboard', ['repeated_games' => $repeated_game]);
+        return view('game-report', ['repeated_games' => $repeated_game]);
     }
 
     public function exportRepeatedGameBySingleUser()
@@ -59,12 +59,12 @@ class GameReportController extends Controller
         $most_played_games = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
-        ->where('sub_cat', 'game')
+        ->where('type', 'game')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*)"))
         ->groupBy('user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 2")->get();
 
-        return view('dashboard', ['most_played_games' => $most_played_games]);
+        return view('game-report', ['most_played_games' => $most_played_games]);
     }
 
     public function exportMostPlayedGames(Type $var = null)
