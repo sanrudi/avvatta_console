@@ -7,12 +7,13 @@
 @endpush
 @section('content')
 <div class="container">
-<h6>Top 10 Most Watched Report</h6><hr>
+<h6>Top Repeated Watched Videos - Report</h6><hr>
 <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
 <thead>
     <tr>
         <th>Title</th>
         <th>Watches</th>
+        <th>User</th>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +26,7 @@
             <td>{!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}</td>
             @endif
             <td>{{$log->count}}</td>
+            <td>{{$log->avvatta_user->firstname.' '.$log->avvatta_user->lastname}}</td>
         </tr>
         @endforeach 
     </tbody>

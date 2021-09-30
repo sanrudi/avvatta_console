@@ -87,6 +87,30 @@
                             </li>
                         </ul>
                         
+                        <a href="#kids" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">                                  
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                                <span>Kids</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled" id="kids" data-parent="#accordionExample">
+                            <li>
+                            <a href="{{route('kids-report')}}"> All Kids Categories </a>
+                            </li>
+                            <li>
+                            <a href="{{ route('most-watched-kids-content') }}"> Top 10 watched Kids Category </a>
+                            </li>
+                            <!-- <li>
+                            <a href="{{ route('top-kids-content') }}"> Top 10 Kids Content </a>
+                            </li> -->
+                            <li>
+                            <a href="{{ route('repeated-kidscontent-by-user') }}"> Most Watched Kids Content By Single User</a>
+                            </li>
+                        </ul>
+                        
                         <a href="#video-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">                                  
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
@@ -104,7 +128,7 @@
                                 <a href="{{ route('video-most-watched-report') }}"> Top 10 most watched  </a>
                             </li>
                             <li>
-                                <a href="">Top repeat watched </a>
+                                <a href="{{ route('video-top-repeat-user-report') }}">Top repeat watched </a>
                             </li>
                         </ul>
                         <a href="#subscription-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
