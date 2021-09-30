@@ -36,7 +36,7 @@
         <tr class="table-success">
           <th scope="col">#</th>
           <th scope="col">ContentID</th>
-          <th scope="col">Title</th>
+          <th scope="col">Article</th>
           <th scope="col">Category</th>
           <th scope="col">Watches</th>
           <th scope="col">Unique Watches</th>
@@ -51,11 +51,11 @@
         <tr>
           <td scope="row">{{ $videoArticles->firstItem() + $key }}</td>
           <td>{{ $data->content_id }}</td>
-          <td>{{ $data->title }}</td>
-          <td>{{ $data->categories }}</td>
-          <td>{{ count($data->erosnow_watches) }}</td>
-          <td>{{ count($data->erosnow_unique_watches) }}</td>
-          <td>{{ count($data->erosnow_wishlist) }}</td>
+          <td>{{ $data->article }}</td>
+          <td>{{ $data->category }}</td>
+          <td>{{ count($data->watches) }}</td>
+          <td>{{ count($data->unique_watches) }}</td>
+          <td>{{ count($data->wishlist) }}</td>
           <td>{{ $data->avg }}</td>
           <td>{{ $data->created_date }}</td>
           <td>{{ $data->duration }}</td>

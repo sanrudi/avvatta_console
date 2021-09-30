@@ -23,25 +23,25 @@ class AvErosNows extends Model
         return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id');
     }
 
-    public function erosnow_watches()
+    public function watches()
     {
         return $this->hasMany('App\Models\UserLog', 'content_id', 'content_id');      
     }
 
-    public function erosnow_unique_watches()
+    public function unique_watches()
     {
         $query = $this->hasMany('App\Models\UserLog', 'content_id', 'content_id');
         return $query->groupBy('user_id');
     }
 
-    public function erosnow_wishlist()
+    public function wishlist()
     {
         return $this->hasMany('App\Models\Wishlist', 'content_id', 'content_id');      
     }
 
-    public function erosnow_avg_watch()
+    public function avg_watch()
     {
-        return $this->erosnow_watches()
+        return $this->eros_watches()
         ->selectRaw('avg(duration) as aggregate')
         ->first('content_id');
     }

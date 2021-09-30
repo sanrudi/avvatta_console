@@ -7,7 +7,7 @@
                 <li class="nav-item align-self-center page-heading">
                     <div class="page-header">
                         <div class="page-title">
-                            <h3>Dashboard</h3>
+                            <h3></h3>
                         </div>
                     </div>
                 </li>

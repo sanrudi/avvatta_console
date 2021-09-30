@@ -7,6 +7,7 @@ use DB;
 use App\Models\UserLog;
 use App\Models\AvErosNows;
 use App\Models\GameContent;
+use App\Models\VideoContent;
 use App\Exports\Videos\VideoArticleExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -21,12 +22,6 @@ class VideoContentReportController extends Controller
     public function index()
     {
         $userLogs = UserLog::all();
-        // print_r($userLogs);
-        // foreach($userLogs as $userLog){
-        //     if($userLog->loggable_type != ""){
-        //         print_r($userLog->loggable);
-        //     }
-        // }
     }
 
     public function videoArticles(Request $request)
@@ -39,9 +34,9 @@ class VideoContentReportController extends Controller
 
         // Erosnow Data
         if($report == "erosnow"){
-        $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title','av_eros_nows.categories','av_eros_nows.created_date','av_eros_nows.duration',DB::raw('avg(user_logs.duration)
+        $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title as article','av_eros_nows.categories as category','av_eros_nows.created_date as added_at','av_eros_nows.duration',DB::raw('avg(user_logs.duration)
         as avg'));
-        $videoArticlesQuery->with(['erosnow_watches' => function ($query) use ($request) {
+        $videoArticlesQuery->with(['watches' => function ($query) use ($request) {
             $query->where('action','=', 'play');
             if($request->input('startDate')){
                 $query->where('date_time', '>=', $request->input('startDate'));
@@ -50,7 +45,7 @@ class VideoContentReportController extends Controller
                 $query->where('date_time', '<=', $request->input('endDate'));
             }
         }]);
-        $videoArticlesQuery->with(['erosnow_unique_watches' => function ($query) use ($request) {
+        $videoArticlesQuery->with(['unique_watches' => function ($query) use ($request) {
             $query->where('action','=', 'play');
             if($request->input('startDate')){
                 $query->where('date_time', '>=', $request->input('startDate'));
@@ -59,7 +54,7 @@ class VideoContentReportController extends Controller
                 $query->where('date_time', '<=', $request->input('endDate'));
             }
         }]);
-        $videoArticlesQuery->with('erosnow_wishlist');
+        $videoArticlesQuery->with('wishlist');
         $videoArticlesQuery->leftjoin("user_logs",function($join) use ($request) {
             $join->on(function ($query) use ($request)  {
                 $query->on('user_logs.content_id','=','av_eros_nows.content_id');
@@ -76,9 +71,9 @@ class VideoContentReportController extends Controller
 
         // Kids Data
         if($report == "kids"){
-            $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title','av_eros_nows.categories','av_eros_nows.created_date','av_eros_nows.duration',DB::raw('avg(user_logs.duration)
+            $videoArticlesQuery = VideoContent::select('video_content.id as content_id','video_content.content_name as article',DB::raw("'' as category"),'video_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration)
             as avg'));
-            $videoArticlesQuery->with(['erosnow_watches' => function ($query) use ($request) {
+            $videoArticlesQuery->with(['watches' => function ($query) use ($request) {
                 $query->where('action','=', 'play');
                 if($request->input('startDate')){
                     $query->where('date_time', '>=', $request->input('startDate'));
@@ -87,7 +82,7 @@ class VideoContentReportController extends Controller
                     $query->where('date_time', '<=', $request->input('endDate'));
                 }
             }]);
-            $videoArticlesQuery->with(['erosnow_unique_watches' => function ($query) use ($request) {
+            $videoArticlesQuery->with(['unique_watches' => function ($query) use ($request) {
                 $query->where('action','=', 'play');
                 if($request->input('startDate')){
                     $query->where('date_time', '>=', $request->input('startDate'));
@@ -96,9 +91,9 @@ class VideoContentReportController extends Controller
                     $query->where('date_time', '<=', $request->input('endDate'));
                 }
             }]);
-            $videoArticlesQuery->with('erosnow_wishlist');
-            $videoArticlesQuery->leftjoin('user_logs','user_logs.content_id','=','av_eros_nows.content_id');
-            $videoArticlesQuery->groupBy('av_eros_nows.content_id');
+            $videoArticlesQuery->with('wishlist');
+            $videoArticlesQuery->leftjoin('user_logs','user_logs.loggable_id','=','video_content.id');
+            $videoArticlesQuery->groupBy('video_content.id');
         }
         
         
