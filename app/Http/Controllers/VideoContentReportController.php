@@ -111,4 +111,20 @@ class VideoContentReportController extends Controller
             ]);
         }
     }
+
+    public function mostWatched()
+    {
+        $logQuery = UserLog::with('loggable','erosnow');
+        $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
+        $logQuery->where('type','=', 'video');
+        $logQuery->where('action','=', 'play');
+        $logQuery->groupBy('user_logs.loggable_id');
+        $logQuery->groupBy('user_logs.user_id');
+        $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
+        $logs = $logQuery->get();
+        return view('video-most-watched-report')
+        ->with([
+            'logs'=>$logs
+        ]);
+    }
 }

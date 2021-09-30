@@ -17,4 +17,8 @@ class UserLog extends Model
         return $this->morphTo();
     }
 
+    public function erosnow()
+    {
+        return $this->hasOne('App\Models\AvErosNows', 'content_id', 'loggable_id');
+    }
 }

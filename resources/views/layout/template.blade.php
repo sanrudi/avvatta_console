@@ -101,7 +101,7 @@
                                 <a href="{{ route('video-articles-report') }}"> Video Article </a>
                             </li>
                             <li>
-                                <a href=""> Top 10 most watched  </a>
+                                <a href="{{ route('video-most-watched-report') }}"> Top 10 most watched  </a>
                             </li>
                             <li>
                                 <a href="">Top repeat watched </a>
