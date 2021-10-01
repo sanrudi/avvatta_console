@@ -7,7 +7,7 @@
 @endpush
 @section('content')
 <div class="container">
-<h6>Subscription Report</h6><hr>
+<h6>Top Genre Watched Videos - Report</h6><hr>
 <form action="" method="GET">
       <div class="form-row">
         <div class="form-group col-md-2">
@@ -36,121 +36,23 @@
       </div>
     </form>
     <hr>
+
 <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
 <thead>
     <tr>
-        <th>Metrics</th>
-        <th>Daily</th>
-        <th>Weekly</th>
-        <th>Monthly</th>
-        <th>OverAll</th>
+        <th>Genre</th>
+        <th>Type</th>
+        <th>Watches</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>Subscriptions</td>
-        @php
-        $sub_all = 0;
-        @endphp
-        @foreach($subscriptions as $subscription)
-        <td>{{$subscription->sub_plan_count}}</td>
-        @php
-        $sub_all = $sub_all + $subscription->sub_plan_count;
-        @endphp
+        @foreach($logs as $log)
+        <tr>
+            <td>{{$log->genre}}</td>
+            <td>{{$log->category}}</td>
+            <td>{{$log->count}}</td>
+        </tr>
         @endforeach 
-        <td>{{$sub_all}}</td>
-    </tr>
-    <tr>
-        <td>Non subscribed users</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Failed due to insufficient </td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Failed due to technical </td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Average number of days active</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Number of upward subscription</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Number of downward subscription</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Cancelled in last 7 Days</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Cancelled in last 14 Days</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Cancelled in last 30+ Days</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Re-activated  in last 7 Days</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Re-activated  in last 14 Days</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Re-activated  in last 30+ Days</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
-    <tr>
-        <td>Unique subscriber base</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-    </tr>
     </tbody>
 </table>
   </div>

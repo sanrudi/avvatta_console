@@ -133,6 +133,12 @@
                             <li>
                                 <a href="{{ route('video-top-repeat-user-report') }}">Top repeat watched </a>
                             </li>
+                            <li>
+                                <a href="{{ route('video-top-genre-watched-report') }}">Top Genre watched </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('video-all-category-user-report') }}">All Category Users </a>
+                            </li>
                         </ul>
                         <a href="#user-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">

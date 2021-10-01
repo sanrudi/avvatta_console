@@ -5,15 +5,26 @@
      <form action="" method="GET">
       <div class="form-row">
         <div class="form-group col-md-2">
+          <label for="reportFrom">Report From</label>
+          <select name="reportFrom" id="reportFrom" class="form-control">
+            <option value="" @if(Request::get('reportFrom') == "") selected="selected" @endif >Select</option>
+            <option value="7" @if(Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
+            <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
+            <option value="30" @if(Request::get('reportFrom') == "30") selected="selected" @endif>Last 30 Days</option>
+            <option value="90" @if(Request::get('reportFrom') == "90") selected="selected" @endif>Last 90 Days</option>
+            <option value="custom" @if(Request::get('reportFrom') == "custom") selected="selected" @endif>Custom</option>
+          </select>
+        </div>
+        <div class="form-group col-md-2 custom-date">
           <label for="startDate">Start Date</label>
           <input id="startDate" name="startDate" type="date" class="form-control" value="{!! Request::get('startDate') !!}"/>
         </div>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-2 custom-date">
           <label for="endDate">End Date</label>
           <input id="endDate" name="endDate" type="date" class="form-control" value="{!! Request::get('endDate') !!}" />
         </div>
         <div class="form-group col-md-2">
-          <label for="endDate">Type</label>
+          <label for="type">Type</label>
           <select name="type" id="type" class="form-control">
             <option value="erosnow" @if(Request::get('type') == "erosnow") selected="selected" @endif >Erosnow</option>
             <option value="kids" @if(Request::get('type') == "kids") selected="selected" @endif>Kids</option>
@@ -37,7 +48,7 @@
           <th scope="col">#</th>
           <th scope="col">ContentID</th>
           <th scope="col">Article</th>
-          <th scope="col">Category</th>
+          <th scope="col">Genre</th>
           <th scope="col">Watches</th>
           <th scope="col">Unique Watches</th>
           <th scope="col">Favourite</th>
@@ -72,4 +83,22 @@
 @push('js-links')
 @endpush
 @section('js-content')
+<script>
+$(document).ready(function(){
+    $(".custom-date").hide();
+    $("#reportFrom").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            console.log(optionValue);
+            $("#startDate").val("");
+            $("#endDate").val("");
+            if(optionValue == "custom"){
+                $(".custom-date").show();
+            } else{
+                $(".custom-date").hide();
+            }
+        });
+    }).change();
+});
+</script>
 @endsection
