@@ -36,6 +36,9 @@ class VideoContentReportController extends Controller
         if($report == "erosnow"){
         $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title as article','av_eros_nows.categories as category','av_eros_nows.created_date as added_at','av_eros_nows.duration',DB::raw('avg(user_logs.duration)
         as avg'));
+        dd($videoArticlesQuery);    
+        exit();
+
         $videoArticlesQuery->with(['watches' => function ($query) use ($request) {
             $query->where('action','=', 'play');
             if($request->input('startDate')){

@@ -77,6 +77,9 @@
                         </a>
                         <ul class="collapse submenu list-unstyled" id="games" data-parent="#accordionExample">
                             <li>
+                                <a href="{{ route('game-articles-report') }}"> Game Article </a>
+                            </li>
+                            <li>
                                 <a href="{{route('game-report')}}"> All Game Categories </a>
                             </li>
                             <li>

@@ -53,6 +53,7 @@ Route::get('repeated-game-by-user',[App\Http\Controllers\GameReportController::c
 Route::get('export-repeated-game-content',[App\Http\Controllers\GameReportController::class, 'exportRepeatedGameBySingleUser'])->name('export-repeated-game-content');
 Route::get('most-played-games',[App\Http\Controllers\GameReportController::class, 'mostPlayedGames'])->name('most-played-games');
 Route::get('export-most-played-games',[App\Http\Controllers\GameReportController::class, 'exportMostPlayedGames'])->name('export-most-played-games');
+Route::get('game-articles-report', [App\Http\Controllers\GameReportController::class, 'gameArticles'])->name('game-articles-report');
 //Kids Report
 Route::get('kids-report', [App\Http\Controllers\KidsReportController::class, 'kidsReport'])->name('kids-report');
 // Route::get('export-game-content', [App\Http\Controllers\GameReportController::class, 'exportGameContent'])->name('export-game-content');
