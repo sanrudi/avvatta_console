@@ -36,7 +36,9 @@ Route::get('register', function () {
 });
 
 // Subscription Report
-Route::get('subscription-report', [App\Http\Controllers\SubscriptionReportController::class, 'index'])->name('subscription-report');
+Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');
+Route::get('subscription-total', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionTotal'])->name('subscription-total');
+
 // Video Content Report
 Route::get('video-content-report', [App\Http\Controllers\VideoContentReportController::class, 'index'])->name('video-content-report');
 Route::get('video-articles-report', [App\Http\Controllers\VideoContentReportController::class, 'videoArticles'])->name('video-articles-report');

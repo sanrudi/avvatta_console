@@ -165,7 +165,10 @@
                         </a>
                         <ul class="collapse submenu list-unstyled" id="subscription-reports" data-parent="#accordionExample">
                             <li>
-                                <a href="{{ route('subscription-report') }}"> Report </a>
+                                <a href="{{ route('subscription-total') }}"> Received Subscriptions </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('subscription-customer') }}">Customer Report </a>
                             </li>
                         </ul>
                     </li>
