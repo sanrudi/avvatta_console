@@ -28,7 +28,7 @@
       <thead>
         <tr class="table-success">
           <th scope="col">#</th>
-          <th scope="col">ContentID</th>
+          <!-- <th scope="col">ContentID</th> -->
           <th scope="col">Article</th>
           <th scope="col">Category</th>
           <th scope="col">Watches</th>
@@ -43,7 +43,7 @@
         @foreach($gameArticles as $key => $data)
         <tr>
           <td scope="row">{{ $gameArticles->firstItem() + $key }}</td>
-          <td>{{ $data->content_id }}</td>
+          <!-- <td>{{ $data->content_id }}</td> -->
           <td>{{ $data->article }}</td>
           <td>{{ $data->category }}</td>
           <td>{{ count($data->watches) }}</td>

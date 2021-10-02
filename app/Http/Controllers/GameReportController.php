@@ -78,49 +78,52 @@ class GameReportController extends Controller
 
     public function gameArticles(Request $request)
     {
-        $paginateSize = 20;$export = 0;$report = "erosnow";
+        $paginateSize = 20;$export = 0;$reportFrom="";$startDate="";$endDate="";
         $export = ($request->input('export'))?1:0;
-        if($request->input('type') && ($request->input('type') == "erosnow" || $request->input('type') == "kids" )){
-            $report = $request->input('type');
+        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
+        $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        
+        date_default_timezone_set('Africa/Johannesburg');
+        $today = date("Y-m-d H:m:s");
+        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+            $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         }
 
-        // Erosnow Data
+        // Games Data
             $gameArticlesQuery = GameContent::select('game_content.id as id','game_content.game_name as article',DB::raw("'' as category"),'game_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration) as avg'));
-            $gameArticlesQuery->with(['watches' => function ($query) use ($request) {
+            $gameArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'game');
-                if($request->input('startDate')){
-                    $query->where('date_time', '>=', $request->input('startDate'));
+                if($startDate){
+                    $query->where('date_time', '>=', $startDate);
                 }
-                if($request->input('endDate')){
-                    $query->where('date_time', '<=', $request->input('endDate'));
+                if($endDate){
+                    $query->where('date_time', '<=', $endDate);
                 }
             }]);
-            $gameArticlesQuery->with(['unique_watches' => function ($query) use ($request) {
+            $gameArticlesQuery->with(['unique_watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'game');
-                if($request->input('startDate')){
-                    $query->where('date_time', '>=', $request->input('startDate'));
+                if($startDate){
+                    $query->where('date_time', '>=', $startDate);
                 }
-                if($request->input('endDate')){
-                    $query->where('date_time', '<=', $request->input('endDate'));
+                if($endDate){
+                    $query->where('date_time', '<=', $endDate);
                 }
             }]);
             $gameArticlesQuery->with('wishlist');
             $gameArticlesQuery->leftjoin('user_logs','user_logs.loggable_id','=','game_content.id');
-            $gameArticlesQuery->where('type','=', 'game');
             $gameArticlesQuery->groupBy('game_content.id');
         
         
         if($export){
             $gameArticles = $gameArticlesQuery->get()->toArray();
-            //dd($gameArticles);
-            return Excel::download(new VideoArticleExport($gameArticles), 'video-article-export.xlsx');
+            return Excel::download(new GameArticleExport($gameArticles), 'game-article-export.xlsx');
         }
 
         if(!$export){
             $gameArticles =  $gameArticlesQuery->paginate($paginateSize);
-            //dd($gameArticles);
             return view('game-articles-report', [
                 'gameArticles' => $gameArticles
             ]);

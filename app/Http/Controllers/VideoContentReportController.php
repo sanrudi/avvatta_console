@@ -48,6 +48,7 @@ class VideoContentReportController extends Controller
         as avg'));
         $videoArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
             $query->where('action','=', 'play');
+            $query->where('type','=', 'video');
             if($startDate){
                 $query->where('date_time', '>=', $startDate);
             }
@@ -57,6 +58,7 @@ class VideoContentReportController extends Controller
         }]);
         $videoArticlesQuery->with(['unique_watches' => function ($query) use ($request,$startDate,$endDate) {
             $query->where('action','=', 'play');
+            $query->where('type','=', 'video');
             if($startDate){
                 $query->where('date_time', '>=', $startDate);
             }
@@ -85,6 +87,7 @@ class VideoContentReportController extends Controller
             as avg'));
             $videoArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
+                $query->where('type','=', 'video');
                 if($startDate){
                     $query->where('date_time', '>=', $startDate);
                 }
@@ -94,6 +97,7 @@ class VideoContentReportController extends Controller
             }]);
             $videoArticlesQuery->with(['unique_watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
+                $query->where('type','=', 'video');
                 if($startDate){
                     $query->where('date_time', '>=', $startDate);
                 }
