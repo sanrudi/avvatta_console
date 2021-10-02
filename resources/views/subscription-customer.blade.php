@@ -46,19 +46,19 @@
     <tbody>
     <tr>
         <td>Non subscribed users</td>
-        <td>0</td>
+        <td>{{$avvattaUsersCount}}</td>
     </tr>
     <tr>
         <td>Cancelled in last 7 Days</td>
-        <td>0</td>
+        <td>{{$cancelledSeven}}</td>
     </tr>
     <tr>
         <td>Cancelled in last 14 Days</td>
-        <td>0</td>
+        <td>{{$cancelledFourteen}}</td>
     </tr>
     <tr>
         <td>Cancelled in last 30+ Days</td>
-        <td>0</td>
+        <td>{{$cancelled}}</td>
     </tr>
     </tbody>
 </table>
