@@ -185,7 +185,6 @@
         $('#example').DataTable( {
             dom: 'Bfrtip',
             searching: false, paging: false, info: false, "aaSorting": [],
-            fixedHeader: true,
             buttons: [
             {
                 extend: 'excel',
