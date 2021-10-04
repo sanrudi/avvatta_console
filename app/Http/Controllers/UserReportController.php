@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GameContent;
 use App\Models\UserLog;
 use App\Models\VideoContent;
-use App\Models\User;
+use App\Models\AvvattaUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,7 +22,7 @@ class UserReportController extends Controller
         foreach ($userReport as $user)
         {
             $user_contents[$i]['id'] = $user->id;
-            $user_contents[$i]['user_name'] = User::where('id', $user->user_id)->value('firstname').' '.User::where('id', $user->user_id)->value('lastname');
+            $user_contents[$i]['user_name'] = AvvattaUser::where('id', $user->user_id)->value('firstname').' '.AvvattaUser::where('id', $user->user_id)->value('lastname');
             $user_contents[$i]['content_name'] = $user->type == "video" ? VideoContent::where('id', $user->loggable_id)->value('content_name') : GameContent::
                 where('id', $user->loggable_id)->value('game_name');
             $user_contents[$i]['type'] = $user->type;

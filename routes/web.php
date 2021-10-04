@@ -46,7 +46,8 @@ Route::get('video-most-watched-report', [App\Http\Controllers\VideoContentReport
 Route::get('video-top-repeat-user-report', [App\Http\Controllers\VideoContentReportController::class, 'topRepeatedBySingleUser'])->name('video-top-repeat-user-report');
 Route::get('video-top-genre-watched-report', [App\Http\Controllers\VideoContentReportController::class, 'topGenreWatched'])->name('video-top-genre-watched-report');
 Route::get('video-all-category-user-report', [App\Http\Controllers\VideoContentReportController::class, 'allCategoryUsers'])->name('video-all-category-user-report');
-
+// Revenue Report
+Route::get('revenue-report', [App\Http\Controllers\RevenueReportController::class, 'index'])->name('revenue-report');
 
 // Activity Report
 Route::get('activity-report', [App\Http\Controllers\ActivityReportController::class, 'index'])->name('activity-report');
