@@ -12,6 +12,8 @@ use App\Models\UserLog;
 use App\Models\AvErosNows;
 use App\Models\GameContent;
 use App\Exports\Videos\VideoArticleExport;
+use App\Exports\Games\GameArticleExport;
+
 
 class GameReportController extends Controller
 {
