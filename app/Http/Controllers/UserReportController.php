@@ -24,33 +24,32 @@ class UserReportController extends Controller
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
         date_default_timezone_set('Africa/Johannesburg');
-        $today = date("Y-m-d H:m:s");
+        $today = date("Y-m-d");
         if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
-            $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+            $startDate = date('Y-m-d', strtotime($today.'-'.$reportFrom.' day'));
         }
         $user_contents = [];
         switch ($request->input('type'))
         {
             case "game":
-                $userReport = UserLog::where('category', '=', 'game')->get();
+                $userReport = UserLog::where('category', '=', 'game');
                 break;
             case "erosnow":
-                $userReport = UserLog::where('category', '=', 'erosnow')->get();
+                $userReport = UserLog::where('category', '=', 'erosnow');
                 break;
             case "kids":
-                $userReport = UserLog::where('category', '=', 'kids')->get();
+                $userReport = UserLog::where('category', '=', 'kids');
                 break;
             default:
-                $userReport = UserLog::all();
+                $userReport = UserLog::select('user_id', 'loggable_id', 'content_id', 'type', 'category', 'action', 'date_time');
         }
-        if($startDate){
-            $userReport->where('date_time', '>=', $startDate);
-        }
-        if($endDate){
-            $userReport->where('date_time', '<=', $endDate);
+        if($startDate && $request->input('reportFrom') != "custom"){
+            $userReport->whereBetween('date_time', [$startDate, $today]);
+        } elseif($request->input('reportFrom') == "custom") {
+            $userReport->whereBetween('date_time', [$startDate, $endDate]);
         }
         $i = 1;
-        foreach ($userReport as $user)
+        foreach ($userReport->get() as $user)
         {
             switch ($user->category) {
                 case "kids":
