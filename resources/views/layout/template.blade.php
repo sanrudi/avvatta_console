@@ -47,7 +47,7 @@
                 <ul class="navbar-nav theme-brand flex-row  text-center">
                     <li class="nav-item theme-logo">
                         <a href="index.html">
-                            <img src="{{ asset('images/avvatta-logo.png') }}" class="navbar-logo" alt="logo">
+                            <img src="{{ asset('images/avvatta-logo.PNG') }}" class="navbar-logo" alt="logo">
                         </a>
                     </li>
                     <li class="nav-item toggle-sidebar">
