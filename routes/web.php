@@ -69,7 +69,6 @@ Route::get('top-kids-content',[App\Http\Controllers\KidsReportController::class,
 Route::get('repeated-kidscontent-by-user',[App\Http\Controllers\KidsReportController::class, 'repeatedKidsContentByUser'])->name('repeated-kidscontent-by-user');
 //User Report
 Route::get('user-report',[App\Http\Controllers\UserReportController::class, 'userReport'])->name('user-report');
-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
