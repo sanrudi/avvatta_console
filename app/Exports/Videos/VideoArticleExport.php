@@ -32,6 +32,7 @@ class VideoArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAu
         return [
             $videoArticles['article'],
             $videoArticles['category'],
+            $videoArticles['provider'],
             count($videoArticles['watches']),
             count($videoArticles['unique_watches']),
             count($videoArticles['wishlist']),
@@ -46,6 +47,7 @@ class VideoArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAu
         return [
             'Article',
             'Category',
+            'Provider',
             'Watches',
             'Unique Watches',
             'Wishlist',

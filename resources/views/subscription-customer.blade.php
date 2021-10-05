@@ -45,8 +45,16 @@
     </thead>
     <tbody>
     <tr>
-        <td>Non subscribed users</td>
-        <td>{{$avvattaUsersCount}}</td>
+        <td>Customers</td>
+        <td>{{$avvattaActiveUsers}}</td>
+    </tr>
+    <tr>
+        <td>Subscribed Customers</td>
+        <td>{{$subscribedUsers}}</td>
+    </tr>
+    <tr>
+        <td>Non subscribed Customers</td>
+        <td>{{$avvattaNSUsersCount}}</td>
     </tr>
     <tr>
         <td>Cancelled in last 7 Days</td>

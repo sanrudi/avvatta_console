@@ -49,10 +49,11 @@
           <!-- <th scope="col">ContentID</th> -->
           <th scope="col">Article</th>
           <th scope="col">Genre</th>
+          <th scope="col">Provider</th>
           <th scope="col">Watches</th>
           <th scope="col">Unique Watches</th>
           <th scope="col">Favourite</th>
-          <th scope="col">Average</th>
+          <th scope="col">Average(sec)</th>
           <th scope="col">Added Date</th>
           <th scope="col">Duration</th>
         </tr>
@@ -64,6 +65,7 @@
           <!-- <td>{{ $data->content_id }}</td> -->
           <td>{{ $data->article }}</td>
           <td>{{ $data->category }}</td>
+          <td>{{ $data->provider }}</td>
           <td>{{ count($data->watches) }}</td>
           <td>{{ count($data->unique_watches) }}</td>
           <td>{{ count($data->wishlist) }}</td>

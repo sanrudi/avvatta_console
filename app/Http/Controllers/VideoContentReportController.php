@@ -45,7 +45,7 @@ class VideoContentReportController extends Controller
         // Erosnow Data
         if($report == "erosnow"){
         $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title as article','av_eros_nows.categories as category','av_eros_nows.created_date as added_at','av_eros_nows.duration',DB::raw('avg(user_logs.duration)
-        as avg'));
+        as avg'),DB::raw("'Erosnow' as provider"));
         $videoArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
             $query->where('action','=', 'play');
             $query->where('type','=', 'video');
@@ -83,7 +83,7 @@ class VideoContentReportController extends Controller
 
         // Kids Data
         if($report == "kids"){
-            $videoArticlesQuery = VideoContent::select('video_content.id as content_id','video_content.content_name as article',DB::raw("'' as category"),'video_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration)
+            $videoArticlesQuery = VideoContent::select('video_content.id as content_id','video_content.content_name as article',DB::raw("'' as category"),DB::raw("'Kids' as provider"),'video_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration)
             as avg'));
             $videoArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');

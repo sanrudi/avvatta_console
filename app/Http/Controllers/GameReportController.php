@@ -93,7 +93,7 @@ class GameReportController extends Controller
         }
 
         // Games Data
-            $gameArticlesQuery = GameContent::select('game_content.id as id','game_content.game_name as article',DB::raw("'' as category"),'game_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration) as avg'));
+            $gameArticlesQuery = GameContent::select('game_content.id as id','game_content.game_name as article',DB::raw("'' as category"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"),'game_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration) as avg'));
             $gameArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'game');

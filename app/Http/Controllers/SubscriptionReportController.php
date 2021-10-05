@@ -55,23 +55,27 @@ class SubscriptionReportController extends Controller
     
     public function subscriptionCustomer(Request $request)
     {
-        $userPaymentQuery = UserPayment::select('user_id');
-        $userPaymentQuery->groupBy('user_id');
+        $userPaymentQuery = UserPayment::select('user_payments.user_id');
+        $userPaymentQuery->join('users', 'users.id', '=', 'user_payments.user_id');
+        $userPaymentQuery->groupBy('user_payments.user_id');
         $userPayment = $userPaymentQuery->get()->toArray();
         $avvattaUsersQuery = AvvattaUser::whereNotIn('id',$userPayment);
-        $avvattaUsersCount = $avvattaUsersQuery->count();
+        $avvattaNSUsersCount = $avvattaUsersQuery->count();
 
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         $sevenDays = date('Y-m-d H:i:s', strtotime($today.'-7 day'));
         $fourteenDays = date('Y-m-d H:i:s', strtotime($today.'-14 day'));
-
+        
+        $avvattaActiveUsers = AvvattaUser::count();
         $cancelledSeven = UserPayment::where('is_cancelled','=',1)->where('created_at', '>=', $sevenDays)->count();
         $cancelledFourteen = UserPayment::where('is_cancelled','=',1)->where('created_at', '>=', $fourteenDays)->count();
         $cancelled = UserPayment::where('is_cancelled','=',1)->count();
         return view('subscription-customer')
         ->with([
-            'avvattaUsersCount'=>$avvattaUsersCount,
+            'avvattaActiveUsers'=>$avvattaActiveUsers,
+            'subscribedUsers'=>count($userPayment),
+            'avvattaNSUsersCount'=>$avvattaNSUsersCount,
             'cancelledSeven'=>$cancelledSeven,
             'cancelledFourteen'=>$cancelledFourteen,
             'cancelled'=>$cancelled,
