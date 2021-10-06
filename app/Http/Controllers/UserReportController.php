@@ -48,6 +48,7 @@ class UserReportController extends Controller
         } elseif($request->input('reportFrom') == "custom") {
             $userReport->whereBetween('date_time', [$startDate, $endDate]);
         }
+        $userReport->orderBy('date_time','desc');
         $i = 1;
         foreach ($userReport->get() as $user)
         {
