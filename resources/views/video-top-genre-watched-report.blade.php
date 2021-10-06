@@ -5,6 +5,7 @@
     <link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
     <!-- Data Tables -->
 @endpush
+@section('title', '| Top Genre Watched Videos')
 @section('content')
 <div class="container">
 <h6>Top Genre Watched Videos - Report</h6><hr>

@@ -5,6 +5,7 @@
     <link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
     <!-- Data Tables -->
 @endpush
+@section('title', '| Top 10 Most Watched')
 @section('content')
 <div class="container">
 <h6>Top 10 Most Watched Report</h6><hr>
@@ -41,18 +42,29 @@
     <tr>
         <th>Title</th>
         <th>Watches</th>
+        <th>Provider</th>
     </tr>
     </thead>
     <tbody>
         @foreach($logs as $log)
         <tr>
+        <td>
             @if($log->loggable_type == "App\Models\VideoContent")
-            <td>{{$log->loggable->content_name}}</td>
+            {{$log->loggable->content_name}}
             @endif
             @if($log->loggable_type == "App\Models\AvErosNows")
-            <td>{!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}</td>
+            {!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}
             @endif
+        </td>
             <td>{{$log->count}}</td>
+        <td>
+            @if($log->loggable_type == "App\Models\VideoContent")
+            Kids
+            @endif
+            @if($log->loggable_type == "App\Models\AvErosNows")
+            Erosnows
+            @endif
+        </td>
         </tr>
         @endforeach 
     </tbody>

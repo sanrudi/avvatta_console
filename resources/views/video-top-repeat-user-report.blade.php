@@ -5,6 +5,7 @@
     <link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
     <!-- Data Tables -->
 @endpush
+@section('title', '| Top Repeated Watched Videos')
 @section('content')
 <div class="container">
 <h6>Top Repeated Watched Videos - Report</h6><hr>
@@ -42,19 +43,30 @@
         <th>Title</th>
         <th>Watches</th>
         <th>User</th>
+        <th>Provider</th>
     </tr>
     </thead>
     <tbody>
         @foreach($logs as $log)
         <tr>
+          <td>
             @if($log->loggable_type == "App\Models\VideoContent")
-            <td>{{$log->loggable->content_name}}</td>
+            {{$log->loggable->content_name}}
             @endif
             @if($log->loggable_type == "App\Models\AvErosNows")
-            <td>{!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}</td>
+            {!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}
             @endif
+            </td>
             <td>{{$log->count}}</td>
             <td>{{$log->avvatta_user->firstname.' '.$log->avvatta_user->lastname}}</td>
+            <td>
+              @if($log->loggable_type == "App\Models\VideoContent")
+              Kids
+              @endif
+              @if($log->loggable_type == "App\Models\AvErosNows")
+              Erosnow
+              @endif
+            </td>
         </tr>
         @endforeach 
     </tbody>

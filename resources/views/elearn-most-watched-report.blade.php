@@ -41,18 +41,22 @@
     <tr>
         <th>Title</th>
         <th>Watches</th>
+        <th>Provider</th>
     </tr>
     </thead>
     <tbody>
         @foreach($logs as $log)
         <tr>
+          <td>
             @if($log->loggable_type == "App\Models\VideoContent")
-            <td>{{$log->loggable->content_name}}</td>
+            {{$log->loggable->content_name}}
             @endif
             @if($log->loggable_type == "App\Models\AvErosNows")
-            <td>{!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}</td>
+            {!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}
             @endif
+            </td>
             <td>{{$log->count}}</td>
+            <td>Elearning</td>
         </tr>
         @endforeach 
     </tbody>

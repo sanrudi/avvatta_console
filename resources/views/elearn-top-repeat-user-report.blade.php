@@ -42,6 +42,7 @@
         <th>Title</th>
         <th>Watches</th>
         <th>User</th>
+        <th>Provider</th>
     </tr>
     </thead>
     <tbody>
@@ -55,6 +56,7 @@
             @endif
             <td>{{$log->count}}</td>
             <td>{{$log->avvatta_user->firstname.' '.$log->avvatta_user->lastname}}</td>
+            <td>Elearning</td>
         </tr>
         @endforeach 
     </tbody>

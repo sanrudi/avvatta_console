@@ -5,11 +5,20 @@
 <link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 <!-- Data Tables -->
 @endpush
+@section('title', 'Revenue - Report')
 @section('content')
 <div class="container">
     <h6>Revenue - Report - Avvatta Revenue Report  
-        From: <?php echo $all['fromdate']->format('d-M-Y'); ?>
-        To: <?php echo $all['todate']->format('d-M-Y'); ?>
+        @if(Request::get('reportFrom') !="custom" && Request::get('reportFrom') !="")
+        for Last {!! Request::get('reportFrom') !!} Days
+        @elseif(Request::get('reportFrom') =="custom")
+        @if(Request::get('startDate') !="")
+        From: {!! Request::get('startDate') !!}
+        @endif
+        @if(Request::get('endDate') !="")
+        till: {!! Request::get('endDate') !!}
+        @endif
+        @endif
     </h6><hr>
     <form action="" method="GET">
         <div class="form-row">
