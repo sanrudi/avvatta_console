@@ -47,7 +47,7 @@ class GameReportController extends Controller
         ->join('users', 'user_logs.user_id', '=', 'users.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game')
-        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, game_name, sub_categories.name as category_name,COUNT(*)"))
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, game_name, sub_categories.name as category_name,COUNT(*)"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"))
         ->groupBy('user_logs.user_id','user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 1")->get();
 
@@ -65,7 +65,7 @@ class GameReportController extends Controller
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game')
-        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*)"))
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*)"), DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"))
         ->groupBy('user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 2")->get();
 
