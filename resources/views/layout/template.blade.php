@@ -113,6 +113,33 @@
                             <a href="{{ route('repeated-kidscontent-by-user') }}"> Most Watched Kids Content By Single User</a>
                             </li>
                         </ul>
+
+                        <a href="#elearning" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">                                  
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                                <span>Elearning</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled" id="elearning" data-parent="#accordionExample">
+                            <li>
+                            <a href="{{route('elearn-report')}}"> All Elearning Categories </a>
+                            </li>
+                            <li>
+                            <a href="{{ route('top-ten-elearn-content') }}"> Top 10 watched Kids Category </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('elearn-top-repeat-user-report') }}">Top repeat watched </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('elearn-top-genre-watched-report') }}">Top Genre watched </a>
+                            </li>
+                            <li>
+                            <a href="{{ route('most-watched-elearn-content') }}"> Most Watched Kids Content By Single User</a>
+                            </li>
+                        </ul>
                         
                         <a href="#video-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">

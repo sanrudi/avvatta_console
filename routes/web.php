@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscriptionReportController;
 use App\Http\Controllers\VideoContentReportController;
+use App\Http\Controllers\ElearnContentReportController;
 use App\Http\Controllers\ActivityReportController;
 
 
@@ -69,6 +70,14 @@ Route::get('top-kids-content',[App\Http\Controllers\KidsReportController::class,
 Route::get('repeated-kidscontent-by-user',[App\Http\Controllers\KidsReportController::class, 'repeatedKidsContentByUser'])->name('repeated-kidscontent-by-user');
 //User Report
 Route::get('user-report',[App\Http\Controllers\UserReportController::class, 'userReport'])->name('user-report');
+
+// Elearning
+Route::get('most-watched-elearn-content',[App\Http\Controllers\ElearnContentReportController::class, 'mostWatchedElearnContent'])->name('most-watched-elearn-content');
+Route::get('top-ten-elearn-content',[App\Http\Controllers\ElearnContentReportController::class, 'topTenElearnContent'])->name('top-ten-elearn-content');
+Route::get('elearn-report',[App\Http\Controllers\ElearnContentReportController::class, 'elearnReport'])->name('elearn-report');
+Route::get('elearn-top-genre-watched-report',[App\Http\Controllers\ElearnContentReportController::class, 'topGenreWatched'])->name('elearn-top-genre-watched-report');
+Route::get('elearn-top-repeat-user-report',[App\Http\Controllers\ElearnContentReportController::class, 'topRepeatedBySingleUser'])->name('elearn-top-repeat-user-report');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
