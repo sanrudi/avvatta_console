@@ -39,6 +39,7 @@ Route::get('register', function () {
 // Subscription Report
 Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');
 Route::get('subscription-total', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionTotal'])->name('subscription-total');
+Route::get('daily-transactions', [App\Http\Controllers\SubscriptionReportController::class, 'dailyTransactions'])->name('daily-transactions');
 
 // Video Content Report
 Route::get('video-content-report', [App\Http\Controllers\VideoContentReportController::class, 'index'])->name('video-content-report');

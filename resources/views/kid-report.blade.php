@@ -55,7 +55,7 @@
 				<tr>
 					<td><div class="td-content product-brand">{{$mostWatchedKidsContent->content_name}}</div></td>
 					<td><div class="td-content">{{$mostWatchedKidsContent->category_name}}</div></td>
-					<td>Kids</td>
+					<td>{{$mostWatchedKidsContent->provider}}</td>
 				</tr>
 			@endforeach
 			</tbody>
@@ -84,7 +84,7 @@
 						<td><div class="td-content customer-name">{{$repeatedKidsContent->firstname.' '.$repeatedKidsContent->lastname}}</div></td>
 						<td><div class="td-content product-brand">{{$repeatedKidsContent->content_name}}</div></td>
 						<td><div class="td-content">{{$repeatedKidsContent->category_name}}</div></td>
-						<td>Kids</td>
+						<td>{{$repeatedKidsContent->provider}}</td>
 					</tr>
 				@endforeach
 				</tbody>

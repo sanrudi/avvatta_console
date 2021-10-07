@@ -1,4 +1,9 @@
 @extends('layout.template')
+@push('css-links')
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Date Picker -->
+@endpush
 @section('content')
     <div class="container">
         <h6>User Report</h6><hr>
@@ -16,12 +21,12 @@
                     </select>
                 </div>
                 <div class="form-group col-md-2 custom-date">
-                    <label for="startDate">Start Date</label>
-                    <input id="startDate" name="startDate" type="date" class="form-control" value="{!! Request::get('startDate') !!}"/>
+                <label for="startDate">Start Date</label>
+                <input id="startDate" name="startDate" type="text" class="form-control" value="" placeholder="yyyy-mm-dd" />
                 </div>
                 <div class="form-group col-md-2 custom-date">
-                    <label for="endDate">End Date</label>
-                    <input id="endDate" name="endDate" type="date" class="form-control" value="{!! Request::get('endDate') !!}" />
+                <label for="endDate">End Date</label>
+                <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
                 </div>
                 <div class="form-group col-md-2">
                     <label for="type">Type</label>
@@ -71,24 +76,44 @@
     </div>
 @endsection
 @push('js-links')
+    <!-- Date Picker -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Date Picker -->
 @endpush
 @section('js-content')
-    <script>
-        $(document).ready(function(){
-            $(".custom-date").hide();
-            $("#reportFrom").change(function(){
-                $(this).find("option:selected").each(function(){
-                    var optionValue = $(this).attr("value");
-                    console.log(optionValue);
-                    $("#startDate").val("");
-                    $("#endDate").val("");
-                    if(optionValue == "custom"){
-                        $(".custom-date").show();
-                    } else{
-                        $(".custom-date").hide();
-                    }
-                });
-            }).change();
+<script>
+$(document).ready(function(){
+    $(".custom-date").hide();
+    $("#reportFrom").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            $("#startDate").val("");
+            $("#endDate").val("");
+            if(optionValue == "custom"){
+                $(".custom-date").show();
+            } else{
+                $(".custom-date").hide();
+            }
         });
-    </script>
+    }).change();
+});
+  $( function() {
+    $( "#startDate" ).datepicker({
+      dateFormat: "yy-mm-dd",
+        onSelect: function(selected) {
+          $("#endDate").datepicker("option","minDate", selected)
+        }
+    });
+    $( "#startDate" ).datepicker("setDate","{!! Request::get('startDate') !!}");
+  } );
+  $( function() {
+    $( "#endDate" ).datepicker({
+      dateFormat: "yy-mm-dd",
+        onSelect: function(selected) {
+           $("#startDate").datepicker("option","maxDate", selected)
+        }
+    });
+    $( "#endDate" ).datepicker("setDate","{!! Request::get('endDate') !!}");
+  } );
+</script>
 @endsection

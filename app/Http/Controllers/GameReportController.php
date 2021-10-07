@@ -98,20 +98,20 @@ class GameReportController extends Controller
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'game');
                 if($startDate){
-                    $query->where('date_time', '>=', $startDate);
+                    $query->whereDate('date_time', '>=', $startDate);
                 }
                 if($endDate){
-                    $query->where('date_time', '<=', $endDate);
+                    $query->whereDate('date_time', '<=', $endDate);
                 }
             }]);
             $gameArticlesQuery->with(['unique_watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'game');
                 if($startDate){
-                    $query->where('date_time', '>=', $startDate);
+                    $query->whereDate('date_time', '>=', $startDate);
                 }
                 if($endDate){
-                    $query->where('date_time', '<=', $endDate);
+                    $query->whereDate('date_time', '<=', $endDate);
                 }
             }]);
             $gameArticlesQuery->with('wishlist');

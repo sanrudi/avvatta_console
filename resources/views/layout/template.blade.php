@@ -128,7 +128,7 @@
                             <a href="{{route('elearn-report')}}"> All Elearning Categories </a>
                             </li>
                             <li>
-                            <a href="{{ route('top-ten-elearn-content') }}"> Top 10 watched Kids Category </a>
+                            <a href="{{ route('top-ten-elearn-content') }}"> Top 10 watched Category </a>
                             </li>
                             <li>
                                 <a href="{{ route('elearn-top-repeat-user-report') }}">Top repeat watched </a>
@@ -196,6 +196,9 @@
                             </li>
                             <li>
                                 <a href="{{ route('subscription-customer') }}">Customer Report </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('daily-transactions') }}">Daily Transactions </a>
                             </li>
                         </ul>
                         <a href="#revenue-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">

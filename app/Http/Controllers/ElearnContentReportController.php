@@ -113,10 +113,10 @@ class ElearnContentReportController extends Controller
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
         if($startDate){
-            $logQuery->where('date_time', '>=', $startDate);
+            $logQuery->whereDate('date_time', '>=', $startDate);
         }
         if($endDate){
-            $logQuery->where('date_time', '<=', $endDate);
+            $logQuery->whereDate('date_time', '<=', $endDate);
         }
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->groupBy('user_logs.loggable_id');
@@ -147,10 +147,10 @@ class ElearnContentReportController extends Controller
         $logQuery->where('action','=', 'play');
         $logQuery->whereNotNull('genre');
         if($startDate){
-            $logQuery->where('date_time', '>=', $startDate);
+            $logQuery->whereDate('date_time', '>=', $startDate);
         }
         if($endDate){
-            $logQuery->where('date_time', '<=', $endDate);
+            $logQuery->whereDate('date_time', '<=', $endDate);
         }
         $logQuery->groupBy('user_logs.category');
         $logQuery->groupBy('user_logs.genre');
@@ -181,10 +181,10 @@ class ElearnContentReportController extends Controller
         $logQuery->where('category','=', 'elearning');
         $logQuery->where('action','=', 'play');
         if($startDate){
-            $logQuery->where('date_time', '>=', $startDate);
+            $logQuery->whereDate('date_time', '>=', $startDate);
         }
         if($endDate){
-            $logQuery->where('date_time', '<=', $endDate);
+            $logQuery->whereDate('date_time', '<=', $endDate);
         }
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->groupBy('user_logs.loggable_id');
@@ -215,10 +215,10 @@ class ElearnContentReportController extends Controller
         $logQuery->where('action','=', 'play');
         $logQuery->whereIn('category', ['erosnow', 'kids']);
         if($startDate){
-            $logQuery->where('date_time', '>=', $startDate);
+            $logQuery->whereDate('date_time', '>=', $startDate);
         }
         if($endDate){
-            $logQuery->where('date_time', '<=', $endDate);
+            $logQuery->whereDate('date_time', '<=', $endDate);
         }    
         $logQuery->groupBy('user_id');
         $logQuery->having(DB::raw('count(category)'), '>', 1);

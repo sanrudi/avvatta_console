@@ -4,6 +4,9 @@
     <link href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
     <!-- Data Tables -->
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Date Picker -->
 @endpush
 @section('content')
 <div class="container">
@@ -23,11 +26,11 @@
         </div>
         <div class="form-group col-md-2 custom-date">
           <label for="startDate">Start Date</label>
-          <input id="startDate" name="startDate" type="date" class="form-control" value="{!! Request::get('startDate') !!}"/>
+          <input id="startDate" name="startDate" type="text" class="form-control" value="" placeholder="yyyy-mm-dd" />
         </div>
         <div class="form-group col-md-2 custom-date">
           <label for="endDate">End Date</label>
-          <input id="endDate" name="endDate" type="date" class="form-control" value="{!! Request::get('endDate') !!}" />
+          <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
         <div class="form-group col-md-2">
           <label for="page">&nbsp;</label>
@@ -56,7 +59,11 @@
             @endif
             </td>
             <td>{{$log->count}}</td>
-            <td>Elearning</td>
+            <td>
+            @if($log->loggable_type == "App\Models\VideoContent")
+            {{$log->loggable->owner}}
+            @endif
+          </td>
         </tr>
         @endforeach 
     </tbody>
@@ -76,6 +83,9 @@
     <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
     <!-- Data Tables -->
+    <!-- Date Picker -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Date Picker -->
 @endpush
 @section('js-content')
 <script>
@@ -100,7 +110,6 @@ $(document).ready(function(){
     $("#reportFrom").change(function(){
         $(this).find("option:selected").each(function(){
             var optionValue = $(this).attr("value");
-            console.log(optionValue);
             $("#startDate").val("");
             $("#endDate").val("");
             if(optionValue == "custom"){
@@ -111,5 +120,23 @@ $(document).ready(function(){
         });
     }).change();
 });
+  $( function() {
+    $( "#startDate" ).datepicker({
+      dateFormat: "yy-mm-dd",
+        onSelect: function(selected) {
+          $("#endDate").datepicker("option","minDate", selected)
+        }
+    });
+    $( "#startDate" ).datepicker("setDate","{!! Request::get('startDate') !!}");
+  } );
+  $( function() {
+    $( "#endDate" ).datepicker({
+      dateFormat: "yy-mm-dd",
+        onSelect: function(selected) {
+           $("#startDate").datepicker("option","maxDate", selected)
+        }
+    });
+    $( "#endDate" ).datepicker("setDate","{!! Request::get('endDate') !!}");
+  } );
 </script>
 @endsection

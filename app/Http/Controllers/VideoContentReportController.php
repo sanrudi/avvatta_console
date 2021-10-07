@@ -50,20 +50,20 @@ class VideoContentReportController extends Controller
             $query->where('action','=', 'play');
             $query->where('type','=', 'video');
             if($startDate){
-                $query->where('date_time', '>=', $startDate);
+                $query->whereDate('date_time', '>=', $startDate);
             }
             if($endDate){
-                $query->where('date_time', '<=', $endDate);
+                $query->whereDate('date_time', '<=', $endDate);
             }
         }]);
         $videoArticlesQuery->with(['unique_watches' => function ($query) use ($request,$startDate,$endDate) {
             $query->where('action','=', 'play');
             $query->where('type','=', 'video');
             if($startDate){
-                $query->where('date_time', '>=', $startDate);
+                $query->whereDate('date_time', '>=', $startDate);
             }
             if($endDate){
-                $query->where('date_time', '<=', $endDate);
+                $query->whereDate('date_time', '<=', $endDate);
             }
         }]);
         $videoArticlesQuery->with('wishlist');
@@ -71,10 +71,10 @@ class VideoContentReportController extends Controller
             $join->on(function ($query) use ($request,$startDate,$endDate)  {
                 $query->on('user_logs.content_id','=','av_eros_nows.content_id');
                 if($startDate){
-                    $query->where('user_logs.date_time', '>=', $startDate);
+                    $query->whereDate('user_logs.date_time', '>=', $startDate);
                 }
                 if($endDate){
-                    $query->where('user_logs.date_time', '<=', $endDate);
+                    $query->whereDate('user_logs.date_time', '<=', $endDate);
                 }
             });
         });
@@ -83,26 +83,26 @@ class VideoContentReportController extends Controller
 
         // Kids Data
         if($report == "kids"){
-            $videoArticlesQuery = VideoContent::select('video_content.id as content_id','video_content.content_name as article',DB::raw("'' as category"),DB::raw("'Kids' as provider"),'video_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration)
+            $videoArticlesQuery = VideoContent::select('video_content.id as content_id','video_content.content_name as article',DB::raw("'' as category"),'video_content.owner as provider','video_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration)
             as avg'));
             $videoArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'video');
                 if($startDate){
-                    $query->where('date_time', '>=', $startDate);
+                    $query->whereDate('date_time', '>=', $startDate);
                 }
                 if($endDate){
-                    $query->where('date_time', '<=', $endDate);
+                    $query->whereDate('date_time', '<=', $endDate);
                 }
             }]);
             $videoArticlesQuery->with(['unique_watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'video');
                 if($startDate){
-                    $query->where('date_time', '>=', $startDate);
+                    $query->whereDate('date_time', '>=', $startDate);
                 }
                 if($endDate){
-                    $query->where('date_time', '<=', $endDate);
+                    $query->whereDate('date_time', '<=', $endDate);
                 }
             }]);
             $videoArticlesQuery->with('wishlist');

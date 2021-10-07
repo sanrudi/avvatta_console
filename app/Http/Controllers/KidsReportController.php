@@ -34,7 +34,7 @@ class KidsReportController extends Controller
         ->join('sub_categories', 'sub_categories.id', '=', 'video_content.sub_id')
         ->where('type', 'video')
         ->where('category', 'kids')
-        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, video_content.content_name, sub_categories.name as category_name,COUNT(*)"))
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, video_content.content_name,video_content.owner as provider, sub_categories.name as category_name,COUNT(*)"))
         ->groupBy('user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 1")->get();
 
@@ -55,7 +55,7 @@ class KidsReportController extends Controller
         ->join('sub_categories', 'sub_categories.id', '=', 'video_content.sub_id')
         ->where('type', 'video')
         ->where('category', 'kids')
-        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, video_content.content_name, sub_categories.name as category_name,COUNT(*)"))
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, video_content.content_name, video_content.owner as provider, sub_categories.name as category_name,COUNT(*)"))
         ->groupBy('user_logs.user_id','user_logs.loggable_id')
         ->havingRaw("COUNT(*) > 1")->get();
 

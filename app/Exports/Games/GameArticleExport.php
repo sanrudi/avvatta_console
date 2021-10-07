@@ -32,6 +32,7 @@ class GameArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
         return [
             $gameArticles['article'],
             $gameArticles['category'],
+            $gameArticles['provider'],
             count($gameArticles['watches']),
             count($gameArticles['unique_watches']),
             count($gameArticles['wishlist']),
@@ -46,9 +47,10 @@ class GameArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
         return [
             'Article',
             'Category',
-            'Played',
-            'Unique Played',
-            'Wishlist',
+            'Provider',
+            'Watches',
+            'Unique Watches',
+            'Favourite',
             'Avg',
             'Added At',
             'Duration'
