@@ -197,16 +197,14 @@ $total_sub_rev_ex_vat = $total_sub_rev_ex_vat + ($all[$value->id] * 0.85);
 $total_op_rev = $total_op_rev + ($all[$value->id] * 0.85 * .4 );
 $total_agg_rev = $total_agg_rev + ($all[$value->id] * 0.85 * .1);
 $total_cp_rev = $total_cp_rev + ($all[$value->id] * 0.85 * .5 );
-//echo "category-".$category."-";  echo "total_sub_rev_ex_vat".$total_sub_rev_ex_vat."|";
+//echo "category-".$category."-";  
+//echo "total_sub_rev_ex_vat".$total_sub_rev_ex_vat."|";
 }
 $category = ""; 
 //  
 $i++;
 
-
-                ?>
-              
-            <?php   }  ?>
+ }  ?>
 
 
   <div class="table-responsive">
@@ -250,6 +248,7 @@ $i++;
                         $currentCPPayment[] = array('category' => 'Video on Demand',
                         'provider' => 'vod',
                         'cprevenue' => $vod_cp_rev);
+
                         ?>
                     </td>
                 </tr>
@@ -412,13 +411,17 @@ $i++;
                     ?>
                     </td>
                 </tr>
-                <?php //}  
+                <?php 
+                //}  
                // } ?>
-                <?php //if(count($kidWatches)>0){ ?>
+                <?php 
+                //if(count($kidWatches)>0){ 
+                    ?>
                 <?php 
                 $kidWatchesTotal =0;
                 foreach ($kidWatches as $kidWatche) {$kidWatchesTotal = $kidWatchesTotal + $kidWatche['count'];}
-               // foreach ($kidWatches as $kidWatche) {  ?>
+               // foreach ($kidWatches as $kidWatche) {  
+                   ?>
                 <tr >
                     <td >Kids</td>
                     <td >Netsport</td>
@@ -528,7 +531,8 @@ $i++;
                 <?php// }   ?>
                 <?php //}   ?>
                 
-                <?php //if(count($funWatches)>0){ ?>
+                <?php //if(count($funWatches)>0){ 
+                    ?>
                 <?php 
                 $funWatchesTotal =0;
                 foreach ($funWatches as $funWatche) {$funWatchesTotal = $funWatchesTotal + $funWatche['count'];}
@@ -641,7 +645,8 @@ $i++;
                 </tr>
                 <?php //}   ?>
                 <?php //}   ?>
-                <?php if(count($higWatches)>0){ ?>
+                <?php if(count($higWatches)>0){ 
+                    ?>
                 <?php 
                 $higWatchesTotal =0;
                 foreach ($higWatches as $higWatche) {$higWatchesTotal = $higWatchesTotal + $higWatche['count'];}
@@ -697,7 +702,8 @@ $i++;
                 </tr>
                 <?php }   ?>
                 <?php }   ?>
-                <?php if(count($higWatches) == 0){ ?>
+                <?php if(count($higWatches) == 0){ 
+                    ?>
                 <tr >
                     <td >Higher Learning</td>
                     <td ></td>
@@ -715,7 +721,8 @@ $i++;
                     <td >{{ $hig_cp_rev }}</td>
                 </tr>
                 <?php }   ?>
-                <?php if(count($codWatches)>0){ ?>
+                <?php if(count($codWatches)>0){ 
+                    ?>
                 <?php 
                 $codWatchesTotal =0;
                 foreach ($codWatches as $codWatche) {$codWatchesTotal = $codWatchesTotal + $codWatche['count'];}
@@ -771,7 +778,8 @@ $i++;
                 </tr>
                 <?php }   ?>
                 <?php }   ?>
-                <?php if(count($codWatches) == 0){ ?>
+                <?php if(count($codWatches) == 0){ 
+                    ?>
                 <tr >
                     <td >Coding</td>
                     <td ></td>
@@ -789,11 +797,14 @@ $i++;
                     <td >{{ $cod_cp_rev }}</td>
                 </tr>
                 <?php }   ?>
-                <?php// if(count($siyWatches)>0){ ?>
+                <?php
+                // if(count($siyWatches)>0){
+                    ?>
                 <?php 
                 $siyWatchesTotal =0;
                 foreach ($siyWatches as $siyWatche) {$siyWatchesTotal = $siyWatchesTotal + $siyWatche['count'];}
-              //  foreach ($siyWatches as $siyWatche) {  ?>
+              //  foreach ($siyWatches as $siyWatche) {  
+                  ?>
                 <tr >
                     <td >Siyavula</td>
                     <td >Siyavula</td>
