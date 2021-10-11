@@ -138,7 +138,7 @@ if($value->title == "vod daily" || $value->title == "vod weekly" || $value->titl
     $vod_sub_rev_ex_vat = $vod_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $vod_op_rev = $vod_op_rev + ($all[$value->id] * 0.85 * .4 );
     $vod_agg_rev = $vod_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $vod_cp_rev = $vod_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $vod_cp_rev = $vod_cp_rev + ($all[$value->id] * 0.85 * .25 );
 } 
 if($value->title == "Eros Now Daily" || $value->title == "Eros Now weekly" || $value->title == "Eros Now Monthly"){
     $category="eros";
@@ -146,7 +146,7 @@ if($value->title == "Eros Now Daily" || $value->title == "Eros Now weekly" || $v
     $ero_sub_rev_ex_vat = $ero_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $ero_op_rev = $ero_op_rev + ($all[$value->id] * 0.85 * .4 );
     $ero_agg_rev = $ero_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $ero_cp_rev = $ero_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $ero_cp_rev = $ero_cp_rev + ($all[$value->id] * 0.85 * .25 );
 }
 if($value->title == "Games Daily" || $value->title == "Games weekly" || $value->title == "Games Monthly") {
     $category="games";
@@ -158,7 +158,7 @@ if($value->title == "Games Daily" || $value->title == "Games weekly" || $value->
     $gam_sub_rev_ex_vat = $gam_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $gam_op_rev = $gam_op_rev + ($all[$value->id] * 0.85 * .4 );
     $gam_agg_rev = $gam_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $gam_cp_rev = $gam_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $gam_cp_rev = $gam_cp_rev + ($all[$value->id] * 0.85 * .25 );
 }
 if($value->title == "Kids Daily" || $value->title == "Kids weekly" || $value->title == "Kids Monthly") {
     $category="kids";
@@ -166,7 +166,7 @@ if($value->title == "Kids Daily" || $value->title == "Kids weekly" || $value->ti
     $kid_sub_rev_ex_vat = $kid_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $kid_op_rev = $kid_op_rev + ($all[$value->id] * 0.85 * .4 );
     $kid_agg_rev = $kid_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $kid_cp_rev = $kid_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $kid_cp_rev = $kid_cp_rev + ($all[$value->id] * 0.85 * .25 );
 }
 if($value->title == "Fun & Learning Daily" || $value->title == "Fun & Learning Weekly" || $value->title == "Fun & Learning Monthly") {
 $category="Fun & Learning";
@@ -174,7 +174,7 @@ $category="Fun & Learning";
     $fun_sub_rev_ex_vat = $fun_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $fun_op_rev = $fun_op_rev + ($all[$value->id] * 0.85 * .4 );
     $fun_agg_rev = $fun_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $fun_cp_rev = $fun_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $fun_cp_rev = $fun_cp_rev + ($all[$value->id] * 0.85 * .25 );
 }
 if($value->title == "Higher Learning Daily" || $value->title == "Higher Learning Weekly" || $value->title == "Higher Learning Monthly") {
 $category="Higher Learning";
@@ -182,7 +182,7 @@ $category="Higher Learning";
     $hig_sub_rev_ex_vat = $hig_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $hig_op_rev = $hig_op_rev + ($all[$value->id] * 0.85 * .4 );
     $hig_agg_rev = $hig_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $hig_cp_rev = $hig_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $hig_cp_rev = $hig_cp_rev + ($all[$value->id] * 0.85 * .25 );
 }
 if($value->title == "Coding Daily" || $value->title == "Coding Weekly" || $value->title == "Coding Monthly") {
 $category="Coding";
@@ -190,7 +190,7 @@ $category="Coding";
     $cod_sub_rev_ex_vat = $cod_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $cod_op_rev = $cod_op_rev + ($all[$value->id] * 0.85 * .4 );
     $cod_agg_rev = $cod_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $cod_cp_rev = $cod_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $cod_cp_rev = $cod_cp_rev + ($all[$value->id] * 0.85 * .25 );
 }
 if($value->title == "Siyavula Daily" || $value->title == "Siyavula Weekly" || $value->title == "Siyavula Monthly") {
 $category="Siyavula";
@@ -198,14 +198,14 @@ $category="Siyavula";
     $siy_sub_rev_ex_vat = $siy_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $siy_op_rev = $siy_op_rev + ($all[$value->id] * 0.85 * .4 );
     $siy_agg_rev = $siy_agg_rev + ($all[$value->id] * 0.85 * .1);
-    $siy_cp_rev = $siy_cp_rev + ($all[$value->id] * 0.85 * .5 );
+    $siy_cp_rev = $siy_cp_rev + ($all[$value->id] * 0.85 * .25 );
 }  
 if($category != ""){
 $total_sub_rev = $total_sub_rev + $all[$value->id];
 $total_sub_rev_ex_vat = $total_sub_rev_ex_vat + ($all[$value->id] * 0.85);
 $total_op_rev = $total_op_rev + ($all[$value->id] * 0.85 * .4 );
 $total_agg_rev = $total_agg_rev + ($all[$value->id] * 0.85 * .1);
-$total_cp_rev = $total_cp_rev + ($all[$value->id] * 0.85 * .5 );
+$total_cp_rev = $total_cp_rev + ($all[$value->id] * 0.85 * .25 );
 //echo "category-".$category."-";  
 //echo "total_sub_rev_ex_vat".$total_sub_rev_ex_vat."|";
 }
