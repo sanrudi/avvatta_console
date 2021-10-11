@@ -19,6 +19,10 @@
         till: {!! Request::get('endDate') !!}
         @endif
         @endif
+        @if(Request::get('reportFrom') =="" && Request::get('startDate') =="" && Request::get('endDate') =="")
+        From: <?php echo $all['fromdate']->format('d-M-Y'); ?>
+                   To: <?php echo $all['todate']->format('d-M-Y'); ?>
+        @endif
     </h6><hr>
     <form action="" method="GET">
         <div class="form-row">
@@ -127,6 +131,7 @@ $siy_cpp = 0;
 $currentCPPayment = [];
 $category ="";
 foreach ($subs as $value) {  
+    //echo "title |".$value->title."|<br>";
 if($value->title == "vod daily" || $value->title == "vod weekly" || $value->title == "vod monthly"){
     $category="vod";
     $vod_sub_rev = $vod_sub_rev + $all[$value->id];
@@ -143,8 +148,12 @@ if($value->title == "Eros Now Daily" || $value->title == "Eros Now weekly" || $v
     $ero_agg_rev = $ero_agg_rev + ($all[$value->id] * 0.85 * .1);
     $ero_cp_rev = $ero_cp_rev + ($all[$value->id] * 0.85 * .5 );
 }
-if($value->title == "siys Daily" || $value->title == "Games weekly" || $value->title == "Games Monthly") {
+if($value->title == "Games Daily" || $value->title == "Games weekly" || $value->title == "Games Monthly") {
     $category="games";
+    // echo "title |".$value->title."|<br>";
+    // echo "gam_sub_rev |".$all[$value->id]."|<br>";
+    // echo "gam_sub_rev_ex_vat |".($all[$value->id] * 0.85)."|<br>";
+    // echo "gam_op_rev |".($all[$value->id] * 0.85 * .4 )."|<br>";
     $gam_sub_rev = $gam_sub_rev + $all[$value->id];
     $gam_sub_rev_ex_vat = $gam_sub_rev_ex_vat + ($all[$value->id] * 0.85);
     $gam_op_rev = $gam_op_rev + ($all[$value->id] * 0.85 * .4 );
@@ -213,8 +222,8 @@ $i++;
             <tr >
                 <th >Category</th>
                 <th >Provider</th>
-                <th >Watches</th>
-                <th >Watches (%)</th>
+                <!-- <th >Watches</th>
+                <th >Watches (%)</th> -->
                 <th >Subs Revenue (Incl VAT)</th>
                 <th >Subs Revenue (Excl VAT)</th>
                 <th >Billing ID</th>
@@ -231,8 +240,8 @@ $i++;
                 <tr >
                     <td >Video on Demand</td>
                     <td ></td>
-                    <td >0</td>
-                    <td >0</td>
+                    <!-- <td >0</td>
+                    <td >0</td> -->
                     <td >{{ $vod_sub_rev }}</td>
                     <td >{{ $vod_sub_rev_ex_vat }}</td>
                     <td ></td>
@@ -255,11 +264,11 @@ $i++;
                 <tr >
                     <td >Eros Now</td>
                     <td >Erosnow</td>
-                    <td >{{$erosnowWatches}}</td>
+                    <!-- <td >{{$erosnowWatches}}</td>
                     <td >
-                    <?php $eroWatchep = 100; echo round($eroWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $eroWatchep = 100; //echo round($eroWatchep,2); ?>
                         <?php 
                         $ero_sub_rev_ForCp = $ero_sub_rev * $eroWatchep/100; 
                         echo "(".round($ero_sub_rev_ForCp,2).")"; 
@@ -308,11 +317,11 @@ $i++;
                 <tr >
                     <td >Games</td>
                     <td >Gogames</td>
-                    <td >{{$gameWatchesTotal}}</td>
+                    <!-- <td >{{$gameWatchesTotal}}</td>
                     <td >
-                    <?php $gameWatchep = 50; echo round($gameWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $gameWatchep = 50; //echo round($gameWatchep,2); ?>
                         <?php 
                         $gam_sub_rev_ForCp = $gam_sub_rev * $gameWatchep/100; 
                         echo "(".round($gam_sub_rev_ForCp,2).")"; 
@@ -361,11 +370,11 @@ $i++;
                 <tr >
                     <td >Games</td>
                     <td >Gamepix</td>
-                    <td >{{$gameWatchesTotal}}</td>
+                    <!-- <td >{{$gameWatchesTotal}}</td>
                     <td >
-                    <?php $gameWatchep = 50; echo round($gameWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $gameWatchep = 50; //echo round($gameWatchep,2); ?>
                         <?php 
                         $gam_sub_rev_ForCp = $gam_sub_rev * $gameWatchep/100; 
                         echo "(".round($gam_sub_rev_ForCp,2).")"; 
@@ -425,11 +434,11 @@ $i++;
                 <tr >
                     <td >Kids</td>
                     <td >Netsport</td>
-                    <td >{{$kidWatchesTotal}}</td>
+                    <!-- <td >{{$kidWatchesTotal}}</td>
                     <td >
-                    <?php $kidWatchep = 50; echo round($kidWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $kidWatchep = 50; //echo round($kidWatchep,2); ?>
                         <?php 
                         $kid_sub_rev_ForCp = $kid_sub_rev * $kidWatchep/100; 
                         echo "(".round($kid_sub_rev_ForCp,2).")"; 
@@ -478,11 +487,11 @@ $i++;
                 <tr >
                     <td >Kids</td>
                     <td >Headstart</td>
-                    <td >{{$kidWatchesTotal}}</td>
+                    <!-- <td >{{$kidWatchesTotal}}</td>
                     <td >
-                    <?php $kidWatchep = 50; echo round($kidWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $kidWatchep = 50; //echo round($kidWatchep,2); ?>
                         <?php 
                         $kid_sub_rev_ForCp = $kid_sub_rev * $kidWatchep/100; 
                         echo "(".round($kid_sub_rev_ForCp,2).")"; 
@@ -540,11 +549,11 @@ $i++;
                 <tr >
                     <td >Fun & Learning</td>
                     <td >Netsport</td>
-                    <td >{{$funWatchesTotal}}</td>
+                    <!-- <td >{{$funWatchesTotal}}</td>
                     <td >
-                    <?php $funWatchep = 50; echo round($funWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $funWatchep = 50; //echo round($funWatchep,2); ?>
                         <?php 
                         $fun_sub_rev_ForCp = $fun_sub_rev * $funWatchep/100; 
                         echo "(".round($fun_sub_rev_ForCp,2).")"; 
@@ -593,11 +602,11 @@ $i++;
                 <tr >
                     <td >Fun & Learning</td>
                     <td >Headstart</td>
-                    <td >{{$funWatchesTotal}}</td>
+                    <!-- <td >{{$funWatchesTotal}}</td>
                     <td >
-                    <?php $funWatchep = 50; echo round($funWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $funWatchep = 50; //echo round($funWatchep,2); ?>
                         <?php 
                         $fun_sub_rev_ForCp = $fun_sub_rev * $funWatchep/100; 
                         echo "(".round($fun_sub_rev_ForCp,2).")"; 
@@ -654,11 +663,11 @@ $i++;
                 <tr >
                     <td >Higher Learning</td>
                     <td >{{$higWatche['provider']}}</td>
-                    <td >{{$higWatche['count']}}</td>
+                    <!-- <td >{{$higWatche['count']}}</td>
                     <td >
-                    <?php $higWatchep = ($higWatche['count'] / $higWatchesTotal) * 100; echo round($higWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $higWatchep = ($higWatche['count'] / $higWatchesTotal) * 100; //echo round($higWatchep,2); ?>
                         <?php 
                         $hig_sub_rev_ForCp = $hig_sub_rev * $higWatchep/100; 
                         echo "(".round($hig_sub_rev_ForCp,2).")"; 
@@ -707,8 +716,8 @@ $i++;
                 <tr >
                     <td >Higher Learning</td>
                     <td ></td>
-                    <td >0</td>
-                    <td >0</td>
+                    <!-- <td >0</td>
+                    <td >0</td> -->
                     <td >{{ $hig_sub_rev }}</td>
                     <td >{{ $hig_sub_rev_ex_vat }}</td>
                     <td ></td>
@@ -726,15 +735,15 @@ $i++;
                 <?php 
                 $codWatchesTotal =0;
                 foreach ($codWatches as $codWatche) {$codWatchesTotal = $codWatchesTotal + $codWatche['count'];}
-                foreach ($codWatches as $codWatche) {  ?>
+                //foreach ($codWatches as $codWatche) {  ?>
                 <tr >
                     <td >Coding</td>
-                    <td >{{$codWatche['provider']}}</td>
-                    <td >{{$codWatche['count']}}</td>
+                    <td ></td>
+                    <!-- <td >{{$codWatche['count']}}</td>
                     <td >
-                    <?php $codWatchep = ($codWatche['count'] / $codWatchesTotal) * 100; echo round($codWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $codWatchep = 100;// echo round($codWatchep,2); ?>
                         <?php 
                         $cod_sub_rev_ForCp = $cod_sub_rev * $codWatchep/100; 
                         echo "(".round($cod_sub_rev_ForCp,2).")"; 
@@ -776,26 +785,7 @@ $i++;
                     ?>
                     </td>
                 </tr>
-                <?php }   ?>
-                <?php }   ?>
-                <?php if(count($codWatches) == 0){ 
-                    ?>
-                <tr >
-                    <td >Coding</td>
-                    <td ></td>
-                    <td >0</td>
-                    <td >0</td>
-                    <td >{{ $cod_sub_rev }}</td>
-                    <td >{{ $cod_sub_rev_ex_vat }}</td>
-                    <td ></td>
-                    <td ></td>
-                    <td ></td>
-                    <td ></td>
-                    <td ></td>
-                    <td >{{ $cod_op_rev }}</td>
-                    <td >{{ $cod_agg_rev }}</td>
-                    <td >{{ $cod_cp_rev }}</td>
-                </tr>
+                <?php //}   ?>
                 <?php }   ?>
                 <?php
                 // if(count($siyWatches)>0){
@@ -808,11 +798,11 @@ $i++;
                 <tr >
                     <td >Siyavula</td>
                     <td >Siyavula</td>
-                    <td >{{$siyWatchesTotal}}</td>
+                    <!-- <td >{{$siyWatchesTotal}}</td>
                     <td >
-                    <?php $siyWatchep = 100; echo round($siyWatchep,2); ?>
-                    </td>
+                    </td> -->
                     <td >
+                    <?php $siyWatchep = 100; //echo round($siyWatchep,2); ?>
                         <?php 
                         $siy_sub_rev_ForCp = $siy_sub_rev * $siyWatchep/100; 
                         echo "(".round($siy_sub_rev_ForCp,2).")"; 
@@ -864,8 +854,8 @@ $i++;
             <tr >
                 <td >Total</td>   
                 <td ></td>
-                <td ></td> 
-                <td ></td>
+                <!-- <td ></td> 
+                <td ></td> -->
                 <td >{{ $total_sub_rev }}</td>
                 <td >{{ $total_sub_rev_ex_vat }}</td>
                 <td ></td> 

@@ -168,7 +168,6 @@ class RevenueReportController extends Controller
                             ->get()->count();
          $all['fromdate'] = Carbon::parse($fromdate);     
          $all['todate'] = Carbon::parse($todate);
-
        // var_dump($all);
         return view('revenue-report',['cat'=>$cat,
                                   'frequency'=>$frequency,
