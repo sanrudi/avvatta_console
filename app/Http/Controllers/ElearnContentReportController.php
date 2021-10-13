@@ -41,8 +41,8 @@ class ElearnContentReportController extends Controller
         $logQuery->select('user_logs.*');
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
-        $logQuery->where('category','=', 'elearning');
-        $logQuery->whereIn('sub_cat', ['8to13']);
+        $logQuery->whereIn('category', ['fun','cod','hig','siy']);
+        //$logQuery->whereIn('sub_cat', ['8to13']);
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
         }
@@ -76,7 +76,7 @@ class ElearnContentReportController extends Controller
         $logQuery = UserLog::with('loggable');
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
-        $logQuery->where('category','=', 'elearning');
+        $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
@@ -109,7 +109,7 @@ class ElearnContentReportController extends Controller
 
         $logQuery = UserLog::with('loggable');
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
-        $logQuery->where('category','=', 'elearning');
+        $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
         if($startDate){
@@ -143,7 +143,7 @@ class ElearnContentReportController extends Controller
 
         $logQuery = UserLog::select('user_logs.*',DB::raw('count(user_logs.genre) as count'));
         $logQuery->where('type','=', 'video');
-        $logQuery->where('category','=', 'elearning');
+        $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
         $logQuery->whereNotNull('genre');
         if($startDate){
@@ -178,7 +178,7 @@ class ElearnContentReportController extends Controller
         $logQuery = UserLog::with('loggable','avvatta_user');
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
-        $logQuery->where('category','=', 'elearning');
+        $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
         if($startDate){
             $logQuery->whereDate('date_time', '>=', $startDate);
@@ -213,7 +213,7 @@ class ElearnContentReportController extends Controller
         $logQuery->select('user_logs.*');
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
-        $logQuery->whereIn('category', ['erosnow', 'kids']);
+        $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         if($startDate){
             $logQuery->whereDate('date_time', '>=', $startDate);
         }

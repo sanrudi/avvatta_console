@@ -42,7 +42,9 @@
 <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
 <thead>
     <tr>
-        <th>User</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
         <th>Type</th>
     </tr>
     </thead>
@@ -50,6 +52,8 @@
         @foreach($logs as $log)
         <tr>
             <td>{{$log->avvatta_user->firstname.' '.$log->avvatta_user->lastname}}</td>
+            <td>{{$log->avvatta_user->email}}</td>
+            <td>{{$log->avvatta_user->mobile}}</td>
             <td>{{$log->type}}</td>
         </tr>
         @endforeach 

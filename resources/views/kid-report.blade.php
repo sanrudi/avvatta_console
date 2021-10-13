@@ -23,7 +23,15 @@
 		<tbody>
 		@foreach ($kids_contents as $kids_content)
 			<tr>
-				<td>{{$kids_content->firstname.' '.$kids_content->lastname}}</td>
+				<td>
+				@if(!empty($kids_content->firstname) && !empty($kids_content->lastname))
+				{{$kids_content->firstname}}{{$kids_content->lastname}}
+				@elseif(!empty($kids_content->email))
+				{{$kids_content->email}}
+				@elseif(!empty($kids_content->mobile))
+				{{$kids_content->mobile}}
+				@endif
+				</td>
 				<td>{{$kids_content->content_name}}</td>
 				<td>{{$kids_content->category_name}}</td>
 				<td>{{date('D j M Y', strtotime($kids_content->date_time))}}</td>
@@ -81,7 +89,15 @@
 				<tbody>
 				@foreach ($repeatedKidsContents as $repeatedKidsContent)
 					<tr>
-						<td><div class="td-content customer-name">{{$repeatedKidsContent->firstname.' '.$repeatedKidsContent->lastname}}</div></td>
+						<td><div class="td-content customer-name">
+							@if(!empty($repeatedKidsContent->firstname) && !empty($repeatedKidsContent->lastname))
+							{{$repeatedKidsContent->firstname}}{{$repeatedKidsContent->lastname}}
+							@elseif(!empty($repeatedKidsContent->email))
+							{{$repeatedKidsContent->email}}
+							@elseif(!empty($repeatedKidsContent->mobile))
+							{{$repeatedKidsContent->mobile}}
+							@endif
+						</div></td>
 						<td><div class="td-content product-brand">{{$repeatedKidsContent->content_name}}</div></td>
 						<td><div class="td-content">{{$repeatedKidsContent->category_name}}</div></td>
 						<td>{{$repeatedKidsContent->provider}}</td>
