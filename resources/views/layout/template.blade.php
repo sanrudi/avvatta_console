@@ -180,6 +180,15 @@
                             <li>
                                 <a href="{{ route('user-report') }}"> User Report </a>
                             </li>
+                            <li>
+                                <a href="{{ route('user-registration-report') }}"> Registrations </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('user-sub-profile-report') }}"> Sub Profile </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('user-login-report') }}"> Login </a>
+                            </li>
                         </ul>
                         <a href="#subscription-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">

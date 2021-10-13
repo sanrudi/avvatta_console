@@ -71,6 +71,9 @@ Route::get('top-kids-content',[App\Http\Controllers\KidsReportController::class,
 Route::get('repeated-kidscontent-by-user',[App\Http\Controllers\KidsReportController::class, 'repeatedKidsContentByUser'])->name('repeated-kidscontent-by-user');
 //User Report
 Route::get('user-report',[App\Http\Controllers\UserReportController::class, 'userReport'])->name('user-report');
+Route::get('user-registration-report',[App\Http\Controllers\UserReportController::class, 'userRegistrationReport'])->name('user-registration-report');
+Route::get('user-sub-profile-report',[App\Http\Controllers\UserReportController::class, 'userSubProfileReport'])->name('user-sub-profile-report');
+Route::get('user-login-report',[App\Http\Controllers\UserReportController::class, 'userLoginReport'])->name('user-login-report');   
 
 // Elearning
 Route::get('most-watched-elearn-content',[App\Http\Controllers\ElearnContentReportController::class, 'mostWatchedElearnContent'])->name('most-watched-elearn-content');
