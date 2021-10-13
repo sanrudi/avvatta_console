@@ -73,6 +73,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="d-flex justify-content-center mt-4">
+        {!! $userPageData->withQueryString()->links() !!}
+        </div>
     </div>
 @endsection
 @push('js-links')

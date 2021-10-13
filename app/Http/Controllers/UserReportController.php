@@ -51,7 +51,8 @@ class UserReportController extends Controller
         }
         $userReport->orderBy('date_time','desc');
         $i = 1;
-        foreach ($userReport->get() as $user)
+        $userPageData = $userReport->paginate($paginateSize);
+        foreach ($userPageData as $user)
         {
             switch ($user->category) {
                 case "kids":
@@ -69,7 +70,7 @@ class UserReportController extends Controller
             }
             $user_contents[$i]['id'] = $user->id;
             $user_contents[$i]['user_name'] = AvvattaUser::where('id', $user->user_id)->value('firstname').' '.AvvattaUser::where('id', $user->user_id)->value('lastname');
-            $user_contents[$i]['content_name'] = $content_name;
+            $user_contents[$i]['content_name'] = isset($content_name)?$content_name:"";
             $user_contents[$i]['type'] = $user->type;
             $user_contents[$i]['action'] = $user->action;
             $user_contents[$i]['date_time'] = $user->date_time;
@@ -83,7 +84,8 @@ class UserReportController extends Controller
 
         return view('user-report')
             ->with([
-                'user_contents'=>$user_contents
+                'user_contents'=>$user_contents,
+                'userPageData' => $userPageData
             ]);
     }
 
