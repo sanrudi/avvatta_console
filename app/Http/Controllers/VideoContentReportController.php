@@ -26,17 +26,16 @@ class VideoContentReportController extends Controller
 
     public function videoArticles(Request $request)
     {
-        $paginateSize = 20;$export = 0;$report = "erosnow";$reportFrom="";$startDate="";$endDate="";
-        $export = ($request->input('export'))?1:0;
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $paginateSize = 20;$export = 0;$report = "erosnow";
+        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
         if($request->input('type') && ($request->input('type') == "erosnow" || $request->input('type') == "kids" )){
             $report = $request->input('type');
@@ -129,19 +128,19 @@ class VideoContentReportController extends Controller
     public function mostWatched(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
-        $logQuery = UserLog::with('loggable','erosnow');
+        $logQuery = UserLog::with(['erosnow','avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
+        $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
@@ -162,19 +161,19 @@ class VideoContentReportController extends Controller
     public function topRepeatedBySingleUser(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
-        $logQuery = UserLog::with('loggable','erosnow','avvatta_user');
+        $logQuery = UserLog::with(['erosnow','avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
+        $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
@@ -195,18 +194,18 @@ class VideoContentReportController extends Controller
     public function topGenreWatched(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
         $logQuery = UserLog::select('user_logs.*',DB::raw('count(user_logs.genre) as count'));
         $logQuery->where('type','=', 'video');
+        $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
         $logQuery->whereNotNull('genre');
         if($startDate){
@@ -228,21 +227,21 @@ class VideoContentReportController extends Controller
     public function allCategoryUsers(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
         $logQuery = UserLog::with('avvatta_user');
         $logQuery->select('user_logs.*');
         $logQuery->where('type','=', 'video');
+        $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
-        $logQuery->whereIn('category', ['erosnow', 'kids']);
+        $logQuery->whereIn('category', ['erosnow', 'kids', 'fun','cod','hig','siy']);
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
         }

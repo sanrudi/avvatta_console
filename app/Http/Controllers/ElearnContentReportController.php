@@ -27,17 +27,16 @@ class ElearnContentReportController extends Controller
     public function elearnReport(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
-        $logQuery = UserLog::with('avvatta_user');
+        $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*');
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
@@ -63,17 +62,16 @@ class ElearnContentReportController extends Controller
     public function mostWatchedElearnContent(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
-        $logQuery = UserLog::with('loggable');
+        $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
@@ -97,17 +95,17 @@ class ElearnContentReportController extends Controller
     public function topTenElearnContent(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
-        $logQuery = UserLog::with('loggable');
+        $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
+       // $logQuery->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('type','=', 'video');
@@ -131,15 +129,14 @@ class ElearnContentReportController extends Controller
     public function topGenreWatched(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
         $logQuery = UserLog::select('user_logs.*',DB::raw('count(user_logs.genre) as count'));
         $logQuery->where('type','=', 'video');
@@ -165,17 +162,16 @@ class ElearnContentReportController extends Controller
     public function topRepeatedBySingleUser(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
-        $logQuery = UserLog::with('loggable','avvatta_user');
+        $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
@@ -199,17 +195,16 @@ class ElearnContentReportController extends Controller
     public function allCategoryUsers(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
-        $logQuery = UserLog::with('avvatta_user');
+        $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*');
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');

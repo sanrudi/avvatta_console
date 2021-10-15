@@ -11,20 +11,19 @@
 @section('title', '| Top Genre Watched Videos')
 @section('content')
 <div class="container">
-<h6>Top Genre Watched Videos - Report</h6><hr>
+<h6>Top Genre Watched Videos - Report @include('report-for-date')</h6><hr>
 <form action="" method="GET">
       <div class="form-row">
-        <div class="form-group col-md-2">
-          <label for="reportFrom">Report From</label>
-          <select name="reportFrom" id="reportFrom" class="form-control">
-            <option value="" @if(Request::get('reportFrom') == "") selected="selected" @endif >Select</option>
-            <option value="7" @if(Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
-            <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
-            <option value="30" @if(Request::get('reportFrom') == "30") selected="selected" @endif>Last 30 Days</option>
-            <option value="90" @if(Request::get('reportFrom') == "90") selected="selected" @endif>Last 90 Days</option>
-            <option value="custom" @if(Request::get('reportFrom') == "custom") selected="selected" @endif>Custom</option>
-          </select>
-        </div>
+      <div class="form-group col-md-2">
+                    <label for="reportFrom">Report From</label>
+                    <select name="reportFrom" id="reportFrom" class="form-control">
+                        <option value="7" @if(Request::get('reportFrom') == "" || Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
+                        <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
+                        <option value="30" @if(Request::get('reportFrom') == "30") selected="selected" @endif>Last 30 Days</option>
+                        <option value="90" @if(Request::get('reportFrom') == "90") selected="selected" @endif>Last 90 Days</option>
+                        <option value="custom" @if(Request::get('reportFrom') == "custom") selected="selected" @endif>Custom</option>
+                    </select>
+                </div>
         <div class="form-group col-md-2 custom-date">
           <label for="startDate">Start Date</label>
           <input id="startDate" name="startDate" type="text" class="form-control" value="" placeholder="yyyy-mm-dd" />
@@ -83,7 +82,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: false, info: false, "aaSorting": [],
+        info: false, pageLength: 10, "aaSorting": [],language: {search: "Filter records:"},
         buttons: [
             {
             extend: 'excel',

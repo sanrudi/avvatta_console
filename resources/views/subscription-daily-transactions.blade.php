@@ -6,7 +6,7 @@
 @endpush
 @section('content')
 <div class="container">
-<h6>Daily Transaction Report</h6><hr>
+<h6>Daily Transaction Report @include('report-for-date-no-default')</h6><hr>
      <form action="" method="GET">
       <div class="form-row">
         <div class="form-group col-md-2">

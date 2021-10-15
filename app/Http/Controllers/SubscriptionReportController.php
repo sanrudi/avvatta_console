@@ -37,8 +37,6 @@ class SubscriptionReportController extends Controller
 
         $subscriptionsQuery = Subscription::select('subscriptions.*');
         $subscriptionsQuery->with(['user_payments' => function ($query) use ($request,$startDate,$endDate) {
-            $query->where('status','=', 1);
-            $query->where('is_cancelled','=',0);
             if($startDate){
                 $query->whereDate('created_at', '>=', $startDate);
             }

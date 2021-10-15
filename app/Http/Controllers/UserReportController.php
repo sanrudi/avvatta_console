@@ -106,12 +106,24 @@ class UserReportController extends Controller
         $registerUsersMonthlyQuery = AvvattaUser::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month'),DB::raw('count(Date(created_at)) as count'));
         $registerUsersMonthlyQuery->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'));
         $registerUsersMonthlyQuery->orderBy('created_at','desc');
+        if($startDate){
+            $registerUsersMonthlyQuery->whereDate('users.created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $registerUsersMonthlyQuery->whereDate('users.created_at', '<=', $endDate);
+        } 
         $registerUsersMonthly = $registerUsersMonthlyQuery->get();
         
         // Registered User By Daily
         $registerUsersDailyQuery = AvvattaUser::select(DB::raw('Date(created_at) as date, count(Date(created_at)) as count'));
         $registerUsersDailyQuery->groupBy(DB::raw('Date(created_at)'));
         $registerUsersDailyQuery->orderBy('created_at','desc');
+        if($startDate){
+            $registerUsersDailyQuery->whereDate('users.created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $registerUsersDailyQuery->whereDate('users.created_at', '<=', $endDate);
+        } 
         $registerUsersDaily = $registerUsersDailyQuery->get();
 
         // signed-up on web 
@@ -119,6 +131,12 @@ class UserReportController extends Controller
         $signedupQuery->where('device_type','=','web');
         $signedupQuery->groupBy(DB::raw('Date(created_at)'));
         $signedupQuery->orderBy('created_at','desc');
+        if($startDate){
+            $signedupQuery->whereDate('users.created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $signedupQuery->whereDate('users.created_at', '<=', $endDate);
+        } 
         $signedUpOnWeb = $signedupQuery->get();
         
         return view('user-registration-report')
@@ -147,6 +165,12 @@ class UserReportController extends Controller
         $loggedInUsersMonthlyQuery->where('action', '=', 'login');
         $loggedInUsersMonthlyQuery->groupBy(DB::raw('YEAR(date_time)'), DB::raw('MONTH(date_time)'));
         $loggedInUsersMonthlyQuery->select(DB::raw('YEAR(date_time) year, MONTH(date_time) month'),DB::raw('count(Date(date_time)) as count'));
+        if($startDate){
+            $loggedInUsersMonthlyQuery->whereDate('user_logs.date_time', '>=', $startDate);
+        }
+        if($endDate){
+            $loggedInUsersMonthlyQuery->whereDate('user_logs.date_time', '<=', $endDate);
+        } 
         $loggedInUsersMonthly = $loggedInUsersMonthlyQuery->get();
         
         // Logged in User By Daily
@@ -154,13 +178,13 @@ class UserReportController extends Controller
         $loggedInUsersQuery->where('action', '=', 'login');
         $loggedInUsersQuery->groupBy(DB::raw('Date(date_time)'));
         $loggedInUsersQuery->select(DB::raw('Date(date_time) as date, count(Date(date_time)) as count'));
+        if($startDate){
+            $loggedInUsersQuery->whereDate('user_logs.date_time', '>=', $startDate);
+        }
+        if($endDate){
+            $loggedInUsersQuery->whereDate('user_logs.date_time', '<=', $endDate);
+        } 
         $loggedInUsersDaily = $loggedInUsersQuery->get();
-
-        $subProfileQuery = SubProfile::join('users', 'users.id', '=', 'sub_profiles.user_id');
-        $subProfileQuery->groupBy('sub_profiles.user_id');
-        $subProfileQuery->select('users.*',DB::raw('count(sub_profiles.user_id) as count'));
-        $subProfile = $subProfileQuery->get();
-        
         
         return view('user-login-report')
             ->with([
@@ -185,6 +209,12 @@ class UserReportController extends Controller
         $subProfileQuery = SubProfile::join('users', 'users.id', '=', 'sub_profiles.user_id');
         $subProfileQuery->groupBy('sub_profiles.user_id');
         $subProfileQuery->select('users.*',DB::raw('count(sub_profiles.user_id) as count'));
+        if($startDate){
+            $subProfileQuery->whereDate('sub_profiles.created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $subProfileQuery->whereDate('sub_profiles.created_at', '<=', $endDate);
+        } 
         $subProfileQuery->orderBy('count','desc');
         $subProfile = $subProfileQuery->get();
         

@@ -39,10 +39,16 @@ class GameContent extends Model
         return $this->hasMany('App\Models\Wishlist', 'content_id', 'loggable_id');      
     }
 
+    public function sub_category()
+    {
+        return $this->hasOne('App\Models\SubCategory', 'id', 'sub_cat_id');      
+    }
+
     public function avg_watch()
     {
         return $this->watches()
         ->selectRaw('avg(duration) as aggregate')
         ->first('content_id');
     }
+   
 }

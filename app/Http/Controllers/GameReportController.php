@@ -22,35 +22,69 @@ class GameReportController extends Controller
     //     $this->middleware('auth');
     // }
 
-    public function index()
+    public function index(Request $request)
     {
-        $game_content = DB::connection('mysql2')->table('user_logs')
+        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
+        $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
+        $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        date_default_timezone_set('Africa/Johannesburg');
+        $today = date("Y-m-d H:m:s");
+        if($reportFrom != "" && $reportFrom != "custom"){
+            $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+        } 
+
+        $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'game_content.id', '=','user_logs.loggable_id')
         ->join('users', 'users.id', '=', 'user_logs.user_id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
-        ->where('type', 'game')
-        ->select('users.firstname', 'users.lastname', 'game_name', 'sub_categories.name as category_name', 'user_logs.date_time')->get();
-        
+        ->where('type', 'game');
+        $gameQuery->select('users.firstname', 'users.lastname','users.email', 'users.mobile', 'game_name', 'sub_categories.name as category_name', 'user_logs.date_time',DB::raw("COUNT(DISTINCT(sub_categories.id)) as count"));
+        $gameQuery->groupBy('user_logs.user_id')->orderBy('count','desc')->havingRaw("count > 9");
+        if($startDate){
+            $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
+        }
+        if($endDate){
+            $gameQuery->whereDate('user_logs.date_time', '<=', $endDate);
+        }  
+
+        $game_content = $gameQuery->get();
         return view('game-report', ['game_contents' => $game_content]);
     }
 
-    public function exportGameContent(Type $var = null)
+    public function exportGameContent(Request $request)
     {
            return Excel::download(new GamesExport, 'GameContent.xlsx');
 
     }
 
-    public function repeatedGameBySingleUser(Type $var = null)
+    public function repeatedGameBySingleUser(Request $request)
     {
-        $repeated_game = DB::connection('mysql2')->table('user_logs')
+        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
+        $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
+        $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        date_default_timezone_set('Africa/Johannesburg');
+        $today = date("Y-m-d H:m:s");
+        if($reportFrom != "" && $reportFrom != "custom"){
+            $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+        } 
+
+        $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('users', 'user_logs.user_id', '=', 'users.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game')
-        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, game_name, sub_categories.name as category_name,COUNT(*)"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"))
-        ->groupBy('user_logs.user_id','user_logs.loggable_id')
-        ->havingRaw("COUNT(*) > 1")->get();
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname,email,mobile, game_name, sub_categories.name as category_name,COUNT(*) as count"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
+        $gameQuery->groupBy('user_logs.user_id','user_logs.loggable_id')->orderBy('count','desc')->havingRaw("COUNT(*) > 1");
+        if($startDate){
+            $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
+        }
+        if($endDate){
+            $gameQuery->whereDate('user_logs.date_time', '<=', $endDate);
+        }  
 
+        $repeated_game = $gameQuery->get();
         return view('game-report', ['repeated_games' => $repeated_game]);
     }
 
@@ -59,20 +93,37 @@ class GameReportController extends Controller
         return Excel::download(new RepeatedGamesExport, 'RepeatedGames.xlsx');
     }
 
-    public function mostPlayedGames(Type $var = null)
+    public function mostPlayedGames(Request $request)
     {
-        $most_played_games = DB::connection('mysql2')->table('user_logs')
+        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
+        $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
+        $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        date_default_timezone_set('Africa/Johannesburg');
+        $today = date("Y-m-d H:m:s");
+        if($reportFrom != "" && $reportFrom != "custom"){
+            $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+        } 
+
+        $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game')
-        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*)"), DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"))
-        ->groupBy('user_logs.loggable_id')
-        ->havingRaw("COUNT(*) > 2")->get();
+        ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*) as count"), DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
+        $gameQuery->groupBy('user_logs.loggable_id')->orderBy('count','desc')->havingRaw("COUNT(*) > 2");
+        
+        if($startDate){
+            $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
+        }
+        if($endDate){
+            $gameQuery->whereDate('user_logs.date_time', '<=', $endDate);
+        }  
 
+        $most_played_games = $gameQuery->get();
         return view('game-report', ['most_played_games' => $most_played_games]);
     }
 
-    public function exportMostPlayedGames(Type $var = null)
+    public function exportMostPlayedGames(Request $request)
     {
         return Excel::download(new MostPlayedGamesExport, 'MostPlayedGames.xlsx');
     }
@@ -80,20 +131,19 @@ class GameReportController extends Controller
 
     public function gameArticles(Request $request)
     {
-        $paginateSize = 20;$export = 0;$reportFrom="";$startDate="";$endDate="";
-        $export = ($request->input('export'))?1:0;
-        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $paginateSize = 20;$export = 0;
+        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-        }
+        } 
 
         // Games Data
-            $gameArticlesQuery = GameContent::select('game_content.id as id','game_content.game_name as article',DB::raw("'' as category"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"),'game_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration) as avg'));
+            $gameArticlesQuery = GameContent::select('game_content.id as id','game_content.game_name as article','sub_categories.name as category',DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"),DB::raw("'' as duration,DATE(game_content.created_at) as added_at"),DB::raw('avg(user_logs.duration) as avg'));
             $gameArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'game');
@@ -115,6 +165,7 @@ class GameReportController extends Controller
                 }
             }]);
             $gameArticlesQuery->with('wishlist');
+            $gameArticlesQuery->leftjoin('sub_categories','sub_categories.id','=','game_content.sub_cat_id');
             $gameArticlesQuery->leftjoin('user_logs','user_logs.loggable_id','=','game_content.id');
             $gameArticlesQuery->groupBy('game_content.id');
         

@@ -11,20 +11,19 @@
 @section('title', '| Top Repeated Watched Videos')
 @section('content')
 <div class="container">
-<h6>Top Repeated Watched Videos - Report</h6><hr>
+<h6>Top Repeated Watched Videos - Report @include('report-for-date')</h6><hr>
 <form action="" method="GET">
       <div class="form-row">
-        <div class="form-group col-md-2">
-          <label for="reportFrom">Report From</label>
-          <select name="reportFrom" id="reportFrom" class="form-control">
-            <option value="" @if(Request::get('reportFrom') == "") selected="selected" @endif >Select</option>
-            <option value="7" @if(Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
-            <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
-            <option value="30" @if(Request::get('reportFrom') == "30") selected="selected" @endif>Last 30 Days</option>
-            <option value="90" @if(Request::get('reportFrom') == "90") selected="selected" @endif>Last 90 Days</option>
-            <option value="custom" @if(Request::get('reportFrom') == "custom") selected="selected" @endif>Custom</option>
-          </select>
-        </div>
+      <div class="form-group col-md-2">
+                    <label for="reportFrom">Report From</label>
+                    <select name="reportFrom" id="reportFrom" class="form-control">
+                        <option value="7" @if(Request::get('reportFrom') == "" || Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
+                        <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
+                        <option value="30" @if(Request::get('reportFrom') == "30") selected="selected" @endif>Last 30 Days</option>
+                        <option value="90" @if(Request::get('reportFrom') == "90") selected="selected" @endif>Last 90 Days</option>
+                        <option value="custom" @if(Request::get('reportFrom') == "custom") selected="selected" @endif>Custom</option>
+                    </select>
+                </div>
         <div class="form-group col-md-2 custom-date">
           <label for="startDate">Start Date</label>
           <input id="startDate" name="startDate" type="text" class="form-control" value="" placeholder="yyyy-mm-dd" />
@@ -44,6 +43,8 @@
 <thead>
     <tr>
         <th>Title</th>
+        <th>Category</th>
+        <th>Sub Category</th>
         <th>Watches</th>
         <th>User</th>
         <th>Provider</th>
@@ -60,8 +61,18 @@
             {!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}
             @endif
             </td>
+            <td>{{$log->loggable->video_category->name}}</td>
+            <td>{{$log->loggable->video_sub_category->name}}</td>
             <td>{{$log->count}}</td>
-            <td>{{$log->avvatta_user->firstname.' '.$log->avvatta_user->lastname}}</td>
+            <td>
+              @if(!empty($log->avvatta_user->firstname) && !empty($log->avvatta_user->lastname))
+              {{$log->avvatta_user->firstname}}{{$log->avvatta_user->lastname}}
+              @elseif(!empty($log->avvatta_user->email))
+              {{$log->avvatta_user->email}}
+              @elseif(!empty($log->avvatta_user->mobile))
+              {{$log->avvatta_user->mobile}}
+              @endif
+            </td>
             <td>
             @if($log->loggable_type == "App\Models\VideoContent")
             {{$log->loggable->owner}}
@@ -98,7 +109,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: false, info: false, "aaSorting": [],
+        info: false, pageLength: 10, "aaSorting": [],language: {search: "Filter records:"},
         buttons: [
             {
             extend: 'excel',

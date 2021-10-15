@@ -10,8 +10,8 @@
 @endpush
 @section('content')
     <div class="container">
-        <h6>Registration Report</h6><hr>
-        <!-- <form action="" method="GET">
+        <h6>Registration Report @include('report-for-date-no-default')</h6><hr>
+        <form action="" method="GET">
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label for="reportFrom">Report From</label>
@@ -33,24 +33,11 @@
                 <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="type">Type</label>
-                    <select name="type" id="type" class="form-control">
-                        <option value="" selected="selected">Select</option>
-                        <option value="erosnow" @if(Request::get('type') == "erosnow") selected="selected" @endif >Erosnow</option>
-                        <option value="kids" @if(Request::get('type') == "kids") selected="selected" @endif>Kids</option>
-                        <option value="game" @if(Request::get('type') == "game") selected="selected" @endif>Games</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-2">
                     <label for="page">&nbsp;</label>
                     <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
                 </div>
-                <div class="form-group col-md-2">
-                    <label for="export">&nbsp;</label>
-                    <button type="submit" class="form-control btn btn-success"  name="export" value="Export Excel"  formtarget="_blank">Export Excel</button>
-                </div>
             </div>
-        </form> -->
+        </form>
         <!-- registerUsersMonthly -->
         <hr>
         <h6>Registered Users - Monthly</h6>
@@ -199,7 +186,7 @@ $(document).ready(function() {
     
 } );
 </script>
-<!-- <script>
+<script>
 $(document).ready(function(){
     $(".custom-date").hide();
     $("#reportFrom").change(function(){
@@ -233,5 +220,5 @@ $(document).ready(function(){
     });
     $( "#endDate" ).datepicker("setDate","{!! Request::get('endDate') !!}");
   } );
-</script> -->
+</script>
 @endsection

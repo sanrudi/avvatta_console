@@ -6,27 +6,26 @@
 @endpush
 @section('content')
 <div class="container">
-<h6>Game Article Report</h6><hr>
+<h6>Game Article Report @include('report-for-date')</h6><hr>
 <form action="" method="GET">
       <div class="form-row">
-        <div class="form-group col-md-2">
-          <label for="reportFrom">Report From</label>
-          <select name="reportFrom" id="reportFrom" class="form-control">
-            <option value="" @if(Request::get('reportFrom') == "") selected="selected" @endif >Select</option>
-            <option value="7" @if(Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
-            <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
-            <option value="30" @if(Request::get('reportFrom') == "30") selected="selected" @endif>Last 30 Days</option>
-            <option value="90" @if(Request::get('reportFrom') == "90") selected="selected" @endif>Last 90 Days</option>
-            <option value="custom" @if(Request::get('reportFrom') == "custom") selected="selected" @endif>Custom</option>
-          </select>
+      <div class="form-group col-md-2">
+            <label for="reportFrom">Report From</label>
+            <select name="reportFrom" id="reportFrom" class="form-control">
+                <option value="7" @if(Request::get('reportFrom') == "" || Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
+                <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
+                <option value="30" @if(Request::get('reportFrom') == "30") selected="selected" @endif>Last 30 Days</option>
+                <option value="90" @if(Request::get('reportFrom') == "90") selected="selected" @endif>Last 90 Days</option>
+                <option value="custom" @if(Request::get('reportFrom') == "custom") selected="selected" @endif>Custom</option>
+            </select>
         </div>
         <div class="form-group col-md-2 custom-date">
-          <label for="startDate">Start Date</label>
-          <input id="startDate" name="startDate" type="text" class="form-control" value="" placeholder="yyyy-mm-dd" />
+        <label for="startDate">Start Date</label>
+        <input id="startDate" name="startDate" type="text" class="form-control" value="" placeholder="yyyy-mm-dd" />
         </div>
         <div class="form-group col-md-2 custom-date">
-          <label for="endDate">End Date</label>
-          <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
+        <label for="endDate">End Date</label>
+        <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
         <div class="form-group col-md-2">
           <label for="page">&nbsp;</label>
@@ -43,7 +42,6 @@
     <table class="table table-bordered mb-5">
       <thead>
         <tr class="table-success">
-          <th scope="col">#</th>
           <!-- <th scope="col">ContentID</th> -->
           <th scope="col">Article</th>
           <th scope="col">Category</th>
@@ -59,7 +57,6 @@
       <tbody>
         @foreach($gameArticles as $key => $data)
         <tr>
-          <td scope="row">{{ $gameArticles->firstItem() + $key }}</td>
           <!-- <td>{{ $data->content_id }}</td> -->
           <td>{{ $data->article }}</td>
           <td>{{ $data->category }}</td>
@@ -68,7 +65,7 @@
           <td>{{ count($data->unique_watches) }}</td>
           <td>{{ count($data->wishlist) }}</td>
           <td>{{ $data->avg }}</td>
-          <td>{{ $data->created_date }}</td>
+          <td>{{ $data->added_at }}</td>
           <td>{{ $data->duration }}</td>
         </tr>
         @endforeach

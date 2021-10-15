@@ -40,4 +40,15 @@ class VideoContent extends Model
         ->selectRaw('avg(duration) as aggregate')
         ->first('content_id');
     }
+    
+    public function video_category()
+    {
+        return $this->hasOne('App\Models\SubCategory', 'id', 'cat_id');      
+    }
+
+    public function video_sub_category()
+    {
+        return $this->hasOne('App\Models\SubCategory', 'id', 'sub_id');      
+    }
+
 }

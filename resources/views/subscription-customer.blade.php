@@ -8,7 +8,7 @@
 @section('title', '| Subscription Report')
 @section('content')
 <div class="container">
-<h6>Subscription Report</h6><hr>
+<h6>Subscription Report @include('report-for-date-no-default')</h6><hr>
 <!-- <form action="" method="GET">
       <div class="form-row">
         <div class="form-group col-md-2">

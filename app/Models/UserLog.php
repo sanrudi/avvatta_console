@@ -26,4 +26,9 @@ class UserLog extends Model
     {
         return $this->hasOne('App\Models\AvvattaUser', 'id', 'user_id');
     }
+
+    // public function video_content()
+    // {
+    //     return $this->hasOne('App\Models\SubCategory', 'id', 'cat_id');      
+    // }
 }
