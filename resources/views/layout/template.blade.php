@@ -178,16 +178,19 @@
                         </a>
                         <ul class="collapse submenu list-unstyled" id="user-reports" data-parent="#accordionExample">
                             <li>
-                                <a href="{{ route('user-report') }}"> User Report </a>
+                                <a href="{{ route('user-report') }}"> User Activity Report </a>
                             </li>
                             <li>
-                                <a href="{{ route('user-registration-report') }}"> Registrations </a>
+                                <a href="{{ route('user-registration-report') }}"> Registration Report</a>
                             </li>
                             <li>
-                                <a href="{{ route('user-sub-profile-report') }}"> Sub Profile </a>
+                                <a href="{{ route('user-sub-profile-report') }}"> Sub Profile Report</a>
                             </li>
                             <li>
-                                <a href="{{ route('user-login-report') }}"> Login </a>
+                                <a href="{{ route('user-login-report') }}"> Login Report</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('user-idle-subscribers') }}"> Subscribers activity</a>
                             </li>
                         </ul>
                         <a href="#subscription-reports" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">

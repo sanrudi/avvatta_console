@@ -74,6 +74,8 @@ Route::get('user-report',[App\Http\Controllers\UserReportController::class, 'use
 Route::get('user-registration-report',[App\Http\Controllers\UserReportController::class, 'userRegistrationReport'])->name('user-registration-report');
 Route::get('user-sub-profile-report',[App\Http\Controllers\UserReportController::class, 'userSubProfileReport'])->name('user-sub-profile-report');
 Route::get('user-login-report',[App\Http\Controllers\UserReportController::class, 'userLoginReport'])->name('user-login-report');   
+Route::get('user-idle-subscribers',[App\Http\Controllers\UserReportController::class, 'idleSubscribers'])->name('user-idle-subscribers');   
+
 //Error Report
 Route::get('error-report',[App\Http\Controllers\ErrorReportController::class, 'errorReport'])->name('error-report');
 

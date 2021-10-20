@@ -22,4 +22,10 @@ class UserPayment extends Model
     {
         return $this->hasOne('App\Models\Subscription', 'id','subscription_id');      
     }
+
+    public function user_payments_user_logs()
+    {
+        return $this->hasMany('App\Models\UserLog', 'user_id','user_id');      
+    }
+    
 }

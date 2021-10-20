@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exports\User\UserArticleExport;
+use App\Exports\Subscriptions\IdleSubscriptionExport;
 use App\Models\AvErosNows;
 use App\Models\GameContent;
 use App\Models\UserLog;
 use App\Models\VideoContent;
 use App\Models\AvvattaUser;
 use App\Models\SubProfile;
+use App\Models\UserPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -65,14 +67,22 @@ class UserReportController extends Controller
                 case "erosnow":
                     $content_name = AvErosNows::where('content_id', $user->content_id)->value('title');
                     break;
+                case "fun":
+                    $content_name = VideoContent::where('id', $user->loggable_id)
+                        ->value('content_name');
+                    break;
+                case "siy":
+                    $content_name = VideoContent::where('id', $user->loggable_id)
+                        ->value('content_name');
+                    break;
                 default:
-                    //
+                $content_name = "-";
             }
             $user_contents[$i]['id'] = $user->id;
             $user_contents[$i]['user_name'] = AvvattaUser::where('id', $user->user_id)->value('firstname').' '.AvvattaUser::where('id', $user->user_id)->value('lastname');
             $user_contents[$i]['content_name'] = isset($content_name)?$content_name:"";
             $user_contents[$i]['type'] = $user->type;
-            $user_contents[$i]['action'] = $user->action;
+            $user_contents[$i]['action'] = ($user->type != "user")?$user->action:$user->category;
             $user_contents[$i]['date_time'] = $user->date_time;
             $i++;
         }
@@ -162,7 +172,7 @@ class UserReportController extends Controller
 
         // Logged in User By Monthly
         $loggedInUsersMonthlyQuery = UserLog::where('type', '=', 'user');
-        $loggedInUsersMonthlyQuery->where('action', '=', 'login');
+        $loggedInUsersMonthlyQuery->where('category', '=', 'login');
         $loggedInUsersMonthlyQuery->groupBy(DB::raw('YEAR(date_time)'), DB::raw('MONTH(date_time)'));
         $loggedInUsersMonthlyQuery->select(DB::raw('YEAR(date_time) year, MONTH(date_time) month'),DB::raw('count(Date(date_time)) as count'));
         if($startDate){
@@ -175,7 +185,7 @@ class UserReportController extends Controller
         
         // Logged in User By Daily
         $loggedInUsersQuery = UserLog::where('type', '=', 'user');
-        $loggedInUsersQuery->where('action', '=', 'login');
+        $loggedInUsersQuery->where('category', '=', 'login');
         $loggedInUsersQuery->groupBy(DB::raw('Date(date_time)'));
         $loggedInUsersQuery->select(DB::raw('Date(date_time) as date, count(Date(date_time)) as count'));
         if($startDate){
@@ -222,6 +232,47 @@ class UserReportController extends Controller
             ->with([
                 'subProfile'=>$subProfile,
             ]);
+    }
+
+    public function idleSubscribers(Request $request)
+    {
+        $paginateSize = 20;$export = 0;$reportFrom="";$startDate="";$endDate="";
+        $export = ($request->input('export'))?1:0;
+        $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
+        $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
+        $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        
+        date_default_timezone_set('Africa/Johannesburg');
+        $today = date("Y-m-d H:m:s");
+        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+            $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+        }
+
+        // Subscription Data
+        $tranQuery = UserPayment::with('user_payments_avvatta_users');
+        $tranQuery->join('user_logs','user_logs.user_id','=','user_payments.user_id');
+        if($startDate){
+            $tranQuery->whereDate('user_logs.date_time', '>=', $startDate);
+        }
+        if($endDate){
+            $tranQuery->whereDate('user_logs.date_time', '<=', $endDate);
+        }
+        $tranQuery->select(DB::raw("DATEDIFF(CURDATE(), user_logs.date_time) as idleDays,user_payments.user_id,user_logs.date_time"));
+        $tranQuery->groupBy('user_payments.user_id');
+        $tranQuery->orderBy('user_payments.created_at','desc');
+
+        if($export){
+            $transactions = $tranQuery->get()->toArray();
+            return Excel::download(new IdleSubscriptionExport($transactions), 'transactions-export.xlsx');
+        }
+
+        if(!$export){
+            $transactionsData =  $tranQuery->paginate($paginateSize);
+            //dd($transactionsData);
+            return view('user-idle-subscribers', [
+                'transactions' => $transactionsData
+            ]);
+        }
     }
     
 }

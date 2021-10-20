@@ -6,7 +6,7 @@
 @endpush
 @section('content')
     <div class="container">
-        <h6>User Report</h6><hr>
+        <h6>User Activity Report</h6><hr>
         <form action="" method="GET">
             <div class="form-row">
                 <div class="form-group col-md-2">
@@ -54,9 +54,10 @@
                     <th scope="col">#</th>
                     <th scope="col">User</th>
                     <th scope="col">Content</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Action</th>
-                    <th scope="col">Date & Time</th>
+                    <th scope="col">Activity Type</th>
+                    <th scope="col">Activity</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Day</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,7 +68,8 @@
                         <td>{{ $data['content_name'] }}</td>
                         <td>{{ ucwords($data['type']) }}</td>
                         <td>{{ $data['action'] }}</td>
-                        <td>{{ date('D j M Y', strtotime($data['date_time'])) }}</td>
+                        <td>{{ date('Y-m-j', strtotime($data['date_time'])) }}</td>
+                        <td>{{ date('D', strtotime($data['date_time'])) }}</td>
                     </tr>
                 @endforeach
                 </tbody>

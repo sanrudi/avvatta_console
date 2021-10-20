@@ -61,8 +61,21 @@
             {!! isset($log->erosnow->title) ? $log->erosnow->title : '' !!}
             @endif
             </td>
-            <td>{{$log->loggable->video_category->name}}</td>
-            <td>{{$log->loggable->video_sub_category->name}}</td>
+            <td>
+            @if($log->loggable_type == "App\Models\VideoContent")
+            {{$log->loggable->video_category->name}}
+            @endif
+            @if($log->loggable_type == "App\Models\AvErosNows")
+            Erosnow
+            @endif
+          </td>
+            <td>
+            @if($log->loggable_type == "App\Models\VideoContent")
+            {{$log->loggable->video_sub_category->name}}
+            @endif
+            @if($log->loggable_type == "App\Models\AvErosNows")
+            Erosnow
+            @endif</td>
             <td>{{$log->count}}</td>
             <td>
               @if(!empty($log->avvatta_user->firstname) && !empty($log->avvatta_user->lastname))

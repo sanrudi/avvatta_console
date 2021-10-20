@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Exports\User;
-
-use App\Models\AvErosNows;
+namespace App\Exports\Subscriptions;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -10,12 +8,13 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Collection;
+use App\Models\UserPayment;
 
-class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAutoSize, WithColumnFormatting, WithMapping
+class IdleSubscriptionExport implements  FromArray,WithHeadings, WithTitle, ShouldAutoSize, WithColumnFormatting, WithMapping
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
+    protected $userArticles;
 
     public function __construct(array $userArticles)
     {
@@ -30,10 +29,10 @@ class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
     public function map($userArticles): array
     {
         return [
-            $userArticles['user_name'],
-            $userArticles['content_name'],
-            $userArticles['type'],
-            $userArticles['action'],
+            $userArticles['username'],
+            $userArticles['title'],
+            $userArticles['created_at'],
+            $userArticles['expiry_at'],
             $userArticles['date_time']
         ];
     }
@@ -41,11 +40,11 @@ class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
     public function headings(): array
     {
         return [
-            'User',
-            'Content',
-            'Activity Type',
-            'Activity',
-            'Date'
+            'username',
+            'title',
+            'created at',
+            'expiry at',
+            'Activies'
         ];
     }
 
