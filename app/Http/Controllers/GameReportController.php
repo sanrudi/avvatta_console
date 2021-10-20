@@ -34,6 +34,9 @@ class GameReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'game_content.id', '=','user_logs.loggable_id')
         ->join('users', 'users.id', '=', 'user_logs.user_id')
@@ -47,6 +50,15 @@ class GameReportController extends Controller
         if($endDate){
             $gameQuery->whereDate('user_logs.date_time', '<=', $endDate);
         }  
+        if($device){
+            $gameQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $gameQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $gameQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
         $game_content = $gameQuery->get();
         return view('game-report', ['game_contents' => $game_content]);
@@ -70,21 +82,35 @@ class GameReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('users', 'user_logs.user_id', '=', 'users.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname,email,mobile, game_name, sub_categories.name as category_name,COUNT(*) as count"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
-        $gameQuery->groupBy('user_logs.user_id','user_logs.loggable_id')->orderBy('count','desc')->havingRaw("COUNT(*) > 1");
+        
         if($startDate){
             $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
         if($endDate){
             $gameQuery->whereDate('user_logs.date_time', '<=', $endDate);
         }  
+        if($device){
+            $gameQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $gameQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $gameQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+        $gameQuery->groupBy('user_logs.user_id','user_logs.loggable_id')->havingRaw("COUNT(*) > 1")->orderBy('count','desc');
+        
 
-        $repeated_game = $gameQuery->get();
+        $repeated_game = $gameQuery->take(20)->get();
         return view('game-report', ['repeated_games' => $repeated_game]);
     }
 
@@ -105,12 +131,15 @@ class GameReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*) as count"), DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
-        $gameQuery->groupBy('user_logs.loggable_id')->orderBy('count','desc')->havingRaw("COUNT(*) > 2");
+        $gameQuery->groupBy('user_logs.loggable_id')->orderBy('count','desc');
         
         if($startDate){
             $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
@@ -118,8 +147,17 @@ class GameReportController extends Controller
         if($endDate){
             $gameQuery->whereDate('user_logs.date_time', '<=', $endDate);
         }  
+        if($device){
+            $gameQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $gameQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $gameQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
-        $most_played_games = $gameQuery->get();
+        $most_played_games = $gameQuery->take(10)->get();
         return view('game-report', ['most_played_games' => $most_played_games]);
     }
 

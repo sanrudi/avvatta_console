@@ -84,8 +84,21 @@ class UserReportController extends Controller
                 default:
                 $content_name = "-";
             }
+            $content_name = !empty($content_name)?$content_name:"-";
+            $userData = AvvattaUser::find($user->user_id);
+            $username ="";
+            if(!empty($userData->firstname) && !empty($userData->lastname)){
+                $username =$userData->firstname." ".$userData->lastname;
+            }
+            if(empty($username) && !empty($userData->email)){
+                $username =$userData->email;
+            }
+            if(empty($username) && !empty($userData->mobile)){
+                $username =$userData->mobile;
+            }
+            $username = !empty($username)?$username:"-";
             $user_contents[$i]['id'] = $user->id;
-            $user_contents[$i]['user_name'] = AvvattaUser::where('id', $user->user_id)->value('firstname').' '.AvvattaUser::where('id', $user->user_id)->value('lastname');
+            $user_contents[$i]['user_name'] = $username;
             $user_contents[$i]['content_name'] = isset($content_name)?$content_name:"";
             $user_contents[$i]['type'] = $user->type;
             $user_contents[$i]['action'] = ($user->type != "user")?$user->action:$user->category;

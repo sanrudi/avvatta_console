@@ -42,7 +42,7 @@
         <hr>
         <h6>logged In Users - Monthly</h6>
         <div class="table-responsive">
-            <table id="loggedInUsersMonthly" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%"> 
+            <table id="loggedInUsersMonthly" class="table table-striped table-bordered " style="width:100%"> 
                 <thead>
                 <tr>
                     <th>Year</th>
@@ -65,7 +65,7 @@
         <hr>
         <h6>logged In Users - Daily</h6>
         <div class="table-responsive">
-            <table id="loggedInUsersDaily" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%"> 
+            <table id="loggedInUsersDaily" class="table table-striped table-bordered " style="width:100%"> 
                 <thead>
                 <tr>
                     <th>Date</th>
