@@ -133,6 +133,7 @@ class GameReportController extends Controller
     {
         $paginateSize = 20;$export = 0;
         $reportFrom="";$startDate="";$endDate="";
+        $export = ($request->input('export'))?1:0;
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";

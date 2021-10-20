@@ -53,7 +53,13 @@ class UserReportController extends Controller
         }
         $userReport->orderBy('date_time','desc');
         $i = 1;
+        if(!$export){
         $userPageData = $userReport->paginate($paginateSize);
+        }
+        
+        if($export){
+            $userPageData = $userReport->get();
+        }
         foreach ($userPageData as $user)
         {
             switch ($user->category) {

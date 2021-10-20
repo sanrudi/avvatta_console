@@ -27,6 +27,7 @@ class VideoContentReportController extends Controller
     public function videoArticles(Request $request)
     {
         $paginateSize = 20;$export = 0;$report = "erosnow";
+        $export = ($request->input('export'))?1:0;
         $reportFrom="";$startDate="";$endDate="";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";

@@ -34,7 +34,8 @@ class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
             $userArticles['content_name'],
             $userArticles['type'],
             $userArticles['action'],
-            $userArticles['date_time']
+            $userArticles['date_time'],
+            date('D', strtotime($userArticles['date_time']))
         ];
     }
 
@@ -45,7 +46,8 @@ class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
             'Content',
             'Activity Type',
             'Activity',
-            'Date'
+            'Date',
+            'Day'
         ];
     }
 
@@ -57,9 +59,9 @@ class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
     public function columnFormats(): array
     {
         return [
-            'C' => '#,##0',
-            'D' => '#,##0',
-            'E' => '#,##0',
+            // 'C' => '#,##0',
+            // 'D' => '#,##0',
+            // 'E' => '#,##0',
         ];
     }
 }

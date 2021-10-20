@@ -33,9 +33,9 @@ class VideoArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAu
             $videoArticles['article'],
             $videoArticles['category'],
             $videoArticles['provider'],
-            count($videoArticles['watches']),
-            count($videoArticles['unique_watches']),
-            count($videoArticles['wishlist']),
+            (count($videoArticles['watches'])>0)?count($videoArticles['watches']):"0",
+            (count($videoArticles['unique_watches'])>0)?count($videoArticles['unique_watches']):"0",
+            (count($videoArticles['wishlist'])>0)?count($videoArticles['wishlist']):"0",
             $videoArticles['avg'],
             $videoArticles['added_at'],
             $videoArticles['duration']
@@ -65,9 +65,9 @@ class VideoArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAu
     public function columnFormats(): array
     {
         return [
-            'C' => '#,##0',
-            'D' => '#,##0',
-            'E' => '#,##0',
+            'A' => NumberFormat::FORMAT_TEXT,
+            'B' => NumberFormat::FORMAT_TEXT,
+            'C' => NumberFormat::FORMAT_TEXT,
         ];
     }
 }

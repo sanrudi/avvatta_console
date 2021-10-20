@@ -109,7 +109,6 @@ class SubscriptionReportController extends Controller
         
         if($export){
             $transactions = $tranQuery->get()->toArray();
-            //dd($transactions[1]['user_payments_subscriptions']);
             return Excel::download(new DailyTransactionExport($transactions), 'transactions-export.xlsx');
         }
 

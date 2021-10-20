@@ -33,9 +33,9 @@ class GameArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
             $gameArticles['article'],
             $gameArticles['category'],
             $gameArticles['provider'],
-            count($gameArticles['watches']),
-            count($gameArticles['unique_watches']),
-            count($gameArticles['wishlist']),
+            (count($gameArticles['watches'])>0)?count($gameArticles['watches']):"0",
+            (count($gameArticles['unique_watches'])>0)?count($gameArticles['unique_watches']):"0",
+            (count($gameArticles['wishlist'])>0)?count($gameArticles['wishlist']):"0",
             $gameArticles['avg'],
             $gameArticles['added_at'],
             $gameArticles['duration']
@@ -65,9 +65,9 @@ class GameArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
     public function columnFormats(): array
     {
         return [
-            'C' => '#,##0',
-            'D' => '#,##0',
-            'E' => '#,##0',
+            'A' => NumberFormat::FORMAT_TEXT,
+            'B' => NumberFormat::FORMAT_TEXT,
+            'C' => NumberFormat::FORMAT_TEXT,
         ];
     }
 }
