@@ -37,6 +37,23 @@
                 <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="device">Device Type</label>
+                    <select name="device" id="device" class="form-control">
+                        <option value="" @if(Request::get('device') == "") selected="selected" @endif >All</option>
+                        <option value="desktop" @if(Request::get('device') == "desktop") selected="selected" @endif>Desktop</option>
+                        <option value="mobile" @if(Request::get('device') == "mobile") selected="selected" @endif>Mobile</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="os">OS</label>
+                    <select name="os" id="os" class="form-control">
+                        <option value="" @if(Request::get('os') == "") selected="selected" @endif >All</option>
+                        <option value="windows" @if(Request::get('os') == "windows") selected="selected" @endif>Windows</option>
+                        <option value="ios" @if(Request::get('os') == "ios") selected="selected" @endif>IOS</option>
+                        <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
                     <label for="page">&nbsp;</label>
                     <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
                 </div>
@@ -45,12 +62,14 @@
         </form>
 	<!-- <a href="{{ route('export-game-content') }}" class="btn btn-info" role="button">Export</a> -->
 	<div class="table-responsive">
-	<table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+	<table id="example" class="table table-striped table-bordered " style="width:100%">
 			<thead>
 				<tr>
 					<th><div class="th-content">User</div></th>
 					<th><div class="th-content">Email</div></th>
 					<th><div class="th-content">Mobile</div></th>
+					<th><div>Device Type</div></th>
+					<th><div>OS</div></th>
 					<!-- <th><div class="th-content">Game</div></th>
 					<th><div class="th-content">Category</div></th>
 					<th><div class="th-content th-heading">Count</div></th> -->
@@ -59,15 +78,21 @@
 			<tbody>
 			@foreach ($game_contents as $game_content)
 				<tr>
-					<td><div class="td-content customer-name">
+					<td>
 					{{$game_content->firstname}}{{$game_content->lastname}}
-					</div></td>
-					<td><div class="td-content customer-name">
+					</td>
+					<td>
 					{{$game_content->email}}
-					</div></td>
-					<td><div class="td-content customer-name">
+					</td>
+					<td>
 					{{$game_content->mobile}}
-					</div></td>
+					</td>
+					<td>
+					{{$game_content->device}}
+					</td>
+					<td>
+					{{$game_content->os}}
+					</td>
 					<!-- <td><div class="td-content product-brand">{{$game_content->game_name}}</div></td>
 					<td><div class="td-content">{{$game_content->category_name}}</div></td>
 					<td><div class="td-content pricing"><span class="">{{$game_content->count}}</span></div></td> -->
@@ -105,6 +130,23 @@
                 <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="device">Device Type</label>
+                    <select name="device" id="device" class="form-control">
+                        <option value="" @if(Request::get('device') == "") selected="selected" @endif >All</option>
+                        <option value="desktop" @if(Request::get('device') == "desktop") selected="selected" @endif>Desktop</option>
+                        <option value="mobile" @if(Request::get('device') == "mobile") selected="selected" @endif>Mobile</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="os">OS</label>
+                    <select name="os" id="os" class="form-control">
+                        <option value="" @if(Request::get('os') == "") selected="selected" @endif >All</option>
+                        <option value="windows" @if(Request::get('os') == "windows") selected="selected" @endif>Windows</option>
+                        <option value="ios" @if(Request::get('os') == "ios") selected="selected" @endif>IOS</option>
+                        <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
                     <label for="page">&nbsp;</label>
                     <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
                 </div>
@@ -113,7 +155,7 @@
         </form>
 	<!-- <a href="{{ route('export-repeated-game-content') }}" class="btn btn-info" role="button">Export</a> -->
 	<div class="table-responsive">
-	<table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+	<table id="example" class="table table-striped table-bordered " style="width:100%">
 			<thead>
 				<tr>
 					<th><div class="th-content">User</div></th>
@@ -121,6 +163,8 @@
 					<th><div class="th-content">Category</div></th>
 					<th><div class="th-content">Provider</div></th>
 					<th><div class="th-content">Count</div></th>
+					<th><div class="th-content">Device Type</div></th>
+					<th><div class="th-content">OS</div></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -138,6 +182,12 @@
 					<td><div class="td-content">{{$repeated_game->category_name}}</div></td>
 					<td><div class="td-content">{{$repeated_game->provider}}</div></td>
 					<td><div class="td-content">{{$repeated_game->count}}</div></td>
+					<td>
+					{{$repeated_game->device}}
+					</td>
+					<td>
+					{{$repeated_game->os}}
+					</td>
 				</tr>
 			@endforeach
 			</tbody>
@@ -172,6 +222,23 @@
                 <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="device">Device Type</label>
+                    <select name="device" id="device" class="form-control">
+                        <option value="" @if(Request::get('device') == "") selected="selected" @endif >All</option>
+                        <option value="desktop" @if(Request::get('device') == "desktop") selected="selected" @endif>Desktop</option>
+                        <option value="mobile" @if(Request::get('device') == "mobile") selected="selected" @endif>Mobile</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="os">OS</label>
+                    <select name="os" id="os" class="form-control">
+                        <option value="" @if(Request::get('os') == "") selected="selected" @endif >All</option>
+                        <option value="windows" @if(Request::get('os') == "windows") selected="selected" @endif>Windows</option>
+                        <option value="ios" @if(Request::get('os') == "ios") selected="selected" @endif>IOS</option>
+                        <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
                     <label for="page">&nbsp;</label>
                     <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
                 </div>
@@ -180,13 +247,15 @@
         </form>
 	<!-- <a href="{{ route('export-most-played-games') }}" class="btn btn-info" role="button">Export</a> -->
 	<div class="table-responsive">
-	<table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+	<table id="example" class="table table-striped table-bordered " style="width:100%">
 			<thead>
 				<tr>
 					<th><div class="th-content">Game</div></th>
 					<th><div class="th-content">Category</div></th>
 					<th><div class="th-content">Provider</div></th>
 					<th><div class="th-content">Count</div></th>
+					<th><div class="th-content">Device Type</div></th>
+					<th><div class="th-content">OS</div></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -196,6 +265,12 @@
 					<td><div class="td-content">{{$most_played_game->category_name}}</div></td>
 					<td><div class="td-content">{{$most_played_game->provider}}</div></td>
 					<td><div class="td-content">{{$most_played_game->count}}</div></td>
+					<td>
+					{{$most_played_game->device}}
+					</td>
+					<td>
+					{{$most_played_game->os}}
+					</td>
 				</tr>
 			@endforeach
 			</tbody>

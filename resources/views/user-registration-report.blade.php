@@ -42,7 +42,7 @@
         <hr>
         <h6>Registered Users - Monthly</h6>
         <div class="table-responsive">
-            <table id="registerUsersMonthly" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%"> 
+            <table id="registerUsersMonthly" class="table table-striped table-bordered " style="width:100%"> 
                 <thead>
                 <tr>
                     <th>Year</th>
@@ -72,7 +72,7 @@
         <hr>
         <h6>Registered Users - Daily</h6>
         <div class="table-responsive">
-            <table id="registerUsersDaily" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%"> 
+            <table id="registerUsersDaily" class="table table-striped table-bordered " style="width:100%"> 
                 <thead>
                 <tr>
                     <th>Date</th>
@@ -99,7 +99,7 @@
         <hr>
         <h6>Signed Up On Web</h6>
         <div class="table-responsive">
-            <table id="signedUpOnWeb" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%"> 
+            <table id="signedUpOnWeb" class="table table-striped table-bordered " style="width:100%"> 
                 <thead>
                 <tr>
                     <th>Date</th>
