@@ -138,6 +138,9 @@ class VideoContentReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $logQuery = UserLog::with(['erosnow','avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
@@ -149,6 +152,16 @@ class VideoContentReportController extends Controller
         if($endDate){
             $logQuery->where('date_time', '<=', $endDate);
         }
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+        
         $logQuery->groupBy('user_logs.loggable_id');
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
@@ -171,6 +184,9 @@ class VideoContentReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $logQuery = UserLog::with(['erosnow','avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
@@ -182,6 +198,16 @@ class VideoContentReportController extends Controller
         if($endDate){
             $logQuery->where('date_time', '<=', $endDate);
         }
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->groupBy('user_logs.loggable_id');
         $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
@@ -204,6 +230,9 @@ class VideoContentReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $logQuery = UserLog::select('user_logs.*',DB::raw('count(user_logs.genre) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
@@ -215,6 +244,16 @@ class VideoContentReportController extends Controller
         if($endDate){
             $logQuery->where('date_time', '<=', $endDate);
         }
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_logs.category');
         $logQuery->groupBy('user_logs.genre');
         $logQuery->orderBy(DB::raw('count(user_logs.genre)'),'desc');
@@ -237,6 +276,9 @@ class VideoContentReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $logQuery = UserLog::with('avvatta_user');
         $logQuery->select('user_logs.*');
         $logQuery->where('type','=', 'video');
@@ -249,6 +291,16 @@ class VideoContentReportController extends Controller
         if($endDate){
             $logQuery->where('date_time', '<=', $endDate);
         }    
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_id');
         $logQuery->having(DB::raw('count(category)'), '>', 1);
         $logs = $logQuery->get();

@@ -31,6 +31,10 @@ class UserReportController extends Controller
         if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
             $startDate = date('Y-m-d', strtotime($today.'-'.$reportFrom.' day'));
         }
+
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $user_contents = [];
         switch ($request->input('type'))
         {
@@ -44,13 +48,19 @@ class UserReportController extends Controller
                 $userReport = UserLog::where('category', '=', 'kids');
                 break;
             default:
-                $userReport = UserLog::select('user_id', 'loggable_id', 'content_id', 'type', 'category', 'action', 'date_time');
+                $userReport = UserLog::select('user_id', 'loggable_id', 'content_id', 'type', 'category', 'action', 'date_time','device','os');
         }
         if($startDate && $request->input('reportFrom') != "custom"){
             $userReport->whereBetween('date_time', [$startDate, $today]);
         } elseif($request->input('reportFrom') == "custom") {
             $userReport->whereBetween('date_time', [$startDate, $endDate]);
         }
+        if($device){
+            $userReport->where('device', '=', $device);
+        }
+        if($os){
+            $userReport->where('os', '=', $os);
+        }  
         $userReport->orderBy('date_time','desc');
         $i = 1;
         if(!$export){
@@ -103,6 +113,8 @@ class UserReportController extends Controller
             $user_contents[$i]['type'] = $user->type;
             $user_contents[$i]['action'] = ($user->type != "user")?$user->action:$user->category;
             $user_contents[$i]['date_time'] = $user->date_time;
+            $user_contents[$i]['device'] = $user->device;
+            $user_contents[$i]['os'] = $user->os;
             $i++;
         }
 

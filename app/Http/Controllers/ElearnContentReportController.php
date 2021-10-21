@@ -36,6 +36,9 @@ class ElearnContentReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*');
         $logQuery->where('type','=', 'video');
@@ -48,6 +51,16 @@ class ElearnContentReportController extends Controller
         if($endDate){
             $logQuery->where('date_time', '<=', $endDate);
         }    
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_id');
         $logQuery->having(DB::raw('count(category)'), '>', 0);
         $logs = $logQuery->get();
@@ -71,6 +84,9 @@ class ElearnContentReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
@@ -82,10 +98,20 @@ class ElearnContentReportController extends Controller
         if($endDate){
             $logQuery->where('date_time', '<=', $endDate);
         }
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_logs.loggable_id');
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
-        $logs = $logQuery->get()->take(10);
+        $logs = $logQuery->get()->take(100);
         return view('elearn-most-watched-report')
         ->with([
             'logs'=>$logs
@@ -103,6 +129,9 @@ class ElearnContentReportController extends Controller
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
        // $logQuery->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
@@ -116,6 +145,16 @@ class ElearnContentReportController extends Controller
         if($endDate){
             $logQuery->whereDate('date_time', '<=', $endDate);
         }
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->groupBy('user_logs.loggable_id');
         $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
@@ -137,6 +176,9 @@ class ElearnContentReportController extends Controller
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
         $logQuery = UserLog::select('user_logs.*',DB::raw('count(user_logs.genre) as count'));
         $logQuery->where('type','=', 'video');
@@ -149,6 +191,16 @@ class ElearnContentReportController extends Controller
         if($endDate){
             $logQuery->whereDate('date_time', '<=', $endDate);
         }
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_logs.category');
         $logQuery->groupBy('user_logs.genre');
         $logQuery->orderBy(DB::raw('count(user_logs.genre)'),'desc');
@@ -170,6 +222,9 @@ class ElearnContentReportController extends Controller
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
@@ -182,6 +237,16 @@ class ElearnContentReportController extends Controller
         if($endDate){
             $logQuery->whereDate('date_time', '<=', $endDate);
         }
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->groupBy('user_logs.loggable_id');
         $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
@@ -203,6 +268,9 @@ class ElearnContentReportController extends Controller
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        
+        $device = "";$device = ($request->input('device'))?$request->input('device'):"";
+        $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*');
@@ -215,6 +283,16 @@ class ElearnContentReportController extends Controller
         if($endDate){
             $logQuery->whereDate('date_time', '<=', $endDate);
         }    
+        if($device){
+            $logQuery->where('user_logs.device', '=', $device);
+        }
+        if($os){
+            $logQuery->where('user_logs.os', '=', $os);
+        }  
+        $device = !empty($device)?$device:"All";
+        $os = !empty($os)?$os:"All";
+        $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
+
         $logQuery->groupBy('user_id');
         $logQuery->having(DB::raw('count(category)'), '>', 1);
         $logs = $logQuery->get();
