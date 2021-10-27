@@ -10,7 +10,7 @@
 @endpush
 @section('content')
 <div class="container">
-<h6>Top 10 Most Watched Report @include('report-for-date')</h6><hr>
+<h6>Most Watched Report @include('report-for-date')</h6><hr>
 <form action="" method="GET">
       <div class="form-row">
       <div class="form-group col-md-2">
@@ -31,6 +31,23 @@
           <label for="endDate">End Date</label>
           <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
+                <div class="form-group col-md-2">
+                    <label for="device">Device Type</label>
+                    <select name="device" id="device" class="form-control">
+                        <option value="" @if(Request::get('device') == "") selected="selected" @endif >All</option>
+                        <option value="desktop" @if(Request::get('device') == "desktop") selected="selected" @endif>Desktop</option>
+                        <option value="mobile" @if(Request::get('device') == "mobile") selected="selected" @endif>Mobile</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="os">OS</label>
+                    <select name="os" id="os" class="form-control">
+                        <option value="" @if(Request::get('os') == "") selected="selected" @endif >All</option>
+                        <option value="windows" @if(Request::get('os') == "windows") selected="selected" @endif>Windows</option>
+                        <option value="ios" @if(Request::get('os') == "ios") selected="selected" @endif>IOS</option>
+                        <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
+                    </select>
+                </div>
         <div class="form-group col-md-2">
           <label for="page">&nbsp;</label>
           <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
@@ -46,6 +63,8 @@
         <th>Sub Category</th>
         <th>Provider</th>
         <th>Watches</th>
+        <th>Device Type</th>
+        <th>OS</th>
     </tr>
     </thead>
     <tbody>
@@ -67,6 +86,8 @@
             @endif
           </td>
             <td>{{$log->count}}</td>
+            <td>{{$log->device}}</td>
+            <td>{{$log->os}}</td>
         </tr>
         @endforeach 
     </tbody>

@@ -35,7 +35,9 @@ class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
             $userArticles['type'],
             $userArticles['action'],
             $userArticles['date_time'],
-            date('D', strtotime($userArticles['date_time']))
+            date('D', strtotime($userArticles['date_time'])),
+            $userArticles['device'],
+            $userArticles['os']
         ];
     }
 
@@ -47,7 +49,9 @@ class UserArticleExport implements FromArray, WithHeadings, WithTitle, ShouldAut
             'Activity Type',
             'Activity',
             'Date',
-            'Day'
+            'Day',
+            'Device',
+            'OS'
         ];
     }
 

@@ -38,6 +38,23 @@
                     </select>
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="device">Device Type</label>
+                    <select name="device" id="device" class="form-control">
+                        <option value="" @if(Request::get('device') == "") selected="selected" @endif >All</option>
+                        <option value="desktop" @if(Request::get('device') == "desktop") selected="selected" @endif>Desktop</option>
+                        <option value="mobile" @if(Request::get('device') == "mobile") selected="selected" @endif>Mobile</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="os">OS</label>
+                    <select name="os" id="os" class="form-control">
+                        <option value="" @if(Request::get('os') == "") selected="selected" @endif >All</option>
+                        <option value="windows" @if(Request::get('os') == "windows") selected="selected" @endif>Windows</option>
+                        <option value="ios" @if(Request::get('os') == "ios") selected="selected" @endif>IOS</option>
+                        <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
                     <label for="page">&nbsp;</label>
                     <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
                 </div>
@@ -58,6 +75,8 @@
                     <th scope="col">Activity</th>
                     <th scope="col">Date</th>
                     <th scope="col">Day</th>
+                    <th scope="col">Device</th>
+                    <th scope="col">OS</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,8 +87,10 @@
                         <td>{{ $data['content_name'] }}</td>
                         <td>{{ ucwords($data['type']) }}</td>
                         <td>{{ $data['action'] }}</td>
-                        <td>{{ date('Y-m-j', strtotime($data['date_time'])) }}</td>
+                        <td>{{ $data['date_time'] }}</td>
                         <td>{{ date('D', strtotime($data['date_time'])) }}</td>
+                        <td>{{ $data['device'] }}</td>
+                        <td>{{ $data['os'] }}</td>
                     </tr>
                 @endforeach
                 </tbody>
