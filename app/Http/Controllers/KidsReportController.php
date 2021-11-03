@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Auth;
 
 
 class KidsReportController extends Controller
@@ -69,9 +70,14 @@ class KidsReportController extends Controller
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
-
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
 
         $kidsQuery = DB::connection('mysql2')->table('user_logs')
         ->join('video_content', 'user_logs.loggable_id','=', 'video_content.id')
@@ -81,7 +87,9 @@ class KidsReportController extends Controller
         ->where('category', 'kids')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, video_content.content_name,video_content.owner as provider, sub_categories.name as category_name,sc.name as sub_cat_name,COUNT(*) as count"))
         ->groupBy('user_logs.loggable_id')->take(10)->orderBy('count','desc');
-        
+        if(!is_null($provider)){
+            $kidsQuery->where('video_content.owner','=', $provider);
+        }
         if($startDate){
             $kidsQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -122,6 +130,13 @@ class KidsReportController extends Controller
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
+
         $kidsQuery = DB::connection('mysql2')->table('user_logs')
         ->join('video_content', 'user_logs.loggable_id','=', 'video_content.id')
         ->join('users', 'user_logs.user_id', '=', 'users.id')
@@ -130,9 +145,11 @@ class KidsReportController extends Controller
         ->where('type', 'video')
         ->where('category', 'kids')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, email, mobile, video_content.content_name, video_content.owner as provider, sub_categories.name as category_name,sc.name as sub_cat_name, COUNT(*) as count"))
-        ->groupBy('user_logs.user_id','user_logs.loggable_id')->orderBy('count','desc')
+        ->groupBy('user_logs.user_id','user_logs.loggable_id')->take(20)->orderBy('count','desc')
         ->havingRaw("COUNT(*) > 1");
-
+        if(!is_null($provider)){
+            $kidsQuery->where('video_content.owner','=', $provider);
+        }
         if($startDate){
             $kidsQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }

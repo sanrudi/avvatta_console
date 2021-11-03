@@ -10,6 +10,7 @@ use App\Models\GameContent;
 use App\Models\VideoContent;
 use App\Exports\Videos\VideoArticleExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Auth;
 
 
 class VideoContentReportController extends Controller
@@ -41,7 +42,18 @@ class VideoContentReportController extends Controller
         if($request->input('type') && ($request->input('type') == "erosnow" || $request->input('type') == "kids" )){
             $report = $request->input('type');
         }
-
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
+        if($provider == "erosnow")
+        {
+            $report = "erosnow";
+        }else{
+            $report = "kids";
+        }
         // Erosnow Data
         if($report == "erosnow"){
         $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title as article','av_eros_nows.categories as category','av_eros_nows.created_date as added_at','av_eros_nows.duration',DB::raw('avg(user_logs.duration)
@@ -105,6 +117,9 @@ class VideoContentReportController extends Controller
                     $query->whereDate('date_time', '<=', $endDate);
                 }
             }]);
+            if(!is_null($provider) && $provider !="erosnow"){
+                $videoArticlesQuery->where('video_content.owner','=', $provider);
+            }
             $videoArticlesQuery->with('wishlist');
             $videoArticlesQuery->leftjoin('user_logs','user_logs.loggable_id','=','video_content.id');
             $videoArticlesQuery->groupBy('video_content.id');
@@ -140,12 +155,26 @@ class VideoContentReportController extends Controller
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
 
         $logQuery = UserLog::with(['erosnow','avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
+        if(!is_null($provider)){
+            if($provider != "erosnow"){
+            $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
+            $logQuery->where('video_content.owner','=', $provider);
+            }else{
+                $logQuery->where('loggable_type','=', 'App\Models\AvErosNows');
+            }
+        }
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
         }
@@ -186,12 +215,26 @@ class VideoContentReportController extends Controller
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
 
         $logQuery = UserLog::with(['erosnow','avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
+        if(!is_null($provider)){
+            if($provider != "erosnow"){
+            $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
+            $logQuery->where('video_content.owner','=', $provider);
+            }else{
+                $logQuery->where('loggable_type','=', 'App\Models\AvErosNows');
+            }
+        }
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
         }
@@ -232,12 +275,26 @@ class VideoContentReportController extends Controller
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
 
         $logQuery = UserLog::select('user_logs.*',DB::raw('count(user_logs.genre) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
         $logQuery->whereNotNull('genre');
+        if(!is_null($provider)){
+            if($provider != "erosnow"){
+            $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
+            $logQuery->where('video_content.owner','=', $provider);
+            }else{
+                $logQuery->where('loggable_type','=', 'App\Models\AvErosNows');
+            }
+        }
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
         }

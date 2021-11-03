@@ -49,6 +49,17 @@
                         <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
                     </select>
                 </div>
+                @if(Auth::user()->is_cp == 0)
+                <div class="form-group col-md-2">
+                    <label for="provider">Provider</label>
+                    <select name="provider" id="provider" class="form-control">
+                        <option value="" @if(Request::get('provider') == "") selected="selected" @endif >All</option>
+                        <option value="erosnow" @if(Request::get('provider') == "erosnow") selected="selected" @endif>Erosnow</option>
+                        <option value="Netsport" @if(Request::get('provider') == "Netsport") selected="selected" @endif>Netsport</option>
+                        <option value="Headstart" @if(Request::get('provider') == "Headstart") selected="selected" @endif>Headstart</option>
+                    </select>
+                </div>
+                @endif
         <div class="form-group col-md-2">
           <label for="page">&nbsp;</label>
           <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
@@ -56,7 +67,8 @@
       </div>
     </form>
     <hr>
-<table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+    <div class="table-responsive">
+<table id="example" class="table table-striped table-bordered" style="width:100%">
 <thead>
     <tr>
         <th>Title</th>
@@ -109,6 +121,7 @@
         @endforeach 
     </tbody>
 </table>
+  </div>
   </div>
 @endsection
 @push('js-links')

@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubscriptionReportController;
 use App\Http\Controllers\VideoContentReportController;
 use App\Http\Controllers\ElearnContentReportController;
 use App\Http\Controllers\ActivityReportController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 
 
 /*
@@ -21,9 +24,6 @@ use App\Http\Controllers\ActivityReportController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('', function () {
-    return view('dashboard');
-});
 
 Route::get('login', function () {
     return view('auth/login');
@@ -35,6 +35,14 @@ Route::get('register', function () {
 Route::get('register', function () {
     return view('register');
 });
+
+
+Route::group(['middleware' => ['auth']], function() {
+    
+Route::get('',[App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+Route::resource('roles', RoleController::class);
+Route::resource('users', UserController::class);
 
 // Subscription Report
 Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');
@@ -86,6 +94,7 @@ Route::get('elearn-report',[App\Http\Controllers\ElearnContentReportController::
 Route::get('elearn-top-genre-watched-report',[App\Http\Controllers\ElearnContentReportController::class, 'topGenreWatched'])->name('elearn-top-genre-watched-report');
 Route::get('elearn-top-repeat-user-report',[App\Http\Controllers\ElearnContentReportController::class, 'topRepeatedBySingleUser'])->name('elearn-top-repeat-user-report');
 
+});
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

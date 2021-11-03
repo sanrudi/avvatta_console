@@ -27,6 +27,7 @@
           <label for="endDate">End Date</label>
           <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
+        @if(Auth::user()->is_cp == 0)
         <div class="form-group col-md-2">
           <label for="type">Type</label>
           <select name="type" id="type" class="form-control">
@@ -34,6 +35,16 @@
             <option value="kids" @if(Request::get('type') == "kids") selected="selected" @endif>Kids</option>
           </select>
         </div>
+          <div class="form-group col-md-2">
+              <label for="provider">Provider</label>
+              <select name="provider" id="provider" class="form-control">
+                  <option value="" @if(Request::get('provider') == "") selected="selected" @endif >All</option>
+                  <option value="erosnow" @if(Request::get('provider') == "erosnow") selected="selected" @endif>Erosnow</option>
+                  <option value="Netsport" @if(Request::get('provider') == "Netsport") selected="selected" @endif>Netsport</option>
+                  <option value="Headstart" @if(Request::get('provider') == "Headstart") selected="selected" @endif>Headstart</option>
+              </select>
+          </div>
+          @endif
         <div class="form-group col-md-2">
           <label for="page">&nbsp;</label>
           <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>

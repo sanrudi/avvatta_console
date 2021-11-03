@@ -10,6 +10,7 @@ use App\Models\GameContent;
 use App\Models\VideoContent;
 use App\Exports\Videos\VideoArticleExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Auth;
 
 
 class ElearnContentReportController extends Controller
@@ -83,15 +84,24 @@ class ElearnContentReportController extends Controller
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
-
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
 
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
+        if(!is_null($provider)){
+            $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
+            $logQuery->where('video_content.owner','=', $provider);
+        }
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
         }
@@ -132,6 +142,12 @@ class ElearnContentReportController extends Controller
         
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
 
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
        // $logQuery->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
@@ -139,6 +155,10 @@ class ElearnContentReportController extends Controller
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
+        if(!is_null($provider)){
+            $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
+            $logQuery->where('video_content.owner','=', $provider);
+        }
         if($startDate){
             $logQuery->whereDate('date_time', '>=', $startDate);
         }
@@ -225,12 +245,22 @@ class ElearnContentReportController extends Controller
         
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest)?$providerRequest:$provider;
 
         $logQuery = UserLog::with(['avvatta_user','loggable','loggable.video_category','loggable.video_sub_category']);
         $logQuery->select('user_logs.*',DB::raw('count(user_logs.user_id) as count'));
         $logQuery->where('type','=', 'video');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
+        if(!is_null($provider)){
+            $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
+            $logQuery->where('video_content.owner','=', $provider);
+        }
         if($startDate){
             $logQuery->whereDate('date_time', '>=', $startDate);
         }

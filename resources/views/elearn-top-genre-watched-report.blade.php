@@ -38,7 +38,7 @@
       </div>
     </form>
     <hr>
-
+    <div class="table-responsive">
 <table id="example" class="table table-striped table-bordered " style="width:100%">
 <thead>
     <tr>
@@ -57,6 +57,7 @@
         @endforeach 
     </tbody>
 </table>
+  </div>
   </div>
 @endsection
 @push('js-links')

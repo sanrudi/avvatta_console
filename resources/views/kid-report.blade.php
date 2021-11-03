@@ -136,6 +136,16 @@
                         <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
                     </select>
                 </div>
+                @if(Auth::user()->is_cp == 0)
+                <div class="form-group col-md-2">
+                    <label for="provider">Provider</label>
+                    <select name="provider" id="provider" class="form-control">
+                        <option value="" @if(Request::get('provider') == "") selected="selected" @endif >All</option>
+                        <option value="Netsport" @if(Request::get('provider') == "Netsport") selected="selected" @endif>Netsport</option>
+                        <option value="Headstart" @if(Request::get('provider') == "Headstart") selected="selected" @endif>Headstart</option>
+                    </select>
+                </div>
+                @endif
                 <div class="form-group col-md-2">
                     <label for="page">&nbsp;</label>
                     <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
@@ -214,6 +224,16 @@
                         <option value="android" @if(Request::get('os') == "android") selected="selected" @endif>Android</option>
                     </select>
                 </div>
+                @if(Auth::user()->is_cp == 0)
+                <div class="form-group col-md-2">
+                    <label for="provider">Provider</label>
+                    <select name="provider" id="provider" class="form-control">
+                        <option value="" @if(Request::get('provider') == "") selected="selected" @endif >All</option>
+                        <option value="Netsport" @if(Request::get('provider') == "Netsport") selected="selected" @endif>Netsport</option>
+                        <option value="Headstart" @if(Request::get('provider') == "Headstart") selected="selected" @endif>Headstart</option>
+                    </select>
+                </div>
+                @endif
                 <div class="form-group col-md-2">
                     <label for="page">&nbsp;</label>
                     <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>

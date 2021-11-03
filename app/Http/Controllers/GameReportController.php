@@ -13,6 +13,8 @@ use App\Models\AvErosNows;
 use App\Models\GameContent;
 use App\Exports\Videos\VideoArticleExport;
 use App\Exports\Games\GameArticleExport;
+use Log;
+use Auth;
 
 
 class GameReportController extends Controller
@@ -85,6 +87,14 @@ class GameReportController extends Controller
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest == "gogames")?0:$provider;
+        $provider = ($providerRequest == "gamepix")?1:$provider;
+
         $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('users', 'user_logs.user_id', '=', 'users.id')
@@ -92,6 +102,9 @@ class GameReportController extends Controller
         ->where('type', 'game')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname,email,mobile, game_name, sub_categories.name as category_name,COUNT(*) as count"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
         
+        if(!is_null($provider)){
+            $gameQuery->where('game_content.play_for_free','=', $provider);
+        }
         if($startDate){
             $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -134,6 +147,14 @@ class GameReportController extends Controller
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest == "gogames")?0:$provider;
+        $provider = ($providerRequest == "gamepix")?1:$provider;
+
         $gameQuery = DB::connection('mysql2')->table('user_logs')
         ->join('game_content', 'user_logs.loggable_id','=', 'game_content.id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
@@ -141,6 +162,10 @@ class GameReportController extends Controller
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*) as count"), DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
         $gameQuery->groupBy('user_logs.loggable_id')->orderBy('count','desc');
         
+        if(!is_null($provider)){
+            $gameQuery->where('game_content.play_for_free', '=', $provider);
+        }
+
         if($startDate){
             $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -181,6 +206,14 @@ class GameReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
+        $provider = null;
+        $providerRequest = $request->input('provider');
+        if(Auth::user()->is_cp == 1){
+            $providerRequest = Auth::user()->roles->first()->name;
+        }
+        $provider = ($providerRequest == "gogames")?0:$provider;
+        $provider = ($providerRequest == "gamepix")?1:$provider;
+
         // Games Data
             $gameArticlesQuery = GameContent::select('game_content.id as id','game_content.game_name as article','sub_categories.name as category',DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"),DB::raw("'' as duration,DATE(game_content.created_at) as added_at"),DB::raw('avg(user_logs.duration) as avg'));
             $gameArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
@@ -203,6 +236,9 @@ class GameReportController extends Controller
                     $query->whereDate('date_time', '<=', $endDate);
                 }
             }]);
+            if(!is_null($provider)){
+                $gameArticlesQuery->where('game_content.play_for_free', '=', $provider);
+            }
             $gameArticlesQuery->with('wishlist');
             $gameArticlesQuery->leftjoin('sub_categories','sub_categories.id','=','game_content.sub_cat_id');
             $gameArticlesQuery->leftjoin('user_logs','user_logs.loggable_id','=','game_content.id');

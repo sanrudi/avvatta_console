@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+                <div class="card-header"><img src="{{ asset('images/avvatta-logo.PNG') }}" class="" alt="logo" width="100%"></div>
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 

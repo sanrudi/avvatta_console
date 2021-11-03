@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Subscription;
+use App\Models\UserPayment;
+use Illuminate\Support\Carbon;
+use Carbon\CarbonPeriod;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +28,36 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $fromdate = date('Y-m-d', strtotime('-10 day'));
+        $todate = date('Y-m-d', strtotime('+1 day'));
+        $period = CarbonPeriod::create($fromdate, $todate);
+        $subscriptionData = [];
+        if(Auth::user()->is_cp){
+            return view('dashboard')
+            ->with([
+                'subscriptions'=>$subscriptionData,'period'=>$period
+            ]);
+        }
+        $subscriptionsQuery = Subscription::select('subscriptions.*');
+        $subscriptions = $subscriptionsQuery->get();
+        $i = 1;
+        foreach ($subscriptions as $subscription)
+        {
+            $userPaymentData = [];
+            foreach ($period as $date) {
+                $userPayment = UserPayment::where('subscription_id','=',$subscription->id)
+                ->whereDate('created_at',$date->format('Y-m-d'))
+                ->count();
+                $userPaymentData[] = $userPayment;
+            }
+
+            $subscriptionData[$i]['title'] = $subscription->title;
+            $subscriptionData[$i]['subscription_count'] = implode(",",$userPaymentData);
+            $i++;
+        }
+        return view('dashboard')
+        ->with([
+            'subscriptions'=>$subscriptionData,'period'=>$period
+        ]);
     }
 }
