@@ -8,6 +8,7 @@ use App\Http\Controllers\ElearnContentReportController;
 use App\Http\Controllers\ActivityReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\CMSController;
 
 
 /*
@@ -43,6 +44,8 @@ Route::get('',[App\Http\Controllers\HomeController::class, 'index'])->name('dash
 
 Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
+Route::resource('cms-editor-erosnow', CMSController::class);
+Route::post('cms-editor-erosnow/searchErosnow',[App\Http\Controllers\CMSController::class, 'searchErosnow'])->name('erosnow-search');
 
 // Subscription Report
 Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');

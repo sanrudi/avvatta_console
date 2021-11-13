@@ -63,7 +63,7 @@ class RevenueReportController extends Controller
         $kidQuery->where('user_logs.type','=', 'video');
         $kidQuery->where('user_logs.category','=', 'kids');
         if($fromdate){
-        $gameQuery->whereDate('date_time', '>=', $fromdate);
+        $kidQuery->whereDate('date_time', '>=', $fromdate);
         }
         if($todate){
         $kidQuery->whereDate('date_time', '<=', $todate);
