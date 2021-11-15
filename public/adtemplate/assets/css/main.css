@@ -2064,3 +2064,21 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 
 .position-relative {
   position: relative; }
+.handle{
+  background: blue;
+  cursor: move;
+}
+.remove{
+  color: #fd0101;
+  cursor: pointer;
+}
+.ui-menu .ui-menu-item{
+  border-radius: 0px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #343a40;
+}
+.ui-sortable .ui-state-default{
+  border: 0px;
+  background: #FFF;
+}

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Avvatta | Console @yield('title')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}"/>
     <link href="{{ asset('assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
@@ -266,7 +267,7 @@
 </a>
 @endcan
 @can('cms-editor')
-<!-- <a href="#cms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+<a href="#cms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
     <div class="">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
         <span>CMS Editor</span>
@@ -277,9 +278,9 @@
 </a>
 <ul class="collapse submenu list-unstyled" id="cms" data-parent="#accordionExample">
     <li>
-        <a href="#"> Content </a>
+        <a href="{{ route('cms-editor-erosnow.index') }}"> Erosnow </a>
     </li>
-</ul> -->
+</ul>
 @endcan
 </li>
 </ul>
