@@ -6,8 +6,11 @@
         <div class="col-md-8">
                 <div class="card-header"><img src="{{ asset('images/avvatta-logo.PNG') }}" class="" alt="logo" width="100%"></div>
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
+                <div class="card-header text-center">
+                    <h4 class="mb-0">
+                        {{ __('Sign In') }}
+                     </h4>
+                    </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
