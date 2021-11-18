@@ -2054,3 +2054,10 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 
 .position-relative {
   position: relative; }
+
+
+.buttons-excel{
+    background: #59bd59;
+    color: #ffffff;
+    border: 1pxsolid #59bd59;
+}

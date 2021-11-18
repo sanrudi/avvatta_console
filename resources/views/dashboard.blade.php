@@ -29,7 +29,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Game Article</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Game Article</h6>
                         </div>
                     </div>
                     </a>
@@ -41,7 +41,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">All Game Categories</h6>
+                            <h6 class="mt-3 text-capitalize text-white">All Game Categories</h6>
                         </div>
                     </div>
                     </a>
@@ -53,7 +53,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top repeat played games by a single user account </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top repeat played games by a single user account </h6>
                         </div>
                     </div>
                     </a>
@@ -65,7 +65,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top 10 most played Games</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top 10 most played Games</h6>
                         </div>
                     </div>
                     </a>
@@ -79,7 +79,7 @@
                             <div class="rotate">
                                 <i class="fa fa-tv fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">All Kids Categories</h6>
+                            <h6 class="mt-3 text-capitalize text-white">All Kids Categories</h6>
                         </div>
                     </div>
                     </a>
@@ -91,7 +91,7 @@
                             <div class="rotate">
                                 <i class="fa fa-tv fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Most Watched Kids Content By Single User </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Most Watched Kids Content By Single User </h6>
                         </div>
                     </div>
                     </a>
@@ -103,7 +103,7 @@
                             <div class="rotate">
                                 <i class="fa fa-tv fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top 10 watched Kids Category </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top 10 watched Kids Category </h6>
                         </div>
                     </div>
                     </a>
@@ -117,7 +117,7 @@
                             <div class="rotate">
                                 <i class="fa fa-book fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top E-Learn Genre watched</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top E-Learn Genre watched</h6>
                         </div>
                     </div>
                     </a>
@@ -129,7 +129,7 @@
                             <div class="rotate">
                                 <i class="fa fa-book fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Most Watched E-learn By Single User</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Most Watched E-learn By Single User</h6>
                         </div>
                     </div>
                     </a>
@@ -141,7 +141,7 @@
                             <div class="rotate">
                                 <i class="fa fa-book fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top repeat E-Learn watched</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top repeat E-Learn watched</h6>
                         </div>
                     </div>
                     </a>
@@ -155,7 +155,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Video Article</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Video Article</h6>
                         </div>
                     </div>
                     </a>
@@ -167,7 +167,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">All Category Users</h6>
+                            <h6 class="mt-3 text-capitalize text-white">All Category Users</h6>
                         </div>
                     </div>
                     </a>
@@ -179,7 +179,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top repeat watched</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top repeat watched</h6>
                         </div>
                     </div>
                     </a>
@@ -191,7 +191,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top 10 most watched </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top 10 most watched </h6>
                         </div>
                     </div>
                     </a>
