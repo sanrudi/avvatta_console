@@ -46,6 +46,12 @@ Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
 Route::resource('cms-editor-erosnow', CMSController::class);
 Route::post('cms-editor-erosnow/searchErosnow',[App\Http\Controllers\CMSController::class, 'searchErosnow'])->name('erosnow-search');
+Route::get('game-promotion', [App\Http\Controllers\CMSController::class, 'gamePromotion'])->name('game-promotion');
+Route::post('game-promotion', [App\Http\Controllers\CMSController::class, 'gamePromotionStore'])->name('game-promotion');
+Route::post('game-promotion-search',[App\Http\Controllers\CMSController::class, 'searchGames'])->name('game-promotion-search');
+Route::get('kid-promotion', [App\Http\Controllers\CMSController::class, 'kidPromotion'])->name('kid-promotion');
+Route::post('kid-promotion', [App\Http\Controllers\CMSController::class, 'kidPromotionStore'])->name('kid-promotion');
+Route::post('kid-promotion-search',[App\Http\Controllers\CMSController::class, 'searchKids'])->name('kid-promotion-search');
 
 // Subscription Report
 Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');
