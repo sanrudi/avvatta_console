@@ -278,8 +278,14 @@
 </a>
 <ul class="collapse submenu list-unstyled" id="cms" data-parent="#accordionExample">
     <li>
-        <a href="{{ route('cms-editor-erosnow.index') }}"> Erosnow </a>
+        <a href="{{ route('cms-editor-erosnow.index') }}"> Erosnow Promotion</a>
     </li>
+    <li>
+        <a href="{{ route('game-promotion') }}"> Games Promotion</a>
+    </li>
+    <!-- <li>
+        <a href="{{ route('kid-promotion') }}"> Kids Promotion</a>
+    </li> -->
 </ul>
 @endcan
 </li>
