@@ -11,7 +11,7 @@ class PromotionKid extends Model
 
     protected $connection = 'mysql2';
 
-    protected $table = 'promotion_kids';
+    protected $table = 'promotion_video_content';
 
     /**
      * The attributes that are mass assignable.
@@ -21,10 +21,14 @@ class PromotionKid extends Model
     protected $fillable = [
         'prefer_content_id',
         'prefer',
+        'category',
+        'main_cat',
+        'main_sub_cat',
+        'content_type',
     ];
     public $timestamps = false;
 
-    public function game_data()
+    public function kid_data()
     {
         return $this->hasOne('App\Models\VideoContent', 'id', 'prefer_content_id');      
     }

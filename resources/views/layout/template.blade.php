@@ -283,9 +283,9 @@
     <li>
         <a href="{{ route('game-promotion') }}"> Games Promotion</a>
     </li>
-    <!-- <li>
+    <li>
         <a href="{{ route('kid-promotion') }}"> Kids Promotion</a>
-    </li> -->
+    </li>
 </ul>
 @endcan
 </li>

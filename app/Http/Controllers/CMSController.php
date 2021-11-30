@@ -7,6 +7,7 @@ use App\Models\AvErosNowsPrefer;
 use App\Models\AvErosNows;
 use App\Models\SubCategory;
 use App\Models\GameContent;
+use App\Models\VideoContent;
 use App\Models\PromotionGame;
 use App\Models\PromotionKid;
 
@@ -189,41 +190,61 @@ class CMSController extends Controller
  
      public function KidPromotion(Request $request)
      {
-        $subCategories = SubCategory::where('category_id','=',4)->select('id','name')->get();
-        $category = 27; // Arcade
+        $mainCatId = 4;
+        $mainSubCatId = $request->mainSubCatId;
+        $videoCatId = $request->videoCatId;
         $contenttype = "kids";
-        $category = ($request->category=="")?$category:$request->category;
-        $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
+        $mainCat = "Kids";
+        
+        $mainSubCats = SubCategory::where('category_id','=',$mainCatId)->select('id','name')->orderby('name')->get();
+        $mainSubCatId = ($mainSubCatId=="")?(!empty($mainSubCats[0]) ? $mainSubCats[0]->id:""):$mainSubCatId;
+        $mainSubCat = SubCategory::where('id','=',$mainSubCatId)->select('id','name')->first();
+        $mainSubCatId = ($request->mainSubCatId=="")?$mainSubCat->id:$request->mainSubCatId;
+        $videoCats = SubCategory::where('category_id',$mainSubCatId)->select('id','name')->orderby('name')->get();
+        $newVideoCatId = "";
+        foreach($videoCats as $data){
+            if($videoCatId == $data->id){
+                $newVideoCatId = $data->id;
+            }
+        }
+        $videoCatId = ($newVideoCatId=="")?(!empty($videoCats[0]) ? $videoCats[0]->id:""):$newVideoCatId;
+        $videoCat = SubCategory::where('id','=',$videoCatId)->select('id','name')->first();
         $data = PromotionKid::with('kid_data')
-        ->where('category', '=' , $category)
+        ->where('category', '=' , $videoCatId)
+        ->where('main_cat', '=' , $mainCatId)
+        ->where('main_sub_cat', '=' , $mainSubCatId)
         ->where('content_type', '=' , $contenttype)
         ->orderBy('prefer','DESC')->get();
-        //  dd($data);
-        return view('kid-promotions.index',compact('subCategories','data','category','contenttype'));
+        return view('kid-promotions.index',compact('data','mainCat','mainSubCat','mainSubCats','videoCat','videoCats','videoCatId','mainCatId','mainSubCatId','mainCatId','contenttype'));
      }
   
      
     public function searchKids(Request $request)
     {
         $search = $request->search;
-        $category = 27; // Arcade
+        $mainCatId = 4;
+        $mainSubCatId = 4;
+        $videoCatId =  156;
         $contenttype = "kids";
-        $category = ($request->category=="")?$category:$request->category;
+        $videoCatId = ($request->videoCatId=="")?$videoCatId:$request->videoCatId;
+        $mainSubCatId = ($request->mainSubCatId=="")?$mainSubCatId:$request->mainSubCatId;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
-        $autocomplateQuery = VideoContent::orderby('game_name','asc')
-        ->select('id','game_name','img')
-        ->where('game_name', 'like', '%' .$search . '%')
-        ->where('sub_cat_id', '=', $category);
+        $autocomplateQuery = VideoContent::orderby('content_name','asc')
+        ->select('id','content_name','profileImage')
+        ->where('content_name', 'like', '%' .$search . '%')
+        ->where('cat_id', '=', $mainSubCatId)
+        ->where('sub_id', '=', $videoCatId)
+        ->orderby('content_name');
         $autocomplate = $autocomplateQuery->limit(10)->get();
         $response = array();
         foreach($autocomplate as $autocomplate){
-            $label = "";$label = $autocomplate->game_name;
+            $label = "";$label = $autocomplate->content_name;
            $response[] = array(
                "value"=>$autocomplate->id,
                "label"=>$label,
                "content_id"=>$autocomplate->id,
-               "title"=>$autocomplate->game_name,
-               "small_url"=>$autocomplate->img
+               "title"=>$autocomplate->content_name,
+               "small_url"=>$autocomplate->profileImage,
             );
         }
         echo json_encode($response);
@@ -235,7 +256,9 @@ class CMSController extends Controller
          $max = 100;
          $prefer = $max;
          $removedMovies = ($request['removed-movie-cards'])?explode("|", $request['removed-movie-cards']):[];
-         $category = $request['card-category'];
+         $videoCatId = $request['card-video-cat-id'];
+         $mainSubCatId = $request['card-main-sub-id'];
+         $mainCatId = $request['card-main-id'];
          $contenttype = $request['card-content'];
          $movieCards = ($request['latest-movie-cards'])?explode("|", $request['latest-movie-cards']):[];
          $latestMovieCards = [];
@@ -244,19 +267,23 @@ class CMSController extends Controller
              $latestMovieCards[] = array(
                  'prefer_content_id'=>$movieCard,
                  'prefer'=>$prefer,
-                 'category'=>$category,
+                 'category'=>$videoCatId,
+                 'main_cat'=>$mainCatId,
+                 'main_sub_cat'=>$mainSubCatId,
                  'content_type'=>$contenttype
              );
          }
          if(count($removedMovies) > 0){
-            PromotionGame::where('category', '=' , $category)
-             ->where('content_type', '=' , $contenttype)
-             ->delete();
+            PromotionKid::where('category', '=' , $videoCatId)
+            ->where('main_cat', '=' , $mainCatId)
+            ->where('main_sub_cat', '=' , $mainSubCatId)
+            ->where('content_type', '=' , $contenttype)
+            ->delete();
          }
          if(count($latestMovieCards) > 0){
-            PromotionGame::upsert($latestMovieCards, ['prefer_content_id', 'category','content_type'], ['prefer']);
+            PromotionKid::upsert($latestMovieCards, ['prefer_content_id', 'category','main_cat','main_sub_cat','content_type'], ['prefer']);
          }
-         return redirect()->route('game-promotion',['category'=>$category,'contenttype'=>$contenttype])->with('success','Content Applied successfully.');
+         return redirect()->route('kid-promotion',['videoCatId'=>$videoCatId,'mainCatId'=>$mainCatId,'mainSubCatId'=>$mainSubCatId,'contenttype'=>$contenttype])->with('success','Content Applied successfully.');
      }
  
 
