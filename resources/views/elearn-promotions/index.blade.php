@@ -6,27 +6,44 @@
 <div class="container">
   <h6>
     {{ !empty($mainCat)?$mainCat:'' }}
+    {{ !empty($contentCat->name)?'\\'.str_replace('<br>','',$contentCat->name):'' }}
     {{ !empty($mainSubCat->name)?'\\'.$mainSubCat->name:'' }}
+    {{ !empty($contentSection->name)?'\\'.$contentSection->name:'' }}
     {{ !empty($videoCat->name)?'\\'.$videoCat->name:'' }}
-  </h6>
   <hr>
   <div class="row mr-5">
-    <div class="form-group col-xl-6 col-md-12"> 
+    <div class="form-group col-xl-12 col-md-12"> 
       <label for="movie_search">Search & Add</label>
       <input type="text" class="form-control" id='movie_search' placeholder="Search & Add {{ $contenttype  }} here...">
     </div>
-    <div class="form-group col-xl-6 col-md-12"> 
-      <form method="get" action="{{ route('kid-promotion') }}">
+    <div class="form-group col-xl-12 col-md-12"> 
+      <form method="get" action="{{ route('elearn-promotion') }}">
         <div class="row">
-          <div class="form-group col-xl-6 col-md-6">
-            <label for="category">Sub Category</label>
-            <select name="mainSubCatId" id="mainSubCatId" class="form-control" onchange="this.form.submit()">
-              @foreach($mainSubCats as $subCategory)
-              <option value="{{$subCategory->id}}" @if($mainSubCatId == $subCategory->id) selected="selected" @endif>{{$subCategory->name}}</option>
+          <div class="form-group col-xl-3 col-md-6 {{  count($contentCats)==0?'d-none':'' }}">
+            <label for="category">Content Category</label>
+            <select name="contentCatId" id="contentCatId" class="form-control" onchange="this.form.submit()">
+              @foreach($contentCats as $contentCat)
+              <option value="{{$contentCat->id}}" @if($contentCatId == $contentCat->id) selected="selected" @endif>{{str_replace('<br>','',$contentCat->name)}}</option>
               @endforeach
             </select>
           </div>
-          <div class="form-group col-xl-6 col-md-6">
+          <div class="form-group col-xl-3 col-md-6 {{  count($mainSubCats)==0?'d-none':'' }}">
+            <label for="category">Content Sub Category</label>
+            <select name="mainSubCatId" id="mainSubCatId" class="form-control" onchange="this.form.submit()">
+              @foreach($mainSubCats as $subCategory)
+              <option value="{{$subCategory->id}}" @if($mainSubCatId == $subCategory->id) selected="selected" @endif>{{str_replace('<br>','',$subCategory->name)}}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group col-xl-3 col-md-6 {{  count($contentSections)==0?'d-none':'' }}">
+            <label for="category">Content Section</label>
+            <select name="contentSectionId" id="contentSectionId" class="form-control" onchange="this.form.submit()">
+              @foreach($contentSections as $contentSectionData)
+              <option value="{{$contentSectionData->id}}" @if($contentSectionId == $contentSectionData->id) selected="selected" @endif>{{$contentSectionData->name}}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group col-xl-3 col-md-6 {{  count($videoCats)==0?'d-none':'' }}">
             <label for="category">Video Category</label>
             <select name="videoCatId" id="videoCatId" class="form-control" onchange="this.form.submit()">
               @foreach($videoCats as $videoCategory)
@@ -51,16 +68,16 @@
     </div>
   </div>
   
-  <form method="post" action="{{ route('kid-promotion') }}">
+  <form method="post" action="{{ route('elearn-promotion') }}">
     @csrf
     <div class="row mr-5" id="sortable">
       @foreach ($data as $key => $content)
       <div class="col-xl-2 col-md-3 col-sm-6 movie-card py-2 ui-state-default">
         <div class="card text-center h-100">
-          <img class="card-img-top handle bg-dark" src="https://www.avvatta.com:8100/video_content/{{ $content->kid_data->profileImage  }}" alt="">
+          <img class="card-img-top handle bg-dark" src="https://www.avvatta.com:8100/video_content/{{ $content->elearn_data->profileImage  }}" alt="">
           <div class="card-body card-frame handle bg-dark p-1">
-            <h6 class="text-white "><small>{{ $content->kid_data->content_name  }}</small></h6>
-            <input type="hidden" name="content_id[]" class="movie-content-id" value="{{ $content->kid_data->id  }}">
+            <h6 class="text-white "><small>{{ $content->elearn_data->content_name  }}</small></h6>
+            <input type="hidden" name="content_id[]" class="movie-content-id" value="{{ $content->elearn_data->id  }}">
           </div>
           <div class="card-footer p-1">
             <sapn class="card-link remove"><small>Remove</small></span>
@@ -72,6 +89,7 @@
           <input type="hidden" name="latest-movie-cards" id="latest-movie-cards" value="">
           <input type="hidden" name="removed-movie-cards" id="removed-movie-cards" value="">
           <input type="hidden" name="card-video-cat-id" id="card-video-cat-id" value="{{ $videoCatId  }}">
+          <input type="hidden" name="card-content-cat-id" id="card-content-cat-id" value="{{ $contentCatId  }}">
           <input type="hidden" name="card-main-sub-id" id="card-main-sub-id" value="{{ $mainSubCatId  }}">
           <input type="hidden" name="card-main-id" id="card-main-id" value="{{ $mainCatId  }}">
           <input type="hidden" name="card-content" id="card-content" value="{{ $contenttype  }}">
@@ -136,7 +154,7 @@
       $( "#movie_search" ).autocomplete({
         source: function( request, response ) {
           $.ajax({
-            url:"{{route('kid-promotion-search')}}",
+            url:"{{route('elearn-promotion-search')}}",
             type: 'post',
             dataType: "json",
             data: {

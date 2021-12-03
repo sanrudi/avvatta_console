@@ -52,6 +52,9 @@ Route::post('game-promotion-search',[App\Http\Controllers\CMSController::class, 
 Route::get('kid-promotion', [App\Http\Controllers\CMSController::class, 'kidPromotion'])->name('kid-promotion');
 Route::post('kid-promotion', [App\Http\Controllers\CMSController::class, 'kidPromotionStore'])->name('kid-promotion');
 Route::post('kid-promotion-search',[App\Http\Controllers\CMSController::class, 'searchKids'])->name('kid-promotion-search');
+Route::get('elearn-promotion', [App\Http\Controllers\CMSController::class, 'elearnPromotion'])->name('elearn-promotion');
+Route::post('elearn-promotion', [App\Http\Controllers\CMSController::class, 'elearnPromotionStore'])->name('elearn-promotion');
+Route::post('elearn-promotion-search',[App\Http\Controllers\CMSController::class, 'searchElearn'])->name('elearn-promotion-search');
 
 // Subscription Report
 Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');
