@@ -68,7 +68,6 @@
             <table class="table table-bordered mb-5">
                 <thead>
                 <tr class="table-success">
-                    <th scope="col">#</th>
                     <th scope="col">User</th>
                     <th scope="col">Content</th>
                     <th scope="col">Activity Type</th>
@@ -77,12 +76,12 @@
                     <th scope="col">Day</th>
                     <th scope="col">Device</th>
                     <th scope="col">OS</th>
+                    <th scope="col">Age</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($user_contents as $key => $data)
                     <tr>
-                        <td scope="row">{{ $key }}</td>
                         <td>{{ $data['user_name'] }}</td>
                         <td>{{ $data['content_name'] }}</td>
                         <td>{{ ucwords($data['type']) }}</td>
@@ -91,6 +90,7 @@
                         <td>{{ date('D', strtotime($data['date_time'])) }}</td>
                         <td>{{ $data['device'] }}</td>
                         <td>{{ $data['os'] }}</td>
+                        <td>{{ $data['age'] }}</td>
                     </tr>
                 @endforeach
                 </tbody>

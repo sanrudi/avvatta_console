@@ -55,27 +55,116 @@ class SubscriptionReportController extends Controller
     
     public function subscriptionCustomer(Request $request)
     {
-        $userPaymentQuery = UserPayment::select('user_payments.user_id');
-        $userPaymentQuery->join('users', 'users.id', '=', 'user_payments.user_id');
-        $userPaymentQuery->groupBy('user_payments.user_id');
-        $userPayment = $userPaymentQuery->get()->toArray();
-        $avvattaUsersQuery = AvvattaUser::whereNotIn('id',$userPayment);
-        $avvattaNSUsersCount = $avvattaUsersQuery->count();
-
+        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
+        $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
+        $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
+        if($reportFrom != "" && $reportFrom != "custom"){
+            $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+        } 
+        
         $sevenDays = date('Y-m-d H:i:s', strtotime($today.'-7 day'));
         $fourteenDays = date('Y-m-d H:i:s', strtotime($today.'-14 day'));
+
+        $userPaymentQuery = UserPayment::select('user_payments.*')
+        ->with('user_payments_avvatta_users')
+        ->with('user_payments_subscriptions');
+        if($startDate){
+            $userPaymentQuery->whereDate('user_payments.created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $userPaymentQuery->whereDate('user_payments.created_at', '<=', $endDate);
+        }
+        $noOfSubscriptions = $userPaymentQuery->get(); 
+         
+        $subscriptionList = [];
+        foreach($noOfSubscriptions as $noOfSubscription){
+            $subscriptionList[] = $noOfSubscription->user_id;
+        }
+
+        // Registered Users
+        $avvattaActiveUsersQuery = AvvattaUser::whereNotNull('id');
+        if($startDate){
+            $avvattaActiveUsersQuery->whereDate('created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $avvattaActiveUsersQuery->whereDate('created_at', '<=', $endDate);
+        }
+        $avvattaUsers = $avvattaActiveUsersQuery->orderBy('created_at','desc')->get();
+
+        $avvattaUserList = [];
+        foreach($avvattaUsers as $avvattaUser){
+            $avvattaUserList[] = $avvattaUser->id;
+        }
         
-        $avvattaActiveUsers = AvvattaUser::count();
-        $cancelledSeven = UserPayment::where('is_cancelled','=',1)->whereDate('created_at', '>=', $sevenDays)->count();
-        $cancelledFourteen = UserPayment::where('is_cancelled','=',1)->whereDate('created_at', '>=', $fourteenDays)->count();
-        $cancelled = UserPayment::where('is_cancelled','=',1)->count();
+        // Registered & Subscribed Users
+        $subscribedUsersQuery = AvvattaUser::whereIn('id',$subscriptionList);
+        if($startDate){
+            $subscribedUsersQuery->whereDate('created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $subscribedUsersQuery->whereDate('created_at', '<=', $endDate);
+        }
+        $subscribedUsers = $subscribedUsersQuery->orderBy('created_at','desc')->get();
+
+        // Registered & Not Subscribed Users
+        $avvattaNSUsersQuery = AvvattaUser::whereNotIn('id',$subscriptionList);
+        if($startDate){
+            $avvattaNSUsersQuery->whereDate('created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $avvattaNSUsersQuery->whereDate('created_at', '<=', $endDate);
+        }
+        $avvattaNSUsers = $avvattaNSUsersQuery->get(); 
+
+        $avvattaNSUsersQuery = AvvattaUser::whereNotIn('id',$subscriptionList);
+        if($startDate){
+            $avvattaNSUsersQuery->whereDate('created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $avvattaNSUsersQuery->whereDate('created_at', '<=', $endDate);
+        }
+        $avvattaNSUsers = $avvattaNSUsersQuery->get(); 
+        
+        // Registered & Not Subscribed Users
+        $cancelledSevenQuery = UserPayment::where('is_cancelled','=',1)->whereDate('created_at', '>=', $sevenDays);
+        if($startDate){
+            $cancelledSevenQuery->whereDate('created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $cancelledSevenQuery->whereDate('created_at', '<=', $endDate);
+        }
+        $cancelledSeven = $cancelledSevenQuery->get();
+
+        $cancelledFourteenQuery = UserPayment::where('is_cancelled','=',1)->whereDate('created_at', '>=', $fourteenDays);
+        if($startDate){
+            $cancelledFourteenQuery->whereDate('created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $cancelledFourteenQuery->whereDate('created_at', '<=', $endDate);
+        }
+        $cancelledFourteen = $cancelledFourteenQuery->get();
+        
+
+        $cancelledQuery = UserPayment::where('is_cancelled','=',1)
+        ->with('user_payments_avvatta_users')
+        ->with('user_payments_subscriptions');
+        if($startDate){
+            $cancelledQuery->whereDate('created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $cancelledQuery->whereDate('created_at', '<=', $endDate);
+        }
+        $cancelled = $cancelledQuery->get();
+        
         return view('subscription-customer')
         ->with([
-            'avvattaActiveUsers'=>$avvattaActiveUsers,
-            'subscribedUsers'=>count($userPayment),
-            'avvattaNSUsersCount'=>$avvattaNSUsersCount,
+            'subscribedUsers'=>$subscribedUsers,
+            'avvattaUsers'=>$avvattaUsers,
+            'noOfSubscriptions'=>$noOfSubscriptions,
+            'avvattaNSUsers'=>$avvattaNSUsers,
             'cancelledSeven'=>$cancelledSeven,
             'cancelledFourteen'=>$cancelledFourteen,
             'cancelled'=>$cancelled,
