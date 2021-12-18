@@ -1,8 +1,4 @@
 
-	===============================
-			@Import	Function
-	===============================
-*/
 /*
 	===============================
 			@Import	Mixins
@@ -835,7 +831,8 @@ code {
   padding-left: 61px;
   font-size: 13px;
   font-weight: 500;
-  color: #bfc9d4; }
+  color: #bfc9d4;
+  text-transform: capitalize; }
 
 #sidebar ul.menu-categories li.menu ul.submenu > li a:before {
   content: '';

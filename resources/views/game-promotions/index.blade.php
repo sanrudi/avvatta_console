@@ -4,7 +4,7 @@
 @endpush
 @section('content')
 <div class="container">
-  <h6>Erosnow - {{ $subCategotyData->name  }}({{ $contenttype  }})</h6>
+  <h6>{{ $subCategotyData->name  }}({{ $contenttype  }})</h6>
   <hr>
   <div class="row mr-5">
     <div class="form-group col-xl-6 col-md-12"> 

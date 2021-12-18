@@ -93,6 +93,7 @@
           <input type="hidden" name="card-main-sub-id" id="card-main-sub-id" value="{{ $mainSubCatId  }}">
           <input type="hidden" name="card-main-id" id="card-main-id" value="{{ $mainCatId  }}">
           <input type="hidden" name="card-content" id="card-content" value="{{ $contenttype  }}">
+          <input type="hidden" name="card-content-section-id" id="card-content-section-id" value="{{ $contentSectionId  }}">
           <button type="submit" class="btn btn-primary">Apply</button>
         </div>
       </div> 
