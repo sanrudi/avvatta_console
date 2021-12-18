@@ -11,6 +11,7 @@ use App\Models\VideoContent;
 use App\Models\PromotionGame;
 use App\Models\PromotionKid;
 use App\Models\PromotionElearn;
+use Log;
 
 
 class CMSController extends Controller
@@ -372,12 +373,13 @@ class CMSController extends Controller
      }
 
      public function elearnPromotionStore(Request $request)
-     {
+     { 
          $max = 100;
          $prefer = $max;
          $removedMovies = ($request['removed-movie-cards'])?explode("|", $request['removed-movie-cards']):[];
          $videoCatId = $request['card-video-cat-id'];
          $contentCatId = $request['card-content-cat-id'];
+         $contentSectionId = $request['card-content-section-id'];
          $mainSubCatId = $request['card-main-sub-id'];
          $mainCatId = $request['card-main-id'];
          $contenttype = $request['card-content'];
@@ -406,7 +408,7 @@ class CMSController extends Controller
          if(count($latestMovieCards) > 0){
             PromotionElearn::upsert($latestMovieCards, ['prefer_content_id', 'category','main_cat','main_sub_cat','content_cat','content_type'], ['prefer']);
          }
-         return redirect()->route('elearn-promotion',['contentCatId'=>$contentCatId,'videoCatId'=>$videoCatId,'mainCatId'=>$mainCatId,'mainSubCatId'=>$mainSubCatId,'contenttype'=>$contenttype])->with('success','Content Applied successfully.');
+         return redirect()->route('elearn-promotion',['contentCatId'=>$contentCatId,'videoCatId'=>$videoCatId,'mainCatId'=>$mainCatId,'mainSubCatId'=>$mainSubCatId,'contenttype'=>$contenttype,'contentSectionId' => $contentSectionId])->with('success','Content Applied successfully.');
      }
  
 

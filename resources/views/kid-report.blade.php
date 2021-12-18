@@ -74,7 +74,7 @@
 
         </div>
     </form>
-    <!-- <a href="{{ route('export-game-content') }}" class="btn btn-info" role="button">Export</a> -->
+        <div class="table-responsive">
     <table id="example" class="table table-striped table-bordered " style="width:100%">	
         <thead>
             <tr>
@@ -115,6 +115,7 @@
             @endforeach
         </tbody>
     </table>
+</div>
 </div>
 </div>
 </div>
@@ -192,7 +193,6 @@
 
         </div>
     </form>
-    <!-- <a href="{{ route('export-most-played-games') }}" class="btn btn-info" role="button">Export</a> -->
     <div class="table-responsive">
         <table id="example" class="table table-striped table-bordered " style="width:100%">
             <thead>
@@ -298,7 +298,6 @@
 
             </div>
         </form>
-        <!-- <a href="{{ route('export-most-played-games') }}" class="btn btn-info" role="button">Export</a> -->
         <div class="table-responsive">
             <table id="example" class="table table-striped table-bordered " style="width:100%">
                 <thead>

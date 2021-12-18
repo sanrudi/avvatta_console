@@ -51,7 +51,7 @@
                             </div>
                         </a>
                     </li>
-                        @can('games')
+                    @can('games')
                     <li class="menu">
                         <a href="#games" data-toggle="collapse" aria-expanded="{{ (request()->is('game-articles-report')||request()->is('game-report')||request()->is('repeated-game-by-user')||request()->is('most-played-games')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
@@ -67,18 +67,18 @@
                                 <a href="{{ route('game-articles-report') }}"> Game Article </a>
                             </li>
                             <li class="{{ request()->is('game-report') ? 'active' : '' }}">
-                                <a href="{{route('game-report')}}"> All Game Categories </a>
+                                <a href="{{route('game-report')}}"> Most Categories Consumed Users </a>
                             </li>
                             <li class="{{ request()->is('repeated-game-by-user') ? 'active' : '' }}">
-                                <a href="{{ route('repeated-game-by-user') }}"> Top repeat played games by a single user account </a>
+                                <a href="{{ route('repeated-game-by-user') }}"> Top Repeat Played Games</a>
                             </li>
                             <li class="{{ request()->is('most-played-games') ? 'active' : '' }}">
-                                <a href="{{ route('most-played-games') }}"> Top 10 most played Games </a>
+                                <a href="{{ route('most-played-games') }}"> Top Most Played Games </a>
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('kids')
+                    @endcan
+                    @can('kids')
                     <li class="menu">
                         <a href="#kids" data-toggle="collapse" aria-expanded="{{ (request()->is('kids-report')||request()->is('most-watched-kids-content')||request()->is('repeated-kidscontent-by-user')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">   
@@ -91,7 +91,7 @@
                         </a>
                         <ul class="collapse submenu list-unstyled {{ (request()->is('kids-report')||request()->is('most-watched-kids-content')||request()->is('repeated-kidscontent-by-user')) ? 'show' : '' }}" id="kids" data-parent="#accordionExample">
                             <li>
-                                <a href="{{route('kids-report')}}"> All Kids Categories </a>
+                                <a href="{{route('kids-report')}}"> Most Categories Consumed Users </a>
                             </li>
                             <li>
                                 <a href="{{ route('most-watched-kids-content') }}"> Top 10 watched Kids Category </a>
@@ -101,8 +101,8 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('elearn')
+                    @endcan
+                    @can('elearn')
                     <li class="menu">
                         <a href="#elearning" data-toggle="collapse" aria-expanded="{{ (request()->is('elearn-report')||request()->is('top-ten-elearn-content')||request()->is('elearn-top-repeat-user-report')||request()->is('elearn-top-genre-watched-report')||request()->is('most-watched-elearn-content')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">   
@@ -115,7 +115,7 @@
                         </a>
                         <ul class="collapse submenu list-unstyled {{ (request()->is('elearn-report')||request()->is('top-ten-elearn-content')||request()->is('elearn-top-repeat-user-report')||request()->is('elearn-top-genre-watched-report')||request()->is('most-watched-elearn-content')) ? 'show' : '' }}" id="elearning" data-parent="#accordionExample">
                             <li>
-                                <a href="{{route('elearn-report')}}"> All Elearning Categories </a>
+                                <a href="{{route('elearn-report')}}"> Most Categories Consumed Users </a>
                             </li>
                             <li>
                                 <a href="{{ route('top-ten-elearn-content') }}"> Top 10 watched Category </a>
@@ -131,8 +131,8 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('videos')
+                    @endcan
+                    @can('videos')
                     <li class="menu">
                         <a href="#video-reports" data-toggle="collapse" aria-expanded="{{ (request()->is('video-articles-report')||request()->is('video-most-watched-report')||request()->is('video-top-repeat-user-report')||request()->is('video-top-genre-watched-report')||request()->is('video-all-category-user-report')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">  
@@ -163,8 +163,8 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('users')
+                    @endcan
+                    @can('users')
                     <li class="menu">
                         <a href="#user-reports" data-toggle="collapse" aria-expanded="{{ (request()->is('user-report')||request()->is('user-registration-report')||request()->is('user-sub-profile-report')||request()->is('user-login-report')||request()->is('user-idle-subscribers')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
@@ -193,8 +193,8 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('subsciprions')
+                    @endcan
+                    @can('subsciprions')
                     <li class="menu">
                         <a href="#subscription-reports" data-toggle="collapse" aria-expanded="{{ (request()->is('subscription-total')||request()->is('subscription-customer')||request()->is('daily-transactions')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
@@ -217,8 +217,8 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('revenue')
+                    @endcan
+                    @can('revenue')
                     <li class="menu">
                         <a href="#revenue-reports" data-toggle="collapse" aria-expanded="{{ (request()->is('video-articles-report')||request()->is('video-most-watched-report')||request()->is('video-top-repeat-user-report')||request()->is('video-top-genre-watched-report')||request()->is('video-all-category-user-report')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
@@ -235,8 +235,8 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('errors')
+                    @endcan
+                    @can('errors')
                     <li class="menu">
                         <a href="#error-reports" data-toggle="collapse" aria-expanded="{{ (request()->is('video-articles-report')||request()->is('video-most-watched-report')||request()->is('video-top-repeat-user-report')||request()->is('video-top-genre-watched-report')||request()->is('video-all-category-user-report')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
@@ -253,8 +253,8 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
-                        @can('manage-user')
+                    @endcan
+                    @can('manage-user')
                     <li class="menu">
                         <a href="{{ route('users.index') }}" class="dropdown-toggle">
                             <div class="">
@@ -263,8 +263,8 @@
                             </div>
                         </a>
                     </li>
-                        @endcan
-                        @can('role-list')
+                    @endcan
+                    @can('role-list')
                     <li class="menu">
                         <a href="{{ route('roles.index') }}" class="dropdown-toggle">
                             <div class="">
@@ -273,8 +273,8 @@
                             </div>
                         </a>
                     </li>
-                        @endcan
-                        @can('cms-editor')
+                    @endcan
+                    @can('cms-editor')
                     <li class="menu">
                         <a href="#cms" data-toggle="collapse" aria-expanded="{{ (request()->is('cms-editor-erosnow')||request()->is('game-promotion')||request()->is('kid-promotion')||request()->is('elearn-promotion')) ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
@@ -300,7 +300,7 @@
                             </li>
                         </ul>
                     </li>
-                        @endcan
+                    @endcan
                 </ul>
             </nav>
         </div>
