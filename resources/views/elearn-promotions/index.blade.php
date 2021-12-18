@@ -1,6 +1,6 @@
 @extends('layout.template')
 @push('css-links')
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.13.0/themes/hot-sneaks/jquery-ui.css" /
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/hot-sneaks/jquery-ui.css" >
 @endpush
 @section('content')
 <div class="container">

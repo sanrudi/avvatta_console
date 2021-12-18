@@ -26,15 +26,19 @@ class GameReportController extends Controller
 
     public function index(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
@@ -44,8 +48,10 @@ class GameReportController extends Controller
         ->join('users', 'users.id', '=', 'user_logs.user_id')
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game');
-        $gameQuery->select('users.firstname', 'users.lastname','users.email', 'users.mobile', 'game_name', 'sub_categories.name as category_name', 'user_logs.date_time',DB::raw("COUNT(DISTINCT(sub_categories.id)) as count"));
-        $gameQuery->groupBy('user_logs.user_id')->orderBy('count','desc')->havingRaw("count > 9");
+        $gameQuery->select('users.firstname', 'users.lastname','users.email', 'users.mobile', 'game_name', 'sub_categories.name as category_name', 'user_logs.date_time',DB::raw("GROUP_CONCAT( DISTINCT sub_categories.name) as category_list"),DB::raw("COUNT(DISTINCT(sub_categories.id)) as count"));
+        $gameQuery->groupBy('user_logs.user_id')
+        ->orderBy('count','desc')
+        ->havingRaw("count > 1");
         if($startDate){
             $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -58,11 +64,30 @@ class GameReportController extends Controller
         if($os){
             $gameQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $gameQuery->whereIn(DB::raw("DATE(user_logs.date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $gameQuery->where('user_logs.age', '>=', $ageRange);
+            $gameQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $gameQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
-        $game_content = $gameQuery->get();
+        if($multiDate){
+            $gameQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $gameQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+
+        if(!$multiDate){
+            $gameQuery->addSelect(DB::raw("'-' as dates"));
+            $game_content = $gameQuery->get();
+        }
+        if($multiDate){
+            $game_content = $gameQuery->get();
+        }
+
         return view('game-report', ['game_contents' => $game_content]);
     }
 
@@ -74,15 +99,19 @@ class GameReportController extends Controller
 
     public function repeatedGameBySingleUser(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
@@ -117,13 +146,31 @@ class GameReportController extends Controller
         if($os){
             $gameQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $gameQuery->whereIn(DB::raw("DATE(user_logs.date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $gameQuery->where('user_logs.age', '>=', $ageRange);
+            $gameQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $gameQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
         $gameQuery->groupBy('user_logs.user_id','user_logs.loggable_id')->havingRaw("COUNT(*) > 1")->orderBy('count','desc');
         
+        if($multiDate){
+            $gameQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $gameQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+        if(!$multiDate){
+            $gameQuery->addSelect(DB::raw("'-' as dates"));
+            $repeated_game = $gameQuery->get();
+        }
+        if($multiDate){
+            $repeated_game = $gameQuery->take(20)->get();
+        }
 
-        $repeated_game = $gameQuery->take(20)->get();
+        
         return view('game-report', ['repeated_games' => $repeated_game]);
     }
 
@@ -134,15 +181,19 @@ class GameReportController extends Controller
 
     public function mostPlayedGames(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
@@ -178,11 +229,28 @@ class GameReportController extends Controller
         if($os){
             $gameQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $gameQuery->whereIn(DB::raw("DATE(date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $gameQuery->where('user_logs.age', '>=', $ageRange);
+            $gameQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $gameQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
-        $most_played_games = $gameQuery->take(10)->get();
+        if($multiDate){
+            $gameQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $gameQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+        if(!$multiDate){
+            $gameQuery->addSelect(DB::raw("'-' as dates"));
+            $most_played_games = $gameQuery->get();
+        }
+        if($multiDate){
+            $most_played_games = $gameQuery->get();
+        }
         return view('game-report', ['most_played_games' => $most_played_games]);
     }
 

@@ -143,15 +143,19 @@ class VideoContentReportController extends Controller
 
     public function mostWatched(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
@@ -187,14 +191,31 @@ class VideoContentReportController extends Controller
         if($os){
             $logQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $logQuery->whereIn(DB::raw("DATE(date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $logQuery->where('user_logs.age', '>=', $ageRange);
+            $logQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
         
+        if($multiDate){
+            $logQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $logQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
         $logQuery->groupBy('user_logs.loggable_id');
         $logQuery->groupBy('user_logs.user_id');
-        $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
-        $logs = $logQuery->get()->take(10);
+        if(!$multiDate){
+            $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
+            $logQuery->addSelect(DB::raw("'-' as dates"));
+            $logs = $logQuery->get()->take(10);
+        }
+        if($multiDate){
+            $logs = $logQuery->get()->take(100);
+        }
         return view('video-most-watched-report')
         ->with([
             'logs'=>$logs
@@ -203,15 +224,19 @@ class VideoContentReportController extends Controller
     
     public function topRepeatedBySingleUser(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
@@ -247,14 +272,32 @@ class VideoContentReportController extends Controller
         if($os){
             $logQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $logQuery->whereIn(DB::raw("DATE(date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $logQuery->where('user_logs.age', '>=', $ageRange);
+            $logQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
+        if($multiDate){
+            $logQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $logQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+
         $logQuery->groupBy('user_logs.user_id');
         $logQuery->groupBy('user_logs.loggable_id');
-        $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
-        $logs = $logQuery->get()->take(10);
+        if(!$multiDate){
+            $logQuery->orderBy(DB::raw('count(user_logs.user_id)'),'desc');
+            $logQuery->addSelect(DB::raw("'-' as dates"));
+            $logs = $logQuery->get()->take(10);
+        }
+        if($multiDate){
+            $logs = $logQuery->get()->take(100);
+        }
         return view('video-top-repeat-user-report')
         ->with([
             'logs'=>$logs
@@ -263,15 +306,19 @@ class VideoContentReportController extends Controller
 
     public function topGenreWatched(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
@@ -306,15 +353,34 @@ class VideoContentReportController extends Controller
         }
         if($os){
             $logQuery->where('user_logs.os', '=', $os);
-        }  
+        }   
+        if($multiDate){
+            $logQuery->whereIn(DB::raw("DATE(date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $logQuery->where('user_logs.age', '>=', $ageRange);
+            $logQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
+
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
+        if($multiDate){
+            $logQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $logQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+        
         $logQuery->groupBy('user_logs.category');
         $logQuery->groupBy('user_logs.genre');
         $logQuery->orderBy(DB::raw('count(user_logs.genre)'),'desc');
-        $logs = $logQuery->get();
+        if(!$multiDate){
+            $logQuery->addSelect(DB::raw("'-' as dates"));
+            $logs = $logQuery->get();
+        }
+        if($multiDate){
+            $logs = $logQuery->get();
+        }
         return view('video-top-genre-watched-report')
         ->with([
             'logs'=>$logs
@@ -323,21 +389,25 @@ class VideoContentReportController extends Controller
 
     public function allCategoryUsers(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
         $logQuery = UserLog::with('avvatta_user');
-        $logQuery->select('user_logs.*');
+        $logQuery->select('user_logs.*',DB::raw("GROUP_CONCAT( DISTINCT category) as category_list"),DB::raw('count(DISTINCT category) as category_count'));
         $logQuery->where('type','=', 'video');
         $logQuery->where('loggable_type','!=', 'App\Models\GameContent');
         $logQuery->where('action','=', 'play');
@@ -354,13 +424,32 @@ class VideoContentReportController extends Controller
         if($os){
             $logQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $logQuery->whereIn(DB::raw("DATE(date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $logQuery->where('user_logs.age', '>=', $ageRange);
+            $logQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $logQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
+        if($multiDate){
+            $logQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $logQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+
         $logQuery->groupBy('user_id');
-        $logQuery->having(DB::raw('count(category)'), '>', 1);
-        $logs = $logQuery->get();
+        $logQuery->having(DB::raw('count(DISTINCT category)'), '>', 1);
+        if(!$multiDate){
+            $logQuery->addSelect(DB::raw("'-' as dates"));
+            $logs = $logQuery->get();
+        }
+        if($multiDate){
+            $logs = $logQuery->get();
+        }
+        
         return view('video-all-category-user-report')
         ->with([
             'logs'=>$logs

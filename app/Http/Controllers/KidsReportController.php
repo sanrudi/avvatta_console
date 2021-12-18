@@ -15,15 +15,19 @@ class KidsReportController extends Controller
 
     public function kidsReport(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
 
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
@@ -35,8 +39,10 @@ class KidsReportController extends Controller
         ->join('sub_categories as sc', 'sc.id', '=', 'video_content.sub_id')
         ->where('type', 'video')
         ->where('category', 'kids')
-        ->select('users.firstname', 'users.lastname', 'users.email', 'users.mobile', 'video_content.content_name', 'sub_categories.name as category_name','sc.name as sub_cat_name','user_logs.date_time',DB::raw("COUNT(DISTINCT(sub_categories.id)) as count"));
-        $kidsQuery->groupBy('user_logs.user_id')->orderBy('count','desc')->havingRaw("count > 4");
+        ->select('users.firstname', 'users.lastname', 'users.email', 'users.mobile', 'video_content.content_name', 'sub_categories.name as category_name','sc.name as sub_cat_name','user_logs.date_time',DB::raw("GROUP_CONCAT( DISTINCT sub_categories.name) as category_list"),DB::raw("COUNT(DISTINCT(sub_categories.id)) as count"));
+        $kidsQuery->groupBy('user_logs.user_id')
+        ->orderBy('count','desc')
+        ->havingRaw("count > 1");
         if($startDate){
             $kidsQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -49,11 +55,29 @@ class KidsReportController extends Controller
         if($os){
             $kidsQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $kidsQuery->whereIn(DB::raw("DATE(user_logs.date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $kidsQuery->where('user_logs.age', '>=', $ageRange);
+            $kidsQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $kidsQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
 
-        $kids_contents = $kidsQuery->get();
+        if($multiDate){
+            $kidsQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $kidsQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+
+        if(!$multiDate){
+            $kidsQuery->addSelect(DB::raw("'-' as dates"));
+            $kids_contents = $kidsQuery->get();
+        }
+        if($multiDate){
+            $kids_contents = $kidsQuery->get();
+        }
         
         return view('kid-report', ['kids_contents' => $kids_contents]);
 
@@ -61,15 +85,19 @@ class KidsReportController extends Controller
 
     public function mostWatchedKidsContent(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
         $provider = null;
@@ -102,31 +130,46 @@ class KidsReportController extends Controller
         if($os){
             $kidsQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $kidsQuery->whereIn(DB::raw("DATE(user_logs.date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $kidsQuery->where('user_logs.age', '>=', $ageRange);
+            $kidsQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $kidsQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
-        $mostWatchedKidsContents = $kidsQuery->get();
+        if($multiDate){
+            $kidsQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $kidsQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+        if(!$multiDate){
+            $kidsQuery->addSelect(DB::raw("'-' as dates"));
+            $mostWatchedKidsContents = $kidsQuery->get();
+        }
+        if($multiDate){
+            $mostWatchedKidsContents = $kidsQuery->get();
+        }
         return view('kid-report', ['mostWatchedKidsContents' => $mostWatchedKidsContents]);
-
-    }
-
-    public function topKidsContent()
-    {
 
     }
 
     public function repeatedKidsContentByUser(Request $request)
     {
-        $reportFrom="";$startDate="";$endDate="";
+        $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $ageRange = ($request->input('ageRange'))?$request->input('ageRange'):"";
         date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
-
+        if($reportFrom == "multiple" && $request->input('multiDate')){
+            $multiDate = explode(",",$request->input('multiDate'));
+        }
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
@@ -162,11 +205,28 @@ class KidsReportController extends Controller
         if($os){
             $kidsQuery->where('user_logs.os', '=', $os);
         }  
+        if($multiDate){
+            $kidsQuery->whereIn(DB::raw("DATE(user_logs.date_time)"), $multiDate);
+        }
+        if($ageRange){
+            $kidsQuery->where('user_logs.age', '>=', $ageRange);
+            $kidsQuery->where('user_logs.age', '<=', $ageRange+9);
+        } 
+
         $device = !empty($device)?$device:"All";
         $os = !empty($os)?$os:"All";
         $kidsQuery->addSelect(DB::raw("'$device' as device, '$os' as os"));
-
-        $repeatedKidsContents = $kidsQuery->get();
+        if($multiDate){
+            $kidsQuery->addSelect(DB::raw("DATE(date_time) as dates"));
+            $kidsQuery->groupBy(DB::raw("DATE(date_time)"));
+        }
+        if(!$multiDate){
+            $kidsQuery->addSelect(DB::raw("'-' as dates"));
+            $repeatedKidsContents = $kidsQuery->get();
+        }
+        if($multiDate){
+            $repeatedKidsContents = $kidsQuery->get();
+        }
 
         return view('kid-report', ['repeatedKidsContents' => $repeatedKidsContents]);
 

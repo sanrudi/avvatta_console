@@ -159,7 +159,7 @@
                                 <a href="{{ route('video-top-genre-watched-report') }}">Top Genre watched </a>
                             </li>
                             <li>
-                                <a href="{{ route('video-all-category-user-report') }}">All Category Users </a>
+                                <a href="{{ route('video-all-category-user-report') }}">Most Category Users </a>
                             </li>
                         </ul>
                     </li>

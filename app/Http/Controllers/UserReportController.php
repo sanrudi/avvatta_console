@@ -48,7 +48,7 @@ class UserReportController extends Controller
                 $userReport = UserLog::where('category', '=', 'kids');
                 break;
             default:
-                $userReport = UserLog::select('user_id', 'loggable_id', 'content_id', 'type', 'category', 'action', 'date_time','device','os');
+                $userReport = UserLog::select('user_id', 'loggable_id', 'content_id', 'type', 'category', 'action', 'date_time','device','os','age');
         }
         if($startDate && $request->input('reportFrom') != "custom"){
             $userReport->whereBetween('date_time', [$startDate, $today]);
@@ -115,6 +115,7 @@ class UserReportController extends Controller
             $user_contents[$i]['date_time'] = $user->date_time;
             $user_contents[$i]['device'] = $user->device;
             $user_contents[$i]['os'] = $user->os;
+            $user_contents[$i]['age'] = ($user->age)?$user->age:"";
             $i++;
         }
 
