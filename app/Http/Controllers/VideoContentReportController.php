@@ -48,20 +48,6 @@ class VideoContentReportController extends Controller
             $providerRequest = Auth::user()->roles->first()->name;
         }
         $provider = ($providerRequest)?$providerRequest:$provider;
-        // if($provider == "erosnow")
-        // {
-        //     $report = "erosnow";
-        // }
-        // if($provider == "kids"){
-        //     $report = "kids";
-        // }
-        // if($provider == "elearn"){
-        //     $report = "elearn";
-        // }
-        // if($provider == "")
-        // {
-        //     $report = "kids";
-        // }
         // Erosnow Data
         if($report == "erosnow"){
         $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title as article','av_eros_nows.categories as category','av_eros_nows.created_date as added_at','av_eros_nows.duration',DB::raw('avg(user_logs.duration)

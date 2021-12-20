@@ -1,16 +1,16 @@
 @extends('layout.template')
 @push('css-links')
-    <!-- Date Picker -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <!-- Date Picker -->
-    <!-- Multi Date Picker -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/jquery-ui.multidatespicker.css') }}">
-    <!-- Multi Date Picker -->
+<!-- Date Picker -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- Date Picker -->
+<!-- Multi Date Picker -->
+<link rel="stylesheet" href="{{ asset('assets/plugins/jquery-ui.multidatespicker.css') }}">
+<!-- Multi Date Picker -->
 @endpush
 @section('content')
-    <div class="container">
-        <h6>Error Report</h6><hr>
-        <form action="" method="GET">
+<div class="container">
+  <h6>Error Report</h6><hr>
+  <form action="" method="GET">
     <div class="form-row">
       <div class="form-group col-md-2">
         <label for="reportFrom">Report From</label>
@@ -41,41 +41,61 @@
       </div>
     </div>
   </form>
-        <div class="table-responsive">
-            <table class="table table-bordered mb-5">
-                <thead>
-                <tr class="table-success">
-                    <th scope="col">Date Time</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Status Text</th>
-                    <th scope="col">URL</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">Error</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($errorReport as $key => $data)
-                    <tr>
-                        <td>{{ $data['date_time'] }}</td>
-                        <td>{{ $data['status'] }}</td>
-                        <td>{{ $data['statusText'] }}</td>
-                        <td>{{ $data['url'] }}</td>
-                        <td>{{ $data['message'] }}</td>
-                        <td>{{ $data['error'] }}</td>
-                    </tr>
-                @endforeach
-                @if(count($errorReport) == 0)
-                <tr>
-                    <td colspan="6"  style="text-align:center;">No Record Found</td>
-                </tr>
-                @endif
-                </tbody>
-            </table>
-        </div>
-        <div class="d-flex justify-content-center mt-4">
-        {!! $errorReport->withQueryString()->links() !!}
-        </div>
+  <div class="table-responsive">
+    <table class="table table-bordered mb-5">
+      <thead>
+        <tr class="table-success">
+          <th scope="col">ID</th>
+          <th scope="col">Date Time</th>
+          <th scope="col">Status</th>
+          <th scope="col">URL</th>
+          <th scope="col">Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($errorReport as $key => $data)
+        <tr>
+          <td><a href="#" onclick="show_error({{ $data['id'] }});">#{{ $data['id'] }}</a></td>
+          <td>{{ $data['date_time'] }}</td>
+          <td>{{ $data['status'] }}</td>
+          <td>{{ $data['url'] }}</td>
+          <td>{{ $data['message'] }}</td>
+        </tr>
+        @endforeach
+        @if(count($errorReport) == 0)
+        <tr>
+          <td colspan="7"  style="text-align:center;">No Record Found</td>
+        </tr>
+        @endif
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex justify-content-center mt-4">
+    {!! $errorReport->withQueryString()->links() !!}
+  </div>
+</div>
+@endsection
+@section('modal')
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg"  id="showError" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showErrorModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="showErrorContent"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
+</div>
+<!-- Modal -->
 @endsection
 @push('js-links')
 <!-- Date Picker -->
@@ -151,5 +171,27 @@
       }
     });
   });
+</script>
+<script>
+  function show_error(id){
+    $('#showError').modal('show');
+    $('#showErrorModalLabel').html("#"+id);
+    $('#showErrorContent').html("loading...");
+    var url = "{{ route('show-error') }}";   
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+      type: "GET",
+      url: url,
+      data: {id:id},
+      success: function(data)
+      {
+        $('#showErrorContent').html(data);
+      }
+    });
+  }
 </script>
 @endsection

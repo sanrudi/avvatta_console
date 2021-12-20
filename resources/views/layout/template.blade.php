@@ -319,6 +319,7 @@
                     <!--  END CONTENT AREA  -->
                 </div>
                 <!-- END MAIN CONTAINER -->
+@yield('modal')
                 <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
                 <script src="{{ asset('adtemplate/assets/js/libs/jquery-3.1.1.min.js') }}"></script>
                 <script src="{{ asset('adtemplate/bootstrap/js/popper.min.js') }}"></script>
