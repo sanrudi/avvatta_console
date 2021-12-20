@@ -39,7 +39,7 @@ class VideoContentReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         } 
 
-        if($request->input('type') && ($request->input('type') == "erosnow" || $request->input('type') == "kids" )){
+        if($request->input('type') && ($request->input('type') == "erosnow" || $request->input('type') == "kids" || $request->input('type') == "elearn" )){
             $report = $request->input('type');
         }
         $provider = null;
@@ -48,12 +48,20 @@ class VideoContentReportController extends Controller
             $providerRequest = Auth::user()->roles->first()->name;
         }
         $provider = ($providerRequest)?$providerRequest:$provider;
-        if($provider == "erosnow")
-        {
-            $report = "erosnow";
-        }else{
-            $report = "kids";
-        }
+        // if($provider == "erosnow")
+        // {
+        //     $report = "erosnow";
+        // }
+        // if($provider == "kids"){
+        //     $report = "kids";
+        // }
+        // if($provider == "elearn"){
+        //     $report = "elearn";
+        // }
+        // if($provider == "")
+        // {
+        //     $report = "kids";
+        // }
         // Erosnow Data
         if($report == "erosnow"){
         $videoArticlesQuery = AvErosNows::select('av_eros_nows.content_id','av_eros_nows.title as article','av_eros_nows.categories as category','av_eros_nows.created_date as added_at','av_eros_nows.duration',DB::raw('avg(user_logs.duration)
@@ -93,10 +101,16 @@ class VideoContentReportController extends Controller
         $videoArticlesQuery->groupBy('av_eros_nows.content_id');
         }
 
-        // Kids Data
-        if($report == "kids"){
+        // Kids, Elearn Data
+        if($report != "erosnow"){
             $videoArticlesQuery = VideoContent::select('video_content.id as content_id','video_content.content_name as article',DB::raw("'' as category"),'video_content.owner as provider','video_content.created_at as added_at',DB::raw("'' as duration"),DB::raw('avg(user_logs.duration)
             as avg'));
+            if($report =="kids"){
+                $videoArticlesQuery->where('video_content.cat_id','=', 4);
+            }
+            if($report =="elearn"){
+                $videoArticlesQuery->where('video_content.cat_id','=', 6);
+            }
             $videoArticlesQuery->with(['watches' => function ($query) use ($request,$startDate,$endDate) {
                 $query->where('action','=', 'play');
                 $query->where('type','=', 'video');
