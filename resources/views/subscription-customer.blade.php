@@ -156,7 +156,7 @@
     <tbody>
       @foreach($noOfSubscriptions as $key => $data)
       <tr>
-        <td>{{ $data->user_payments_subscriptions->title }}</td> 
+        <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
         <td>
           @if(!empty($log->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
           {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
@@ -180,12 +180,13 @@
         <th>Customer</th>
         <th>Days</th>
         <th>Date</th>
+        <th>Reason</th>
       </tr>
     </thead>
     <tbody>
       @foreach($cancelled as $key => $data)
       <tr>
-        <td>{{ $data->user_payments_subscriptions->title }}</td> 
+        <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
         <td>
           @if(!empty($log->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
           {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
@@ -197,6 +198,7 @@
         </td>    
         <td>{{isset($data->created_at)?$data->created_at->diffForHumans():''}}</td>   
         <td>{{isset($data->created_at)?$data->created_at:''}}</td>      
+        <td>{{isset($data->cancel_reason)?$data->cancel_reason:''}}</td>     
       </tr>
       @endforeach
     </tbody>

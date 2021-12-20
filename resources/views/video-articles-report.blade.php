@@ -33,6 +33,7 @@
           <select name="type" id="type" class="form-control">
             <option value="erosnow" @if(Request::get('type') == "erosnow") selected="selected" @endif >Erosnow</option>
             <option value="kids" @if(Request::get('type') == "kids") selected="selected" @endif>Kids</option>
+            <option value="elearn" @if(Request::get('type') == "elearn") selected="selected" @endif>E-learn</option>
           </select>
         </div>
           <div class="form-group col-md-2">
