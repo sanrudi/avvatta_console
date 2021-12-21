@@ -12,7 +12,7 @@
 @section('content')
 <div class="container">
   <h6>Subscription Report @include('report-for-date-no-default')</h6><hr>
-  <form action="" method="GET">
+  <form autocomplete="off" action="" method="GET">
     <div class="form-row">
       <div class="form-group col-md-2">
         <label for="reportFrom">Report From</label>
@@ -158,7 +158,7 @@
       <tr>
         <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
         <td>
-          @if(!empty($log->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
+          @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
           {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
           @elseif(!empty($data->user_payments_avvatta_users->email))
           {{$data->user_payments_avvatta_users->email}}
@@ -188,7 +188,7 @@
       <tr>
         <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
         <td>
-          @if(!empty($log->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
+          @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
           {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
           @elseif(!empty($data->user_payments_avvatta_users->email))
           {{$data->user_payments_avvatta_users->email}}
@@ -199,6 +199,34 @@
         <td>{{isset($data->created_at)?$data->created_at->diffForHumans():''}}</td>   
         <td>{{isset($data->created_at)?$data->created_at:''}}</td>      
         <td>{{isset($data->cancel_reason)?$data->cancel_reason:''}}</td>     
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+  <hr>
+  <h6>New Subscriptions</h6>
+  <table id="newSubscriptions" class="table table-striped table-bordered " style="width:100%">
+    <thead>
+      <tr>
+        <th>Customer</th>
+        <th>Subscription</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($newSubscriptions as $key => $data)
+      <tr>
+        <td>
+          @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
+          {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
+          @elseif(!empty($data->user_payments_avvatta_users->email))
+          {{$data->user_payments_avvatta_users->email}}
+          @elseif(!empty($data->user_payments_avvatta_users->mobile))
+          {{$data->user_payments_avvatta_users->mobile}}
+          @endif
+        </td>    
+        <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
+        <td>{{isset($data->created_at)?$data->created_at:''}}</td>      
       </tr>
       @endforeach
     </tbody>
@@ -295,6 +323,18 @@
         text: 'Export Results',
         className: 'btn btn-default',
         title: 'Cancelled Subscriptions'
+      }
+      ]
+    } );
+    $('#newSubscriptions').DataTable( {
+      dom: 'Bfrtip',
+      searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+      buttons: [
+      {
+        extend: 'excel',
+        text: 'Export Results',
+        className: 'btn btn-default',
+        title: 'New Subscriptions'
       }
       ]
     } );

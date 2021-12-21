@@ -12,7 +12,7 @@
 @section('content')
 <div class="container">
 <h6>Received Subscriptions - Report @include('report-for-date-no-default')</h6><hr>
-<form action="" method="GET">
+<form autocomplete="off" action="" method="GET">
       <div class="form-row">
         <div class="form-group col-md-2">
           <label for="reportFrom">Report From</label>
