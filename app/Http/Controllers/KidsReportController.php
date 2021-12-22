@@ -12,6 +12,33 @@ class KidsReportController extends Controller
 {
 
     CONST KIDS_CATEGORY = 'kids';
+    
+    
+    private $country;
+    public function __construct(Request $request)
+    {
+        // $this->middleware('auth');
+        // check the domain and set country
+        $this->country = env('COUNTRY','SA');
+        $server_host = $request->server()['SERVER_NAME'];
+                $referer =  request()->headers->get('referer');
+                if($referer=='https://gh.avvatta.com/') {
+                 
+                    $this->country = 'GH';
+                    
+                }
+              
+                if($referer=='https://ng.avvatta.com/') {
+                 
+                    $this->country = 'NG';
+                    
+                }
+        
+        $this->country = env('COUNTRY','SA');
+    }
+    
+    
+    
 
     public function kidsReport(Request $request)
     {
@@ -43,6 +70,23 @@ class KidsReportController extends Controller
         $kidsQuery->groupBy('user_logs.user_id')
         ->orderBy('count','desc')
         ->havingRaw("count > 1");
+        
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $kidsQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($startDate){
             $kidsQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -115,6 +159,22 @@ class KidsReportController extends Controller
         ->where('category', 'kids')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, video_content.content_name,video_content.owner as provider, sub_categories.name as category_name,sc.name as sub_cat_name,COUNT(*) as count"))
         ->groupBy('user_logs.loggable_id')->take(10)->orderBy('count','desc');
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $kidsQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if(!is_null($provider)){
             $kidsQuery->where('video_content.owner','=', $provider);
         }
@@ -190,6 +250,22 @@ class KidsReportController extends Controller
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname, email, mobile, video_content.content_name, video_content.owner as provider, sub_categories.name as category_name,sc.name as sub_cat_name, COUNT(*) as count"))
         ->groupBy('user_logs.user_id','user_logs.loggable_id')->take(20)->orderBy('count','desc')
         ->havingRaw("COUNT(*) > 1");
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $kidsQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if(!is_null($provider)){
             $kidsQuery->where('video_content.owner','=', $provider);
         }

@@ -12,10 +12,29 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SubscriptionReportController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    private $country;
+    public function __construct(Request $request)
+    {
+        // $this->middleware('auth');
+        // check the domain and set country
+        $this->country = env('COUNTRY','SA');
+        $server_host = $request->server()['SERVER_NAME'];
+                $referer =  request()->headers->get('referer');
+                if($referer=='https://gh.avvatta.com/') {
+                 
+                    $this->country = 'GH';
+                    
+                }
+              
+                if($referer=='https://ng.avvatta.com/') {
+                 
+                    $this->country = 'NG';
+                    
+                }
+        
+        $this->country = env('COUNTRY','SA');
+    }
+
 
     public function index()
     {

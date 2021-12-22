@@ -19,6 +19,30 @@ use Maatwebsite\Excel\Facades\Excel;
 class UserReportController extends Controller
 {
 
+    private $country;
+    public function __construct(Request $request)
+    {
+        // $this->middleware('auth');
+        // check the domain and set country
+        $this->country = env('COUNTRY','SA');
+        $server_host = $request->server()['SERVER_NAME'];
+                $referer =  request()->headers->get('referer');
+                if($referer=='https://gh.avvatta.com/') {
+                 
+                    $this->country = 'GH';
+                    
+                }
+              
+                if($referer=='https://ng.avvatta.com/') {
+                 
+                    $this->country = 'NG';
+                    
+                }
+        
+        $this->country = env('COUNTRY','SA');
+    }
+    
+    
     public function userReport(Request $request)
     {
         $paginateSize = 20;$export = 0;$report = "erosnow";$reportFrom="";$startDate="";$endDate="";
@@ -55,6 +79,22 @@ class UserReportController extends Controller
         } elseif($request->input('reportFrom') == "custom") {
             $userReport->whereBetween('date_time', [$startDate, $endDate]);
         }
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $userReport->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $userReport->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $userReport->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($device){
             $userReport->where('device', '=', $device);
         }
@@ -207,6 +247,23 @@ class UserReportController extends Controller
         $loggedInUsersMonthlyQuery->where('category', '=', 'login');
         $loggedInUsersMonthlyQuery->groupBy(DB::raw('YEAR(date_time)'), DB::raw('MONTH(date_time)'));
         $loggedInUsersMonthlyQuery->select(DB::raw('YEAR(date_time) year, MONTH(date_time) month'),DB::raw('count(Date(date_time)) as count'));
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $loggedInUsersMonthlyQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $loggedInUsersMonthlyQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $loggedInUsersMonthlyQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
+        
         if($startDate){
             $loggedInUsersMonthlyQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -220,6 +277,22 @@ class UserReportController extends Controller
         $loggedInUsersQuery->where('category', '=', 'login');
         $loggedInUsersQuery->groupBy(DB::raw('Date(date_time)'));
         $loggedInUsersQuery->select(DB::raw('Date(date_time) as date, count(Date(date_time)) as count'));
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $logQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($startDate){
             $loggedInUsersQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -289,6 +362,22 @@ class UserReportController extends Controller
         if($endDate){
             $tranQuery->whereDate('user_logs.date_time', '<=', $endDate);
         }
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $tranQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $tranQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'GH':
+               $tranQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         $tranQuery->select(DB::raw("DATEDIFF(CURDATE(), user_logs.date_time) as idleDays,user_payments.user_id,user_logs.date_time"));
         $tranQuery->groupBy('user_payments.user_id');
         $tranQuery->orderBy('user_payments.created_at','desc');

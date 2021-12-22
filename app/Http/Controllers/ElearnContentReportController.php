@@ -15,10 +15,28 @@ use Auth;
 
 class ElearnContentReportController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    private $country;
+    public function __construct(Request $request)
+    {
+        // $this->middleware('auth');
+        // check the domain and set country
+        $this->country = env('COUNTRY','SA');
+        $server_host = $request->server()['SERVER_NAME'];
+                $referer =  request()->headers->get('referer');
+                if($referer=='https://gh.avvatta.com/') {
+                 
+                    $this->country = 'GH';
+                    
+                }
+              
+                if($referer=='https://ng.avvatta.com/') {
+                 
+                    $this->country = 'NG';
+                    
+                }
+        
+        $this->country = env('COUNTRY','SA');
+    }
 
     public function index()
     {
@@ -49,6 +67,21 @@ class ElearnContentReportController extends Controller
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
+        switch ($this->country) {
+            
+           case 'SA':
+               $logQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+           
         if($startDate){
             $logQuery->where('date_time', '>=', $startDate);
         }
@@ -123,6 +156,21 @@ class ElearnContentReportController extends Controller
         $logQuery->where('type','=', 'video');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
+        switch ($this->country) {
+            
+           case 'SA':
+               $logQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+          
         if(!is_null($provider)){
             $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
             $logQuery->where('video_content.owner','=', $provider);
@@ -202,6 +250,21 @@ class ElearnContentReportController extends Controller
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
+        switch ($this->country) {
+            
+           case 'SA':
+               $logQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+          
         if(!is_null($provider)){
             $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
             $logQuery->where('video_content.owner','=', $provider);
@@ -273,6 +336,21 @@ class ElearnContentReportController extends Controller
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
         $logQuery->whereNotNull('genre');
+        switch ($this->country) {
+            
+           case 'SA':
+               $logQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+          
         if($startDate){
             $logQuery->whereDate('date_time', '>=', $startDate);
         }
@@ -348,6 +426,21 @@ class ElearnContentReportController extends Controller
         $logQuery->where('type','=', 'video');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
         $logQuery->where('action','=', 'play');
+        switch ($this->country) {
+            
+           case 'SA':
+               $logQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+          
         if(!is_null($provider)){
             $logQuery->join('video_content', 'user_logs.loggable_id','=', 'video_content.id');
             $logQuery->where('video_content.owner','=', $provider);
@@ -419,6 +512,21 @@ class ElearnContentReportController extends Controller
         $logQuery->where('type','=', 'video');
         $logQuery->where('action','=', 'play');
         $logQuery->whereIn('category', ['fun','cod','hig','siy']);
+        switch ($this->country) {
+            
+           case 'SA':
+               $logQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $logQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+          
         if($startDate){
             $logQuery->whereDate('date_time', '>=', $startDate);
         }

@@ -12,6 +12,9 @@ use App\Models\VideoContent;
 
 class RevenueReportController extends Controller
 {
+    
+    
+    
     function index(Request $request)
     {
         
@@ -35,6 +38,23 @@ class RevenueReportController extends Controller
                 $query->where('category', '=', "erosnow");
                       //->orWhere('d', '=', 1);
             });
+            
+            
+        switch ($this->country) {
+            
+           case 'SA':
+               $erosnowQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $erosnowQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $erosnowQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+            
         if($fromdate){
         $erosnowQuery->whereDate('date_time', '>=', $fromdate);
         }
@@ -48,6 +68,23 @@ class RevenueReportController extends Controller
         $gameQuery->join('user_logs','user_logs.loggable_id','=','game_content.id');
         $gameQuery->groupBy('game_content.play_for_free');
         $gameQuery->where('user_logs.type','=', 'game');
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $gameQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $gameQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'GH':
+               $gameQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
+        
         if($fromdate){
         $gameQuery->whereDate('date_time', '>=', $fromdate);
         }
@@ -62,6 +99,22 @@ class RevenueReportController extends Controller
         $kidQuery->groupBy('video_content.owner');
         $kidQuery->where('user_logs.type','=', 'video');
         $kidQuery->where('user_logs.category','=', 'kids');
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $kidsQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'GH':
+               $kidsQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($fromdate){
         $kidQuery->whereDate('date_time', '>=', $fromdate);
         }
@@ -76,6 +129,23 @@ class RevenueReportController extends Controller
         $funQuery->groupBy('video_content.owner');
         $funQuery->where('user_logs.type','=', 'video');
         $funQuery->where('user_logs.category','=', 'fun');
+        
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $funQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $funQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'GH':
+               $funQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($fromdate){
         $funQuery->whereDate('date_time', '>=', $fromdate);
         }
@@ -90,6 +160,22 @@ class RevenueReportController extends Controller
         $higQuery->groupBy('video_content.owner');
         $higQuery->where('user_logs.type','=', 'video');
         $higQuery->where('user_logs.category','=', 'hig');
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $higQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $higQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'GH':
+               $higQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($fromdate){
         $higQuery->whereDate('date_time', '>=', $fromdate);
         }
@@ -104,6 +190,22 @@ class RevenueReportController extends Controller
         $codQuery->groupBy('video_content.owner');
         $codQuery->where('user_logs.type','=', 'video');
         $codQuery->where('user_logs.category','=', 'cod');
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $codQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $codQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'GH':
+               $codQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($fromdate){
         $codQuery->whereDate('date_time', '>=', $fromdate);
         }
@@ -118,6 +220,22 @@ class RevenueReportController extends Controller
         $siyQuery->groupBy('video_content.owner');
         $siyQuery->where('user_logs.type','=', 'video');
         $siyQuery->where('user_logs.category','=', 'siy');
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $siyQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $siyQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'GH':
+               $siyQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($fromdate){
         $siyQuery->whereDate('date_time', '>=', $fromdate);
         }

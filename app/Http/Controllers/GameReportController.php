@@ -19,11 +19,28 @@ use Auth;
 
 class GameReportController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-
+   private $country;
+    public function __construct(Request $request)
+    {
+        // $this->middleware('auth');
+        // check the domain and set country
+            $this->country = env('COUNTRY','SA');
+            $server_host = $request->server()['SERVER_NAME'];
+                $referer =  request()->headers->get('referer');
+                if($referer=='https://gh.avvatta.com/') {
+                 
+                    $this->country = 'GH';
+                    
+                }
+              
+                if($referer=='https://ng.avvatta.com/') {
+                 
+                    $this->country = 'NG';
+                    
+                }
+        
+        $this->country = env('COUNTRY','SA');
+    }
     public function index(Request $request)
     {
         $reportFrom="";$startDate="";$endDate="";$multiDate = "";
@@ -52,6 +69,23 @@ class GameReportController extends Controller
         $gameQuery->groupBy('user_logs.user_id')
         ->orderBy('count','desc')
         ->havingRaw("count > 1");
+        
+         switch ($this->country) {
+            
+           case 'SA':
+               $gameQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $gameQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $gameQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
+        
         if($startDate){
             $gameQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }
@@ -130,7 +164,20 @@ class GameReportController extends Controller
         ->join('sub_categories', 'sub_categories.id', '=', 'game_content.sub_cat_id')
         ->where('type', 'game')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, firstname, lastname,email,mobile, game_name, sub_categories.name as category_name,COUNT(*) as count"),DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
-        
+        switch ($this->country) {
+            
+           case 'SA':
+               $gameQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $gameQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $gameQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
         if(!is_null($provider)){
             $gameQuery->where('game_content.play_for_free','=', $provider);
         }
@@ -212,7 +259,20 @@ class GameReportController extends Controller
         ->where('type', 'game')
         ->select(DB::raw("user_logs.user_id, user_logs.loggable_id, game_name, sub_categories.name as category_name,COUNT(*) as count"), DB::raw("(CASE WHEN game_content.play_for_free='0' THEN 'gogames' WHEN game_content.play_for_free='1' THEN 'gamepix' ELSE '' END) as provider"));
         $gameQuery->groupBy('user_logs.loggable_id')->orderBy('count','desc');
-        
+        switch ($this->country) {
+            
+           case 'SA':
+               $gameQuery->where('user_country','=', 0);
+               break;
+           case 'GH':
+               $gameQuery->where('user_country','=', 1);
+               break;
+           case 'GH':
+               $gameQuery->where('user_country','=', 2);
+               break;
+           default:
+               break;
+        }
         if(!is_null($provider)){
             $gameQuery->where('game_content.play_for_free', '=', $provider);
         }
