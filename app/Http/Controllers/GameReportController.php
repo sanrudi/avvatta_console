@@ -40,6 +40,7 @@ class GameReportController extends Controller
                 }
         
     //    $this->country = env('COUNTRY','SA');
+                echo $this->country ;
     }
     public function index(Request $request)
     {
