@@ -16,7 +16,7 @@
 @if (Request::path() == 'kids-report')
 <div class="container">
     <h6>Most Categories Consumed Users @include('report-for-date')</h6><hr>
-    <form action="" method="GET">
+    <form autocomplete="off" action="" method="GET">
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="reportFrom">Report From</label>
@@ -125,7 +125,7 @@
 @if (Request::path() == 'most-watched-kids-content')
 <div class="container">
     <h6>Top 10 watched Kids Category @include('report-for-date')</h6><hr>
-    <form action="" method="GET">
+    <form autocomplete="off" autocomplete="off" action="" method="GET">
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="reportFrom">Report From</label>
@@ -230,7 +230,7 @@
     @if (Request::path() == 'repeated-kidscontent-by-user')
     <div class="container">
         <h6>Most Repeated Kids Content By Single User @include('report-for-date')</h6><hr>
-        <form action="" method="GET">
+        <form autocomplete="off" autocomplete="off" action="" method="GET">
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label for="reportFrom">Report From</label>

@@ -63,9 +63,6 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled {{ (request()->is('game-articles-report')||request()->is('game-report')||request()->is('repeated-game-by-user')||request()->is('most-played-games')) ? 'show' : '' }}" id="games" data-parent="#accordionExample">
-                            <li class="{{ request()->is('game-articles-report') ? 'active' : '' }}">
-                                <a href="{{ route('game-articles-report') }}"> Game Article </a>
-                            </li>
                             <li class="{{ request()->is('game-report') ? 'active' : '' }}">
                                 <a href="{{route('game-report')}}"> Most Categories Consumed Users </a>
                             </li>
@@ -74,6 +71,9 @@
                             </li>
                             <li class="{{ request()->is('most-played-games') ? 'active' : '' }}">
                                 <a href="{{ route('most-played-games') }}"> Top Most Played Games </a>
+                            </li>
+                            <li class="{{ request()->is('game-articles-report') ? 'active' : '' }}">
+                                <a href="{{ route('game-articles-report') }}"> Game Article </a>
                             </li>
                         </ul>
                     </li>
@@ -144,11 +144,6 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled {{ (request()->is('video-articles-report')||request()->is('video-most-watched-report')||request()->is('video-top-repeat-user-report')||request()->is('video-top-genre-watched-report')||request()->is('video-all-category-user-report')) ? 'show' : '' }}" id="video-reports" data-parent="#accordionExample">
-                            @can('video-article')
-                            <li>
-                                <a href="{{ route('video-articles-report') }}"> Video Article </a>
-                            </li>
-                            @endcan
                             <li>
                                 <a href="{{ route('video-most-watched-report') }}"> Top 10 most watched  </a>
                             </li>
@@ -161,6 +156,11 @@
                             <li>
                                 <a href="{{ route('video-all-category-user-report') }}">Most Category Users </a>
                             </li>
+                            @can('video-article')
+                            <li>
+                                <a href="{{ route('video-articles-report') }}"> Video Article </a>
+                            </li>
+                            @endcan
                         </ul>
                     </li>
                     @endcan
@@ -319,6 +319,7 @@
                     <!--  END CONTENT AREA  -->
                 </div>
                 <!-- END MAIN CONTAINER -->
+                @yield('modal')
                 <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
                 <script src="{{ asset('adtemplate/assets/js/libs/jquery-3.1.1.min.js') }}"></script>
                 <script src="{{ asset('adtemplate/bootstrap/js/popper.min.js') }}"></script>

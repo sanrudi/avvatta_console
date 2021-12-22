@@ -17,7 +17,7 @@
 <div class="container">
 	<h6>Most categories Consumed Users @include('report-for-date')</h6>
 	<hr>
-	<form action="" method="GET">
+	<form autocomplete="off" autocomplete="off" action="" method="GET">
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="reportFrom">Report From</label>
@@ -127,7 +127,7 @@
 <div class="container">
 	<h6>Top repeat played games by a single user account @include('report-for-date')</h6>
 	<hr>
-	<form action="" method="GET">
+	<form autocomplete="off"  action="" method="GET">
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="reportFrom">Report From</label>
@@ -249,7 +249,7 @@
 <div class="container">
 	<h6>Top 10 most played Games @include('report-for-date')</h6>
 	<hr>
-	<form action="" method="GET">
+	<form autocomplete="off" autocomplete="off" action="" method="GET">
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="reportFrom">Report From</label>
