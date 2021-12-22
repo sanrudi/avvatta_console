@@ -26,6 +26,7 @@ class GameReportController extends Controller
         // check the domain and set country
             $this->country = env('COUNTRY','SA');
             $server_host = $request->server()['SERVER_NAME'];
+            var_dump($server_host);
                 $referer =  request()->headers->get('referer');
                 if($referer=='https://gh.avvatta.com/') {
                  
@@ -38,7 +39,7 @@ class GameReportController extends Controller
                     $this->country = 'NG';
                     
                 }
-        
+        var_dump($referer);
     //    $this->country = env('COUNTRY','SA');
                 echo $this->country ;
     }
