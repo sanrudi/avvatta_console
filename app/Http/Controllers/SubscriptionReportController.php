@@ -147,7 +147,6 @@ class SubscriptionReportController extends Controller
         }
         $cancelledFourteen = $cancelledFourteenQuery->get();
         
-
         $cancelledQuery = UserPayment::where('is_cancelled','=',1)
         ->with('user_payments_avvatta_users')
         ->with('user_payments_subscriptions');
@@ -158,6 +157,38 @@ class SubscriptionReportController extends Controller
             $cancelledQuery->whereDate('created_at', '<=', $endDate);
         }
         $cancelled = $cancelledQuery->get();
+
+        $newSubscriptionQuery = UserPayment::whereNotNull('id')
+        ->with('user_payments_avvatta_users')
+        ->with('user_payments_subscriptions');
+        if(empty($startDate) && empty($endDate)  || empty($startDate) && !empty($endDate)){
+            $newSubscriptionQuery->whereIn('id', function($query) use ($request,$startDate,$endDate){
+                $query->select(DB::raw("MIN(id)"))
+                ->from(with(new UserPayment)->getTable());
+                if($endDate){
+                    $newSubscriptionQuery->whereDate('created_at', '<=', $endDate);
+                }
+                $query->groupBy('user_id');
+            });
+        }
+        if(!empty($startDate) || !empty($endDate)){
+            $newSubscriptionQuery->whereNotIn('user_id', function($query) use ($request,$startDate,$endDate){
+                $query->select(DB::raw("user_id"))
+                ->from(with(new UserPayment)->getTable());
+                if($startDate){
+                    $query->whereDate('created_at', '<', $startDate);
+                }
+                $query->groupBy('user_id');
+            });
+            if($startDate){
+                $newSubscriptionQuery->whereDate('created_at', '>=', $startDate);
+            }
+            if($endDate){
+                $newSubscriptionQuery->whereDate('created_at', '<=', $endDate);
+            }
+            $newSubscriptionQuery->groupBy('user_id');
+        }
+        $newSubscriptions = $newSubscriptionQuery->get();
         
         return view('subscription-customer')
         ->with([
@@ -168,6 +199,7 @@ class SubscriptionReportController extends Controller
             'cancelledSeven'=>$cancelledSeven,
             'cancelledFourteen'=>$cancelledFourteen,
             'cancelled'=>$cancelled,
+            'newSubscriptions'=>$newSubscriptions,
         ]);
 
     }

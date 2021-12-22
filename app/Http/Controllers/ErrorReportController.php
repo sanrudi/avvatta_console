@@ -20,7 +20,7 @@ class ErrorReportController extends Controller
 
     public function errorReport(Request $request)
     {
-        $paginateSize = 20;$export = 0;$report = "erosnow";
+        $paginateSize = 10;$export = 0;$report = "erosnow";
         $reportFrom="";$startDate="";$endDate="";$multiDate = "";
         $export = ($request->input('export'))?1:0;
         $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
@@ -56,6 +56,12 @@ class ErrorReportController extends Controller
             ->with([
                 'errorReport'=>$errorReport
             ]);
+    }
+    
+    public function showError(Request $request)
+    {
+        $data = ErrorLog::find($request->id);
+        return view('modal-view.show-error')->with(['data'=>$data]);
     }
     
 }

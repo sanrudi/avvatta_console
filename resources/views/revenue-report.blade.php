@@ -27,7 +27,7 @@
                    To: <?php echo $all['todate']->format('d-M-Y'); ?>
         @endif
     </h6><hr>
-    <form action="" method="GET">
+    <form autocomplete="off" action="" method="GET">
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="reportFrom">Report From</label>
@@ -226,7 +226,673 @@ $i++;
 
  }  ?>
 
+@if(Auth::user()->is_cp)
+<div class="table-responsive">
+    <table id="cp-table" class="table table-bordered mb-5">
+        <thead>
+            <tr >
+                <th >Category</th>
+                <th >Provider</th>
+                <th >Watches</th>
+                <th >Watches (%)</th>
+                <th >Subs Revenue (Incl VAT)</th>
+                <th >Subs Revenue (Excl VAT)</th>
+                <th >Billing ID</th>
+                <th >Operator</th>
+                <th >Quantity Successfully Billed</th>
+                <th >Quantity Failed</th>
+                <th >Gross Revenue (VAT EX)</th>
+                <th >Operator Revenue</th>
+                <th >Aggregator Revenue</th>
+                <th >CP Revenue</th>
+            </tr>   
+        </thead>
+        <tbody>
+                @if(Auth::user()->roles->pluck('name')[0] == 'vod' && Auth::user()->is_cp)
+                <tr >
+                    <td >Video on Demand</td>
+                    <td ></td>
+                    <td >0</td>
+                    <td >0</td>
+                    <td >{{ $vod_sub_rev }}</td>
+                    <td >{{ $vod_sub_rev_ex_vat }}</td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >{{ $vod_op_rev }}</td>
+                    <td >{{ $vod_agg_rev }}</td>
+                    <td >(0){{ $vod_cp_rev }}
+                        <?php 
+                        //currentCPPayment
+                        $currentCPPayment[] = array('category' => 'Video on Demand',
+                        'provider' => 'vod',
+                        'cprevenue' => $vod_cp_rev);
 
+                        ?>
+                    </td>
+                </tr>
+                @endif
+                @if(Auth::user()->roles->pluck('name')[0] == 'erosnow' && Auth::user()->is_cp)
+                <tr >
+                    <td >Eros Now</td>
+                    <td >Erosnow</td>
+                    <td >{{$erosnowWatches}}</td>
+                    <td >
+                    </td>
+                    <td >
+                    <?php $eroWatchep = 100; //echo round($eroWatchep,2); ?>
+                        <?php 
+                        $ero_sub_rev_ForCp = $ero_sub_rev * $eroWatchep/100; 
+                        echo "(".round($ero_sub_rev_ForCp,2).")"; 
+                        echo $ero_sub_rev; 
+                        ?></td>
+                    <td >
+                    <?php 
+                    $ero_sub_rev_ex_vat_ForCp = $ero_sub_rev_ex_vat * $eroWatchep/100; 
+                    echo "(".round($ero_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $ero_sub_rev_ex_vat; 
+                    ?></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $ero_op_rev_ForCp = $ero_op_rev * $eroWatchep/100; 
+                    echo "(".round($ero_op_rev_ForCp,2).")"; 
+                    echo $ero_op_rev; 
+                    ?></td>
+                    <td >
+                    <?php 
+                    $ero_agg_rev_ForCp = $ero_agg_rev * $eroWatchep/100; 
+                    echo "(".round($ero_agg_rev_ForCp,2).")"; 
+                    echo $ero_agg_rev; 
+                    ?></td>
+                    <td >
+                    <?php 
+                    $ero_cp_rev_ForCp = $ero_cp_rev * $eroWatchep/100; 
+                    echo "(".round($ero_cp_rev_ForCp,2).")"; 
+                    echo $ero_cp_rev; 
+                    //currentCPPayment
+                    $currentCPPayment[] = array('category' => 'Eros Now',
+                    'provider' => 'Erosnow',
+                    'cprevenue' => $ero_cp_rev_ForCp);
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <!-- Games With Watches  -->
+                <?php 
+                if(count($gameWatches)>0){
+                $gameWatchesTotal =0;
+                foreach ($gameWatches as $gameWatche) {$gameWatchesTotal = $gameWatchesTotal + $gameWatche['count'];}
+                foreach ($gameWatches as $gameWatche) {  ?>
+                @if(Auth::user()->roles->pluck('name')[0] == $gameWatche['provider'] && Auth::user()->is_cp)
+                <tr >
+                    <td >Games</td>
+                    <td >{{$gameWatche['provider']}}</td>
+                    <td >{{$gameWatche['count']}}</td>
+                    <td >
+                    <?php $gameWatchep = ($gameWatche['count']/$gameWatchesTotal)*100; echo round($gameWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $gam_sub_rev_ForCp = $gam_sub_rev * $gameWatchep/100; 
+                        echo "(".round($gam_sub_rev_ForCp,2).")"; 
+                        echo $gam_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $gam_sub_rev_ex_vat_ForCp = $gam_sub_rev_ex_vat * $gameWatchep/100; 
+                    echo "(".round($gam_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $gam_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $gam_op_rev_ForCp = $gam_op_rev * $gameWatchep/100; 
+                    echo "(".round($gam_op_rev_ForCp,2).")"; 
+                    echo $gam_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $gam_agg_rev_ForCp = $gam_agg_rev * $gameWatchep/100; 
+                    echo "(".round($gam_agg_rev_ForCp,2).")"; 
+                    echo $gam_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $gam_cp_rev_ForCp = $gam_cp_rev * $gameWatchep/100; 
+                    echo "(".round($gam_cp_rev_ForCp,2).")"; 
+                    echo $gam_cp_rev; 
+                    //currentCPPayment
+                    $currentCPPayment[] = array('category' => 'Games',
+                    'provider' => $gameWatche['provider'],
+                    'cprevenue' => $gam_cp_rev_ForCp);
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php 
+                }  
+                } ?>
+                <!-- Games No Watches  -->
+                <?php 
+                if(count($gameWatches) == 0){
+                $gameWatchesTotal =0;
+                foreach ($gameWatches as $gameWatche) {$gameWatchesTotal = $gameWatchesTotal + $gameWatche['count'];}
+               // foreach ($gameWatches as $gameWatche) {  ?>
+                @if(Auth::user()->roles->pluck('name')[0] == $gameWatche['provider'] && Auth::user()->is_cp)
+                <tr >
+                    <td >Games</td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php $gameWatchep = 0; echo round($gameWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $gam_sub_rev_ForCp = $gam_sub_rev * $gameWatchep/100; 
+                        echo "(".round($gam_sub_rev_ForCp,2).")"; 
+                        echo $gam_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $gam_sub_rev_ex_vat_ForCp = $gam_sub_rev_ex_vat * $gameWatchep/100; 
+                    echo "(".round($gam_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $gam_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $gam_op_rev_ForCp = $gam_op_rev * $gameWatchep/100; 
+                    echo "(".round($gam_op_rev_ForCp,2).")"; 
+                    echo $gam_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $gam_agg_rev_ForCp = $gam_agg_rev * $gameWatchep/100; 
+                    echo "(".round($gam_agg_rev_ForCp,2).")"; 
+                    echo $gam_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $gam_cp_rev_ForCp = $gam_cp_rev * $gameWatchep/100; 
+                    echo "(".round($gam_cp_rev_ForCp,2).")"; 
+                    echo $gam_cp_rev; 
+                    //currentCPPayment
+                    // $currentCPPayment[] = array('category' => 'Games',
+                    // 'provider' => $gameWatche['provider'],
+                    // 'cprevenue' => $gam_cp_rev_ForCp);
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php 
+               // }  
+                } ?>
+
+                <!-- Kids -->
+                <?php if(count($kidWatches)>0){ ?>
+                <?php 
+                $kidWatchesTotal =0;
+                foreach ($kidWatches as $kidWatche) {$kidWatchesTotal = $kidWatchesTotal + $kidWatche['count'];}
+                foreach ($kidWatches as $kidWatche) {  
+                   ?>
+                @if(Auth::user()->roles->pluck('name')[0] == $kidWatche['provider'] && Auth::user()->is_cp)
+                <tr >
+                    <td >Kids</td>
+                    <td >{{$kidWatche['provider']}}</td>
+                    <td >{{$kidWatche['count']}}</td>
+                    <td >
+                    <?php $kidWatchep = ($kidWatche['count']/$kidWatchesTotal)*100; echo round($kidWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $kid_sub_rev_ForCp = $kid_sub_rev * $kidWatchep/100; 
+                        echo "(".round($kid_sub_rev_ForCp,2).")"; 
+                        echo $kid_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $kid_sub_rev_ex_vat_ForCp = $kid_sub_rev_ex_vat * $kidWatchep/100; 
+                    echo "(".round($kid_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $kid_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $kid_op_rev_ForCp = $kid_op_rev * $kidWatchep/100; 
+                    echo "(".round($kid_op_rev_ForCp,2).")"; 
+                    echo $kid_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $kid_agg_rev_ForCp = $kid_agg_rev * $kidWatchep/100; 
+                    echo "(".round($kid_agg_rev_ForCp,2).")"; 
+                    echo $kid_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $kid_cp_rev_ForCp = $kid_cp_rev * $kidWatchep/100; 
+                    echo "(".round($kid_cp_rev_ForCp,2).")"; 
+                    echo $kid_cp_rev; 
+                    //currentCPPayment
+                    $currentCPPayment[] = array('category' => 'Kids',
+                    'provider' => $kidWatche['provider'],
+                    'cprevenue' => $kid_cp_rev_ForCp);
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php }   ?>
+                <?php }   ?>
+                <!-- Kids -->
+                <?php if(count($kidWatches) == 0){ ?>
+                <?php 
+                $kidWatchesTotal =0;
+                foreach ($kidWatches as $kidWatche) {$kidWatchesTotal = $kidWatchesTotal + $kidWatche['count'];}
+               // foreach ($kidWatches as $kidWatche) {  
+                   ?>
+                   @if(Auth::user()->roles->pluck('name')[0] == $kidWatche['provider'] && Auth::user()->is_cp)
+                <tr >
+                    <td >Kids</td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php $kidWatchep = 0; echo round($kidWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $kid_sub_rev_ForCp = $kid_sub_rev * $kidWatchep/100; 
+                        echo "(".round($kid_sub_rev_ForCp,2).")"; 
+                        echo $kid_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $kid_sub_rev_ex_vat_ForCp = $kid_sub_rev_ex_vat * $kidWatchep/100; 
+                    echo "(".round($kid_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $kid_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $kid_op_rev_ForCp = $kid_op_rev * $kidWatchep/100; 
+                    echo "(".round($kid_op_rev_ForCp,2).")"; 
+                    echo $kid_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $kid_agg_rev_ForCp = $kid_agg_rev * $kidWatchep/100; 
+                    echo "(".round($kid_agg_rev_ForCp,2).")"; 
+                    echo $kid_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $kid_cp_rev_ForCp = $kid_cp_rev * $kidWatchep/100; 
+                    echo "(".round($kid_cp_rev_ForCp,2).")"; 
+                    echo $kid_cp_rev; 
+                    //currentCPPayment
+                    // $currentCPPayment[] = array('category' => 'Kids',
+                    // 'provider' => $kidWatche['provider'],
+                    // 'cprevenue' => $kid_cp_rev_ForCp);
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php //}   ?>
+                <?php }   ?>
+                <!-- Fun -->
+                <?php if(count($funWatches)>0){ ?>
+                <?php 
+                $funWatchesTotal =0;
+                foreach ($funWatches as $funWatche) {$funWatchesTotal = $funWatchesTotal + $funWatche['count'];}
+                foreach ($funWatches as $funWatche) {  ?>
+                    @if(Auth::user()->roles->pluck('name')[0] == $funWatche['provider'] && Auth::user()->is_cp)
+                <tr >
+                    <td >Fun & Learning</td>
+                    <td >{{$funWatche['provider']}}</td>
+                    <td >{{$funWatche['count']}}</td>
+                    <td >
+                    <?php $funWatchep = ($funWatche['count']/$funWatchesTotal)*100; echo round($funWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $fun_sub_rev_ForCp = $fun_sub_rev * $funWatchep/100; 
+                        echo "(".round($fun_sub_rev_ForCp,2).")"; 
+                        echo $fun_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $fun_sub_rev_ex_vat_ForCp = $fun_sub_rev_ex_vat * $funWatchep/100; 
+                    echo "(".round($fun_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $fun_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $fun_op_rev_ForCp = $fun_op_rev * $funWatchep/100; 
+                    echo "(".round($fun_op_rev_ForCp,2).")"; 
+                    echo $fun_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $fun_agg_rev_ForCp = $fun_agg_rev * $funWatchep/100; 
+                    echo "(".round($fun_agg_rev_ForCp,2).")"; 
+                    echo $fun_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $fun_cp_rev_ForCp = $fun_cp_rev * $funWatchep/100; 
+                    echo "(".round($fun_cp_rev_ForCp,2).")"; 
+                    echo $fun_cp_rev; 
+                    //currentCPPayment
+                    $currentCPPayment[] = array('category' => 'Fun & Learning',
+                    'provider' => 'Netsport',
+                    'cprevenue' => $fun_cp_rev_ForCp);
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php }   ?>
+                <?php }   ?>
+                
+                <!-- Fun -->
+                <?php if(count($funWatches) == 0){ ?>
+                <?php 
+                $funWatchesTotal =0;
+                foreach ($funWatches as $funWatche) {$funWatchesTotal = $funWatchesTotal + $funWatche['count'];}
+                //foreach ($funWatches as $funWatche) {  ?>
+                @if(Auth::user()->roles->pluck('name')[0] == "fun" && Auth::user()->is_cp)
+                <tr >
+                    <td >Fun & Learning</td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php $funWatchep = 0; echo round($funWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $fun_sub_rev_ForCp = $fun_sub_rev * $funWatchep/100; 
+                        echo "(".round($fun_sub_rev_ForCp,2).")"; 
+                        echo $fun_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $fun_sub_rev_ex_vat_ForCp = $fun_sub_rev_ex_vat * $funWatchep/100; 
+                    echo "(".round($fun_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $fun_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $fun_op_rev_ForCp = $fun_op_rev * $funWatchep/100; 
+                    echo "(".round($fun_op_rev_ForCp,2).")"; 
+                    echo $fun_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $fun_agg_rev_ForCp = $fun_agg_rev * $funWatchep/100; 
+                    echo "(".round($fun_agg_rev_ForCp,2).")"; 
+                    echo $fun_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $fun_cp_rev_ForCp = $fun_cp_rev * $funWatchep/100; 
+                    echo "(".round($fun_cp_rev_ForCp,2).")"; 
+                    echo $fun_cp_rev; 
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php //}   ?>
+                <?php }   ?>
+                <?php if(count($higWatches)>0){ 
+                    ?>
+                <?php 
+                $higWatchesTotal =0;
+                foreach ($higWatches as $higWatche) {$higWatchesTotal = $higWatchesTotal + $higWatche['count'];}
+                foreach ($higWatches as $higWatche) {  ?>
+                    @if(Auth::user()->roles->pluck('name')[0] == $higWatche['provider'] && Auth::user()->is_cp)
+                <tr >
+                    <td >Higher Learning</td>
+                    <td >{{$higWatche['provider']}}</td>
+                    <td >{{$higWatche['count']}}</td>
+                    <td >
+                    </td>
+                    <td >
+                    <?php $higWatchep = ($higWatche['count'] / $higWatchesTotal) * 100; //echo round($higWatchep,2); ?>
+                        <?php 
+                        $hig_sub_rev_ForCp = $hig_sub_rev * $higWatchep/100; 
+                        echo "(".round($hig_sub_rev_ForCp,2).")"; 
+                        echo $hig_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $hig_sub_rev_ex_vat_ForCp = $hig_sub_rev_ex_vat * $higWatchep/100; 
+                    echo "(".round($hig_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $hig_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $hig_op_rev_ForCp = $hig_op_rev * $higWatchep/100; 
+                    echo "(".round($hig_op_rev_ForCp,2).")"; 
+                    echo $hig_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $hig_agg_rev_ForCp = $hig_agg_rev * $higWatchep/100; 
+                    echo "(".round($hig_agg_rev_ForCp,2).")"; 
+                    echo $hig_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $hig_cp_rev_ForCp = $hig_cp_rev * $higWatchep/100; 
+                    echo "(".round($hig_cp_rev_ForCp,2).")"; 
+                    echo $hig_cp_rev; 
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php }   ?>
+                <?php }   ?>
+                <?php if(count($codWatches)>0){  ?>
+                <?php 
+                $codWatchesTotal =0;
+                foreach ($codWatches as $codWatche) {$codWatchesTotal = $codWatchesTotal + $codWatche['count'];}
+                foreach ($codWatches as $codWatche) {  ?>
+                    @if(Auth::user()->roles->pluck('name')[0] == $codWatche['provider'] && Auth::user()->is_cp)
+                <tr >
+                    <td >Coding</td>
+                    <td >{{$codWatche['provider']}}</td>
+                    <td >{{$codWatche['count']}}</td>
+                    <td >
+                    <?php $codWatchep = 100; echo round($codWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $cod_sub_rev_ForCp = $cod_sub_rev * $codWatchep/100; 
+                        echo "(".round($cod_sub_rev_ForCp,2).")"; 
+                        echo $cod_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $cod_sub_rev_ex_vat_ForCp = $cod_sub_rev_ex_vat * $codWatchep/100; 
+                    echo "(".round($cod_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $cod_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $cod_op_rev_ForCp = $cod_op_rev * $codWatchep/100; 
+                    echo "(".round($cod_op_rev_ForCp,2).")"; 
+                    echo $cod_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $cod_agg_rev_ForCp = $cod_agg_rev * $codWatchep/100; 
+                    echo "(".round($cod_agg_rev_ForCp,2).")"; 
+                    echo $cod_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $cod_cp_rev_ForCp = $cod_cp_rev * $codWatchep/100; 
+                    echo "(".round($cod_cp_rev_ForCp,2).")"; 
+                    echo $cod_cp_rev; 
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php }   ?>
+                <?php }   ?>
+                <?php
+                // if(count($siyWatches)>0){
+                    ?>
+                <?php 
+                $siyWatchesTotal =0;
+                foreach ($siyWatches as $siyWatche) {$siyWatchesTotal = $siyWatchesTotal + $siyWatche['count'];}
+              //  foreach ($siyWatches as $siyWatche) {  
+                  ?>
+                  @if(Auth::user()->roles->pluck('name')[0] == "Siyavula" && Auth::user()->is_cp)
+                <tr >
+                    <td >Siyavula</td>
+                    <td >Siyavula</td>
+                    <td >{{$siyWatchesTotal}}</td>
+                    <td >
+                    <?php $siyWatchep = ($siyWatchesTotal>0)?100:0; echo round($siyWatchep,2); ?>
+                    </td>
+                    <td >
+                        <?php 
+                        $siy_sub_rev_ForCp = $siy_sub_rev * $siyWatchep/100; 
+                        echo "(".round($siy_sub_rev_ForCp,2).")"; 
+                        echo $siy_sub_rev; 
+                        ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $siy_sub_rev_ex_vat_ForCp = $siy_sub_rev_ex_vat * $siyWatchep/100; 
+                    echo "(".round($siy_sub_rev_ex_vat_ForCp,2).")"; 
+                    echo $siy_sub_rev_ex_vat; 
+                    ?>
+                    </td>
+                    </td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td >
+                    <?php 
+                    $siy_op_rev_ForCp = $siy_op_rev * $siyWatchep/100; 
+                    echo "(".round($siy_op_rev_ForCp,2).")"; 
+                    echo $siy_op_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $siy_agg_rev_ForCp = $siy_agg_rev * $siyWatchep/100; 
+                    echo "(".round($siy_agg_rev_ForCp,2).")"; 
+                    echo $siy_agg_rev; 
+                    ?>
+                    </td>
+                    <td >
+                    <?php 
+                    $siy_cp_rev_ForCp = $siy_cp_rev * $siyWatchep/100; 
+                    echo "(".round($siy_cp_rev_ForCp,2).")"; 
+                    echo $siy_cp_rev; 
+                    //currentCPPayment
+                    $currentCPPayment[] = array('category' => 'Siyavula',
+                    'provider' => 'Siyavula',
+                    'cprevenue' => $siy_cp_rev_ForCp);
+                    ?>
+                    </td>
+                </tr>
+                @endif
+                <?php //}   ?>
+                <?php //}   ?>
+                
+        </tbody>
+    </table>
+  </div>  
+@endif
+
+    @if(!Auth::user()->is_cp)
   <div class="table-responsive">
     <table id="example" class="table table-bordered mb-5">
         <thead>
@@ -953,7 +1619,7 @@ $i++;
         </tbody>
     </table>
 </div>
-
+@endif
 </div>
 @endsection
 @push('js-links')
@@ -993,6 +1659,22 @@ $i++;
 <script>
     $(document).ready(function() {
         $('#example2').DataTable( {
+            dom: 'Bfrtip',
+            searching: false, paging: false, info: false, "aaSorting": [],
+            buttons: [
+            {
+                extend: 'excel',
+                text: 'Export Results',
+                className: 'btn btn-default',
+                title: ''
+            }
+            ]
+        } );
+    } );
+</script>
+<script>
+    $(document).ready(function() {
+        $('#cp-table').DataTable( {
             dom: 'Bfrtip',
             searching: false, paging: false, info: false, "aaSorting": [],
             buttons: [
