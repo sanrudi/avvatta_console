@@ -75,7 +75,7 @@ class ElearnContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_country','=', 2);
                break;
            default:
@@ -164,7 +164,7 @@ class ElearnContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_country','=', 2);
                break;
            default:
@@ -258,7 +258,7 @@ class ElearnContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_country','=', 2);
                break;
            default:
@@ -344,7 +344,7 @@ class ElearnContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_country','=', 2);
                break;
            default:
@@ -434,7 +434,7 @@ class ElearnContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_country','=', 2);
                break;
            default:
@@ -520,7 +520,7 @@ class ElearnContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_country','=', 2);
                break;
            default:

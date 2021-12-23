@@ -88,7 +88,7 @@ class UserReportController extends Controller
            case 'GH':
                $userReport->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $userReport->where('user_country','=', 2);
                break;
            default:
@@ -256,7 +256,7 @@ class UserReportController extends Controller
            case 'GH':
                $loggedInUsersMonthlyQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $loggedInUsersMonthlyQuery->where('user_country','=', 2);
                break;
            default:
@@ -371,7 +371,7 @@ class UserReportController extends Controller
            case 'GH':
                $tranQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $tranQuery->where('user_logs.user_country','=', 2);
                break;
            default:

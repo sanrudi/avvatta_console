@@ -80,7 +80,7 @@ class GameReportController extends Controller
            case 'GH':
                $gameQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $gameQuery->where('user_country','=', 2);
                break;
            default:
@@ -174,7 +174,7 @@ class GameReportController extends Controller
            case 'GH':
                $gameQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $gameQuery->where('user_country','=', 2);
                break;
            default:
@@ -269,7 +269,7 @@ class GameReportController extends Controller
            case 'GH':
                $gameQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $gameQuery->where('user_country','=', 2);
                break;
            default:

@@ -70,7 +70,7 @@ class RevenueReportController extends Controller
            case 'GH':
                $erosnowQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $erosnowQuery->where('user_country','=', 2);
                break;
            default:
@@ -99,7 +99,7 @@ class RevenueReportController extends Controller
            case 'GH':
                $gameQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $gameQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -130,7 +130,7 @@ class RevenueReportController extends Controller
            case 'GH':
                $kidQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $kidQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -161,7 +161,7 @@ class RevenueReportController extends Controller
            case 'GH':
                $funQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $funQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -191,7 +191,7 @@ class RevenueReportController extends Controller
            case 'GH':
                $higQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $higQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -221,7 +221,7 @@ class RevenueReportController extends Controller
            case 'GH':
                $codQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $codQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -251,7 +251,7 @@ class RevenueReportController extends Controller
            case 'GH':
                $siyQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $siyQuery->where('user_logs.user_country','=', 2);
                break;
            default:

@@ -80,7 +80,7 @@ class KidsReportController extends Controller
            case 'GH':
                $kidsQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $kidsQuery->where('user_country','=', 2);
                break;
            default:
@@ -168,7 +168,7 @@ class KidsReportController extends Controller
            case 'GH':
                $kidsQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $kidsQuery->where('user_country','=', 2);
                break;
            default:
@@ -259,7 +259,7 @@ class KidsReportController extends Controller
            case 'GH':
                $kidsQuery->where('user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $kidsQuery->where('user_country','=', 2);
                break;
            default:

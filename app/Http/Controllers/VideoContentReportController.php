@@ -112,7 +112,7 @@ class VideoContentReportController extends Controller
            case 'GH':
                $videoArticlesQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $videoArticlesQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -216,7 +216,7 @@ class VideoContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -314,7 +314,7 @@ class VideoContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -412,7 +412,7 @@ class VideoContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_logs.user_country','=', 2);
                break;
            default:
@@ -506,7 +506,7 @@ class VideoContentReportController extends Controller
            case 'GH':
                $logQuery->where('user_logs.user_country','=', 1);
                break;
-           case 'GH':
+           case 'NG':
                $logQuery->where('user_logs.user_country','=', 2);
                break;
            default:
