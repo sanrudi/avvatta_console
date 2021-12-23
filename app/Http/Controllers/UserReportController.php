@@ -281,13 +281,13 @@ class UserReportController extends Controller
         switch ($this->country) {
             
            case 'SA':
-               $logQuery->where('user_country','=', 0);
+               $loggedInUsersQuery->where('user_country','=', 0);
                break;
            case 'GH':
-               $logQuery->where('user_country','=', 1);
+               $loggedInUsersQuery->where('user_country','=', 1);
                break;
            case 'GH':
-               $logQuery->where('user_country','=', 2);
+               $loggedInUsersQuery->where('user_country','=', 2);
                break;
            default:
                break;
