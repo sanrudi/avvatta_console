@@ -23,19 +23,18 @@ class VideoContentReportController extends Controller
         $this->country = env('COUNTRY','SA');
         $server_host = $request->server()['SERVER_NAME'];
                 $referer =  request()->headers->get('referer');
-                if($referer=='https://gh.avvatta.com/') {
+                 if($server_host=='gh.avvatta.com') {
                  
                     $this->country = 'GH';
                     
                 }
               
-                if($referer=='https://ng.avvatta.com/') {
+                if($server_host=='ng.avvatta.com') {
                  
                     $this->country = 'NG';
                     
                 }
-        
-        $this->country = env('COUNTRY','SA');
+      
     }
 
 
@@ -108,13 +107,13 @@ class VideoContentReportController extends Controller
         switch ($this->country) {
             
            case 'SA':
-               $logQuery->where('user_logs.user_country','=', 0);
+               $videoArticlesQuery->where('user_logs.user_country','=', 0);
                break;
            case 'GH':
-               $logQuery->where('user_logs.user_country','=', 1);
+               $videoArticlesQuery->where('user_logs.user_country','=', 1);
                break;
            case 'GH':
-               $logQuery->where('user_logs.user_country','=', 2);
+               $videoArticlesQuery->where('user_logs.user_country','=', 2);
                break;
            default:
                break;

@@ -22,13 +22,13 @@ class KidsReportController extends Controller
         $this->country = env('COUNTRY','SA');
         $server_host = $request->server()['SERVER_NAME'];
                 $referer =  request()->headers->get('referer');
-                if($referer=='https://gh.avvatta.com/') {
+                if($server_host=='gh.avvatta.com') {
                  
                     $this->country = 'GH';
                     
                 }
               
-                if($referer=='https://ng.avvatta.com/') {
+                if($server_host=='ng.avvatta.com') {
                  
                     $this->country = 'NG';
                     
