@@ -125,13 +125,13 @@ class RevenueReportController extends Controller
         switch ($this->country) {
             
            case 'SA':
-               $kidsQuery->where('user_logs.user_country','=', 0);
+               $kidQuery->where('user_logs.user_country','=', 0);
                break;
            case 'GH':
-               $kidsQuery->where('user_logs.user_country','=', 1);
+               $kidQuery->where('user_logs.user_country','=', 1);
                break;
            case 'GH':
-               $kidsQuery->where('user_logs.user_country','=', 2);
+               $kidQuery->where('user_logs.user_country','=', 2);
                break;
            default:
                break;
