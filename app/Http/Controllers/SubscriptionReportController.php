@@ -239,6 +239,22 @@ class SubscriptionReportController extends Controller
 
         // Subscription Data
         $tranQuery = UserPayment::with('user_payments_subscriptions','user_payments_avvatta_users');
+        
+        switch ($this->country) {
+            
+           case 'SA':
+               $videoArticlesQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $videoArticlesQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'NG':
+               $videoArticlesQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($startDate){
             $tranQuery->whereDate('created_at', '>=', $startDate);
         }
