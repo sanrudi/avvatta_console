@@ -89,6 +89,20 @@ class SubscriptionReportController extends Controller
         $userPaymentQuery = UserPayment::select('user_payments.*')
         ->with('user_payments_avvatta_users')
         ->with('user_payments_subscriptions');
+        switch ($this->country) {
+            
+           case 'SA':
+               $userPaymentQuery->where('user_payments.user_country','=', 0);
+               break;
+           case 'GH':
+               $userPaymentQuery->where('user_payments.user_country','=', 1);
+               break;
+           case 'NG':
+               $userPaymentQuery->where('user_payments.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
         if($startDate){
             $userPaymentQuery->whereDate('user_payments.created_at', '>=', $startDate);
         }
@@ -168,6 +182,20 @@ class SubscriptionReportController extends Controller
         $cancelledQuery = UserPayment::where('is_cancelled','=',1)
         ->with('user_payments_avvatta_users')
         ->with('user_payments_subscriptions');
+        switch ($this->country) {
+            
+           case 'SA':
+               $cancelledQuery->where('user_payments.user_country','=', 0);
+               break;
+           case 'GH':
+               $cancelledQuery->where('user_payments.user_country','=', 1);
+               break;
+           case 'NG':
+               $cancelledQuery->where('user_payments.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
         if($startDate){
             $cancelledQuery->whereDate('created_at', '>=', $startDate);
         }
@@ -179,6 +207,20 @@ class SubscriptionReportController extends Controller
         $newSubscriptionQuery = UserPayment::whereNotNull('id')
         ->with('user_payments_avvatta_users')
         ->with('user_payments_subscriptions');
+        switch ($this->country) {
+            
+           case 'SA':
+               $newSubscriptionQuery->where('user_payments.user_country','=', 0);
+               break;
+           case 'GH':
+               $newSubscriptionQuery->where('user_payments.user_country','=', 1);
+               break;
+           case 'NG':
+               $newSubscriptionQuery->where('user_payments.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
         if(empty($startDate) && empty($endDate)  || empty($startDate) && !empty($endDate)){
             $newSubscriptionQuery->whereIn('id', function($query) use ($request,$startDate,$endDate){
                 $query->select(DB::raw("MIN(id)"))
