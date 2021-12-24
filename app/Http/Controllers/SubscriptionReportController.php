@@ -32,7 +32,6 @@ class SubscriptionReportController extends Controller
                     
                 }
         
-        $this->country = env('COUNTRY','SA');
     }
 
 
