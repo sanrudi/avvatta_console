@@ -243,13 +243,13 @@ class SubscriptionReportController extends Controller
         switch ($this->country) {
             
            case 'SA':
-               $tranQuery->where('user_logs.user_country','=', 0);
+               $tranQuery->where('user_payments.user_country','=', 0);
                break;
            case 'GH':
-               $tranQuery->where('user_logs.user_country','=', 1);
+               $tranQuery->where('user_payments.user_country','=', 1);
                break;
            case 'NG':
-               $tranQuery->where('user_logs.user_country','=', 2);
+               $tranQuery->where('user_payments.user_country','=', 2);
                break;
            default:
                break;
