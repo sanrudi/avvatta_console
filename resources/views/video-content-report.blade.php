@@ -23,7 +23,7 @@
   <div class="row">
   <div class="col-sm">
   <br><br><br>
-<table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+<table id="videoContent" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
 <thead>
     <tr>
         <th>Metrics</th>
@@ -178,7 +178,7 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 <script>
 $(document).ready(function() {
-    $('#example').DataTable( {
+    $('#videoContent').DataTable( {
         dom: 'Bfrtip',
         searching: false, paging: false, info: false, "aaSorting": [],
         buttons: [
