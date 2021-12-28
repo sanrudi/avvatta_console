@@ -46,6 +46,7 @@ class VideoContentReportController extends Controller
         $providerRequest = $request->input('provider');
         if(Auth::user()->is_cp == 1){
             $providerRequest = Auth::user()->roles->first()->name;
+            $report = $providerRequest;
         }
         $provider = ($providerRequest)?$providerRequest:$provider;
         // Erosnow Data
