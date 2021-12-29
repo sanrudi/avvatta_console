@@ -287,23 +287,44 @@ class RevenueReportController extends Controller
        */   
           
         foreach ($subscription as $value) {   
+            
+             switch ($this->country) {
+            
+           case 'SA':
+               $uc = 0;
+               break;
+           case 'GH':
+               $uc= 1;
+               break;
+           case 'NG':
+               $uc=2;
+               break;
+           default:
+               $uc=0;
+               break;
+        }
+            
         $all[$value->id] = DB::connection('mysql2')->table('user_payments')     
                 ->where('subscription_id','=',$value->id)
+                ->where('user_country','=',$uc)
                 ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                 ->get()->sum('amount');
         
         // get subs count
          $subcount[$value->id] = DB::connection('mysql2')->table('user_payments')
                  ->where('subscription_id','=',$value->id)
+                 ->where('user_country','=',$uc)
                  ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                  ->count();
         }
         
          $all['total'] = DB::connection('mysql2')->table('user_payments')
+                 ->where('user_country','=',$uc)
                   ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                             ->get()->sum('amount');
         
          $all['count'] = DB::connection('mysql2')->table('user_payments')
+                 ->where('user_country','=',$uc)
                   ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                             ->get()->count();
          $all['fromdate'] = Carbon::parse($fromdate);     
