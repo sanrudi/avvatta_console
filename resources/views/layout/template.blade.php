@@ -16,6 +16,7 @@
     <!-- END GLOBAL MANDATORY STYLES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @stack('css-links')
+    @stack('css-content')
 </head>
 <body>
     <!-- BEGIN LOADER -->

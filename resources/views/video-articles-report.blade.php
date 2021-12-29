@@ -58,7 +58,7 @@
     </form>
     <hr>
     <div class="table-responsive">
-    <table class="table table-bordered mb-5">
+    <table class="table table-bordered mb-5" id="videoArticle">
       <thead>
         <tr class="table-success">
           <th scope="col">#</th>
@@ -106,6 +106,12 @@
 @section('js-content')
 <script>
 $(document).ready(function(){
+    $('#videoArticle').DataTable( {
+        dom: 'Bfrtip',
+        searching: false, paging: false, info: false, "aaSorting": [],
+        ]
+    } );
+
     $(".custom-date").hide();
     $("#reportFrom").change(function(){
         $(this).find("option:selected").each(function(){
