@@ -80,7 +80,7 @@ class HomeController extends Controller
                 $userPayment->count();
                 $userPaymentData[] = $userPayment;
             }
-            var_dump($userPaymentData);
+           
             $subscriptionData[$i]['title'] = $subscription->title;
             $subscriptionData[$i]['subscription_count'] = implode(",",$userPaymentData);
             $i++;
