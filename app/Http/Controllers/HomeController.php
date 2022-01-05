@@ -77,8 +77,8 @@ class HomeController extends Controller
                    break;
             }       
                         
-                $userPayment->whereDate('created_at',$date->format('Y-m-d'))
-                ->count();
+                $userPayment->whereDate('created_at',$date->format('Y-m-d'));
+                $userPayment->count();
                 $userPaymentData[] = $userPayment;
             }
 
