@@ -61,21 +61,23 @@ class SubscriptionReportController extends Controller
             if($endDate){
                 $query->whereDate('created_at', '<=', $endDate);
             }
-        }]);
-        switch ($this->country) {
+            switch ($this->country) {
 
                case 'SA':
-                   $subscriptionsQuery->where('user_payments.user_country','=', 0);
+                   $query->where('user_payments.user_country','=', 0);
                    break;
                case 'GH':
-                   $subscriptionsQuery->where('user_payments.user_country','=', 1);
+                   $query->where('user_payments.user_country','=', 1);
                    break;
                case 'NG':
-                   $subscriptionsQuery->where('user_payments.user_country','=', 2);
+                   $query->where('user_payments.user_country','=', 2);
                    break;
                default:
                    break;
             }
+            
+        }]);
+       
         $subscriptions = $subscriptionsQuery->get();
         return view('subscription-total')
         ->with([
