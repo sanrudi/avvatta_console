@@ -19,6 +19,22 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        
+         $this->country = env('COUNTRY','SA');
+        $server_host = $request->server()['SERVER_NAME'];
+                $referer =  request()->headers->get('referer');
+                if($server_host=='gh.avvatta.com') {
+                 
+                    $this->country = 'GH';
+                    
+                }
+              
+                if($server_host=='ng.avvatta.com') {
+                 
+                    $this->country = 'NG';
+                    
+                }
+        
     }
 
     /**
@@ -45,8 +61,23 @@ class HomeController extends Controller
         {
             $userPaymentData = [];
             foreach ($period as $date) {
-                $userPayment = UserPayment::where('subscription_id','=',$subscription->id)
-                ->whereDate('created_at',$date->format('Y-m-d'))
+                $userPayment = UserPayment::where('subscription_id','=',$subscription->id);
+                 switch ($this->country) {
+
+               case 'SA':
+                   $userPayment->where('user_payments.user_country','=', 0);
+                   break;
+               case 'GH':
+                   $userPayment->where('user_payments.user_country','=', 1);
+                   break;
+               case 'NG':
+                   $userPayment->where('user_payments.user_country','=', 2);
+                   break;
+               default:
+                   break;
+            }       
+                        
+                $userPayment->whereDate('created_at',$date->format('Y-m-d'))
                 ->count();
                 $userPaymentData[] = $userPayment;
             }
