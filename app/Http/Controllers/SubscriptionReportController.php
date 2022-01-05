@@ -52,7 +52,7 @@ class SubscriptionReportController extends Controller
         if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         }
-
+        
         $subscriptionsQuery = Subscription::select('subscriptions.*');
         $subscriptionsQuery->with(['user_payments' => function ($query) use ($request,$startDate,$endDate) {
             if($startDate){
@@ -62,6 +62,20 @@ class SubscriptionReportController extends Controller
                 $query->whereDate('created_at', '<=', $endDate);
             }
         }]);
+        switch ($this->country) {
+
+               case 'SA':
+                   $subscriptionsQuery->where('user_payments.user_country','=', 0);
+                   break;
+               case 'GH':
+                   $subscriptionsQuery->where('user_payments.user_country','=', 1);
+                   break;
+               case 'NG':
+                   $subscriptionsQuery->where('user_payments.user_country','=', 2);
+                   break;
+               default:
+                   break;
+            }
         $subscriptions = $subscriptionsQuery->get();
         return view('subscription-total')
         ->with([
