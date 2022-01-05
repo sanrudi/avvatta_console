@@ -61,8 +61,8 @@ class HomeController extends Controller
         {
             $userPaymentData = [];
             foreach ($period as $date) {
-                $userPayment = UserPayment::where('subscription_id','=',$subscription->id);
-                 switch ($this->country) {
+                $userPayment = UserPayment::where('subscription_id','=',$subscription->id)
+         /*        switch ($this->country) {
 
                case 'SA':
                    $userPayment->where('user_payments.user_country','=', 0);
@@ -75,9 +75,9 @@ class HomeController extends Controller
                    break;
                default:
                    break;
-            }       
-                $userPayment->whereDate('created_at',$date->format('Y-m-d'));
-                $userPayment->count();
+            }       */
+                ->whereDate('created_at',$date->format('Y-m-d'))
+                ->count();
                 $userPaymentData[] = $userPayment;
             }
            
