@@ -57,25 +57,29 @@ class HomeController extends Controller
         $subscriptionsQuery = Subscription::select('subscriptions.*');
         $subscriptions = $subscriptionsQuery->get();
         $i = 1;
+        
+        switch ($this->country) {
+
+               case 'SA':
+                   $uc = 0;
+                   break;
+               case 'GH':
+                   $uc = 1;
+                   break;
+               case 'NG':
+                    $uc = 2;
+                   break;
+               default:
+                   break;
+            } 
         foreach ($subscriptions as $subscription)
         {
             $userPaymentData = [];
             foreach ($period as $date) {
+                
+                  
                 $userPayment = UserPayment::where('subscription_id','=',$subscription->id)
-         /*        switch ($this->country) {
-
-               case 'SA':
-                   $userPayment->where('user_payments.user_country','=', 0);
-                   break;
-               case 'GH':
-                   $userPayment->where('user_payments.user_country','=', 1);
-                   break;
-               case 'NG':
-                   $userPayment->where('user_payments.user_country','=', 2);
-                   break;
-               default:
-                   break;
-            }       */
+                ->where('user_payments.user_country','=', $uc)       
                 ->whereDate('created_at',$date->format('Y-m-d'))
                 ->count();
                 $userPaymentData[] = $userPayment;
