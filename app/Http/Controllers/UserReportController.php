@@ -104,12 +104,15 @@ class UserReportController extends Controller
         $userReport->orderBy('date_time','desc');
         $i = 1;
         
-        DB::enableQueryLog(); 
+        
+        
+        if(!$export) {
         echo $export;
-        if(!$export){
+        DB::enableQueryLog(); 
         $userPageData = $userReport->paginate($paginateSize);
-        }
         dd(DB::getQueryLog());
+        }
+        
         
         
         if($export){
