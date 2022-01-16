@@ -387,8 +387,6 @@ class UserReportController extends Controller
             $transactions = $tranQuery->get()->toArray();
             return Excel::download(new IdleSubscriptionExport($transactions), 'transactions-export.xlsx');
         }
-        echo "TEST ";
-        return false;
         if(!$export){
             $transactionsData =  $tranQuery->paginate($paginateSize);
             //dd($transactionsData);
