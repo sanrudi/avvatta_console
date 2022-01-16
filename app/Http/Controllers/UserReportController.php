@@ -106,7 +106,7 @@ class UserReportController extends Controller
         if(!$export){
         $userPageData = $userReport->paginate($paginateSize);
         }
-        
+        var_dump($userPageData);
         if($export){
             $userPageData = $userReport->get();
         }
