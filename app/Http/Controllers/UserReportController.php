@@ -106,7 +106,7 @@ class UserReportController extends Controller
         if(!$export) {
         echo $export;
         DB::enableQueryLog(); 
-        $userPageData = $userReport->paginate($paginateSize)->get();
+        $userPageData = $userReport->paginate($paginateSize);
         dd(DB::getQueryLog());
         }
         
