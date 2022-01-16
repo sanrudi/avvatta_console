@@ -103,6 +103,7 @@ class UserReportController extends Controller
         }  
         $userReport->orderBy('date_time','desc');
         $i = 1;
+        
         DB::enableQueryLog(); 
         if(!$export){
         $userPageData = $userReport->paginate($paginateSize);
