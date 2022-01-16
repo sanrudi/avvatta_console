@@ -55,7 +55,8 @@ class UserReportController extends Controller
         if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
             $startDate = date('Y-m-d', strtotime($today.'-'.$reportFrom.' day'));
         }
-
+        echo "TEST1";
+        return true;
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
