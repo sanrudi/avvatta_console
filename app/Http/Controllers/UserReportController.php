@@ -55,8 +55,7 @@ class UserReportController extends Controller
         if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
             $startDate = date('Y-m-d', strtotime($today.'-'.$reportFrom.' day'));
         }
-        echo "TEST1";
-        return true;
+       
         $device = "";$device = ($request->input('device'))?$request->input('device'):"";
         $os = "";$os = ($request->input('os'))?$request->input('os'):"";
 
@@ -166,8 +165,6 @@ class UserReportController extends Controller
             $userArticles = $user_contents;
             return Excel::download(new UserArticleExport($userArticles), 'user-article-export.xlsx');
         }
-        echo "TEST";
-        return true;
         return view('user-report')
             ->with([
                 'user_contents'=>$user_contents,
@@ -390,7 +387,8 @@ class UserReportController extends Controller
             $transactions = $tranQuery->get()->toArray();
             return Excel::download(new IdleSubscriptionExport($transactions), 'transactions-export.xlsx');
         }
-
+        echo "TEST ";
+        return false;
         if(!$export){
             $transactionsData =  $tranQuery->paginate($paginateSize);
             //dd($transactionsData);
