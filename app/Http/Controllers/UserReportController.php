@@ -165,7 +165,8 @@ class UserReportController extends Controller
             $userArticles = $user_contents;
             return Excel::download(new UserArticleExport($userArticles), 'user-article-export.xlsx');
         }
-
+        echo "TEST";
+        return true;
         return view('user-report')
             ->with([
                 'user_contents'=>$user_contents,
