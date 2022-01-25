@@ -80,7 +80,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: false, info: false, "aaSorting": [],
+        paging: false, info: false, "aaSorting": [],
         buttons: [
             {
             extend: 'excel',
