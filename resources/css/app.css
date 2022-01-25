@@ -1,3 +1,9 @@
 .export-excel {
     padding-left: 87%;
 }
+
+.dataTables_wrapper > .dt-buttons > .button-excel {
+    background: #317531;
+    color: #fff;
+    border: 1px solid #317531;
+}
