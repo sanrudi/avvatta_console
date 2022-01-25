@@ -285,61 +285,64 @@ class RevenueReportController extends Controller
                 var_dump($todate);
           var_dump($fromdate);
        */   
-          
-        foreach ($subscription as $value) {   
-            
-             switch ($this->country) {
-            
-           case 'SA':
-               $uc = 0;
-               break;
-           case 'GH':
-               $uc= 1;
-               break;
-           case 'NG':
-               $uc=2;
-               break;
-           default:
-               $uc=0;
-               break;
+
+        $user_country = 0;
+        switch ($this->country) {
+            case 'SA':
+                $user_country = 0;
+                break;
+            case 'GH':
+                $user_country = 1;
+                break;
+            case 'NG':
+                $user_country = 2;
+                break;
+            default:
+                break;
         }
-            
+          
+        foreach ($subscription as $value) {  
         $all[$value->id] = DB::connection('mysql2')->table('user_payments')     
-                ->where('subscription_id','=',$value->id)
-                ->where('user_country','=',$uc)
+                ->where('subscription_id','=',$value->id)  
+                ->where('status','=',1) 
+                ->where('user_country','=', $user_country)
                 ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                 ->get()->sum('amount');
         
         // get subs count
          $subcount[$value->id] = DB::connection('mysql2')->table('user_payments')
                  ->where('subscription_id','=',$value->id)
-                 ->where('user_country','=',$uc)
+                 ->where('status','=',1) 
+                 ->where('user_country','=', $user_country)
                  ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                  ->count();
         }
         
          $all['total'] = DB::connection('mysql2')->table('user_payments')
-                 ->where('user_country','=',$uc)
+         ->where('status','=',1) 
+         ->where('user_country','=', $user_country)
                   ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                             ->get()->sum('amount');
         
          $all['count'] = DB::connection('mysql2')->table('user_payments')
-                 ->where('user_country','=',$uc)
+         ->where('status','=',1) 
+         ->where('user_country','=', $user_country)
                   ->whereBetween('user_payments.created_at',array($fromdate,$todate))
                             ->get()->count();
          $all['fromdate'] = Carbon::parse($fromdate);     
          $all['todate'] = Carbon::parse($todate);
        // var_dump($all);
         return view('revenue-report',['cat'=>$cat,
-                                  'frequency'=>$frequency,
-                                  'subs'=>$subscription,
-             'subcount'=>$subcount,
-                                  'all' =>$all, 'erosnowWatches' =>$erosnowWatches,
-                                  'gameWatches' =>$gameWatches,
-                                  'kidWatches' =>$kidWatches,
-                                  'funWatches' =>$funWatches,
-                                  'higWatches' =>$higWatches,
-                                  'codWatches' =>$codWatches,
-                                  'siyWatches' =>$siyWatches]);
+                                'frequency'=>$frequency,
+                                'subs'=>$subscription,
+                                'subcount'=>$subcount,
+                                'all' =>$all, 
+                                'erosnowWatches' =>$erosnowWatches,
+                                'gameWatches' =>$gameWatches,
+                                'kidWatches' =>$kidWatches,
+                                'funWatches' =>$funWatches,
+                                'higWatches' =>$higWatches,
+                                'codWatches' =>$codWatches,
+                                'siyWatches' =>$siyWatches]);
     }
 }

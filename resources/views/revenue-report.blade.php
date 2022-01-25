@@ -80,6 +80,16 @@ $higData = array();
 $codData = array();
 $siyData = array();
 $i = 0;
+// Sub Count
+$vod_sub_count = 0;
+$ero_sub_count = 0;
+$gam_sub_count = 0;
+$kid_sub_count = 0;
+$fun_sub_count = 0;
+$hig_sub_count = 0;
+$cod_sub_count = 0;
+$siy_sub_count = 0;
+$total_sub_count = 0;
 // Sub Rev
 $vod_sub_rev = 0;
 $ero_sub_rev = 0;
@@ -145,6 +155,7 @@ foreach ($subs as $value) {
     //echo "title |".$value->title."|<br>";
 if($value->title == "vod daily" || $value->title == "vod weekly" || $value->title == "vod monthly"){
     $category="vod";
+    $vod_sub_count = $vod_sub_count + $subcount[$value->id];
     $vod_sub_rev = $vod_sub_rev + $all[$value->id];
     $vod_sub_rev_ex_vat = $vod_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $vod_op_rev = $vod_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -153,6 +164,7 @@ if($value->title == "vod daily" || $value->title == "vod weekly" || $value->titl
 } 
 if($value->title == "Eros Now Daily" || $value->title == "Eros Now weekly" || $value->title == "Eros Now Monthly"){
     $category="eros";
+    $ero_sub_count =  $ero_sub_count + $subcount[$value->id];
     $ero_sub_rev = $ero_sub_rev + $all[$value->id];
     $ero_sub_rev_ex_vat = $ero_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $ero_op_rev = $ero_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -165,6 +177,7 @@ if($value->title == "Games Daily" || $value->title == "Games weekly" || $value->
     // echo "gam_sub_rev |".$all[$value->id]."|<br>";
     // echo "gam_sub_rev_ex_vat |".($all[$value->id] * 0.85)."|<br>";
     // echo "gam_op_rev |".($all[$value->id] * 0.85 * .4 )."|<br>";
+    $gam_sub_count =  $gam_sub_count + $subcount[$value->id];
     $gam_sub_rev = $gam_sub_rev + $all[$value->id];
     $gam_sub_rev_ex_vat = $gam_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $gam_op_rev = $gam_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -173,6 +186,7 @@ if($value->title == "Games Daily" || $value->title == "Games weekly" || $value->
 }
 if($value->title == "Kids Daily" || $value->title == "Kids weekly" || $value->title == "Kids Monthly") {
     $category="kids";
+    $kid_sub_count =  $kid_sub_count + $subcount[$value->id];
     $kid_sub_rev = $kid_sub_rev + $all[$value->id];
     $kid_sub_rev_ex_vat = $kid_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $kid_op_rev = $kid_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -181,6 +195,7 @@ if($value->title == "Kids Daily" || $value->title == "Kids weekly" || $value->ti
 }
 if($value->title == "Fun & Learning Daily" || $value->title == "Fun & Learning Weekly" || $value->title == "Fun & Learning Monthly") {
 $category="Fun & Learning";
+    $fun_sub_count =  $fun_sub_count + $subcount[$value->id];
     $fun_sub_rev = $fun_sub_rev + $all[$value->id];
     $fun_sub_rev_ex_vat = $fun_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $fun_op_rev = $fun_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -189,6 +204,7 @@ $category="Fun & Learning";
 }
 if($value->title == "Higher Learning Daily" || $value->title == "Higher Learning Weekly" || $value->title == "Higher Learning Monthly") {
 $category="Higher Learning";
+    $hig_sub_count =  $hig_sub_count + $subcount[$value->id];
     $hig_sub_rev = $hig_sub_rev + $all[$value->id];
     $hig_sub_rev_ex_vat = $hig_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $hig_op_rev = $hig_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -197,6 +213,7 @@ $category="Higher Learning";
 }
 if($value->title == "Coding Daily" || $value->title == "Coding Weekly" || $value->title == "Coding Monthly") {
 $category="Coding";
+    $cod_sub_count =  $cod_sub_count + $subcount[$value->id];
     $cod_sub_rev = $cod_sub_rev + $all[$value->id];
     $cod_sub_rev_ex_vat = $cod_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $cod_op_rev = $cod_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -205,6 +222,7 @@ $category="Coding";
 }
 if($value->title == "Siyavula Daily" || $value->title == "Siyavula Weekly" || $value->title == "Siyavula Monthly") {
 $category="Siyavula";
+    $siy_sub_count =  $siy_sub_count + $subcount[$value->id];
     $siy_sub_rev = $siy_sub_rev + $all[$value->id];
     $siy_sub_rev_ex_vat = $siy_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
     $siy_op_rev = $siy_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -212,6 +230,7 @@ $category="Siyavula";
     $siy_cp_rev = $siy_cp_rev + ($all[$value->id] * $excludeTax * .25 );
 }  
 if($category != ""){
+$total_sub_count =  $total_sub_count + $subcount[$value->id];
 $total_sub_rev = $total_sub_rev + $all[$value->id];
 $total_sub_rev_ex_vat = $total_sub_rev_ex_vat + ($all[$value->id] * $excludeTax);
 $total_op_rev = $total_op_rev + ($all[$value->id] * $excludeTax * .4 );
@@ -233,6 +252,7 @@ $i++;
             <tr >
                 <th >Category</th>
                 <th >Provider</th>
+                <th >Subscriptions</th>
                 <th >Watches</th>
                 <th >Watches (%)</th>
                 <th >Subs Revenue (Incl VAT)</th>
@@ -252,6 +272,7 @@ $i++;
                 <tr >
                     <td >Video on Demand</td>
                     <td ></td>
+                    <td >{{$vod_sub_count}}</td>
                     <td >0</td>
                     <td >0</td>
                     <td >{{ $vod_sub_rev }}</td>
@@ -278,6 +299,7 @@ $i++;
                 <tr >
                     <td >Eros Now</td>
                     <td >Erosnow</td>
+                    <td >{{$vod_sub_count}}</td>
                     <td >{{$erosnowWatches}}</td>
                     <td >
                     </td>
@@ -334,6 +356,7 @@ $i++;
                 <tr >
                     <td >Games</td>
                     <td >{{$gameWatche['provider']}}</td>
+                    <td >{{$gam_sub_count}}</td>
                     <td >{{$gameWatche['count']}}</td>
                     <td >
                     <?php $gameWatchep = ($gameWatche['count']/$gameWatchesTotal)*100; echo round($gameWatchep,2); ?>
@@ -393,11 +416,12 @@ $i++;
                 if(count($gameWatches) == 0){
                 $gameWatchesTotal =0;
                 foreach ($gameWatches as $gameWatche) {$gameWatchesTotal = $gameWatchesTotal + $gameWatche['count'];}
-               // foreach ($gameWatches as $gameWatche) {  ?>
+                foreach ($gameWatches as $gameWatche) {  ?>
                 @if(Auth::user()->roles->pluck('name')[0] == $gameWatche['provider'] && Auth::user()->is_cp)
                 <tr >
                     <td >Games</td>
                     <td ></td>
+                    <td >{{$gam_sub_count}}</td>
                     <td ></td>
                     <td >
                     <?php $gameWatchep = 0; echo round($gameWatchep,2); ?>
@@ -450,7 +474,7 @@ $i++;
                 </tr>
                 @endif
                 <?php 
-               // }  
+                }  
                 } ?>
 
                 <!-- Kids -->
@@ -464,6 +488,7 @@ $i++;
                 <tr >
                     <td >Kids</td>
                     <td >{{$kidWatche['provider']}}</td>
+                    <td >{{$kid_sub_count}}</td>
                     <td >{{$kidWatche['count']}}</td>
                     <td >
                     <?php $kidWatchep = ($kidWatche['count']/$kidWatchesTotal)*100; echo round($kidWatchep,2); ?>
@@ -522,12 +547,13 @@ $i++;
                 <?php 
                 $kidWatchesTotal =0;
                 foreach ($kidWatches as $kidWatche) {$kidWatchesTotal = $kidWatchesTotal + $kidWatche['count'];}
-               // foreach ($kidWatches as $kidWatche) {  
+                foreach ($kidWatches as $kidWatche) {  
                    ?>
                    @if(Auth::user()->roles->pluck('name')[0] == $kidWatche['provider'] && Auth::user()->is_cp)
                 <tr >
                     <td >Kids</td>
                     <td ></td>
+                    <td >{{$kid_sub_count}}</td>
                     <td ></td>
                     <td >
                     <?php $kidWatchep = 0; echo round($kidWatchep,2); ?>
@@ -579,7 +605,7 @@ $i++;
                     </td>
                 </tr>
                 @endif
-                <?php //}   ?>
+                <?php }   ?>
                 <?php }   ?>
                 <!-- Fun -->
                 <?php if(count($funWatches)>0){ ?>
@@ -591,6 +617,7 @@ $i++;
                 <tr >
                     <td >Fun & Learning</td>
                     <td >{{$funWatche['provider']}}</td>
+                    <td >{{$fun_sub_count}}</td>
                     <td >{{$funWatche['count']}}</td>
                     <td >
                     <?php $funWatchep = ($funWatche['count']/$funWatchesTotal)*100; echo round($funWatchep,2); ?>
@@ -655,6 +682,7 @@ $i++;
                 <tr >
                     <td >Fun & Learning</td>
                     <td ></td>
+                    <td >{{$fun_sub_count}}</td>
                     <td ></td>
                     <td >
                     <?php $funWatchep = 0; echo round($funWatchep,2); ?>
@@ -714,6 +742,7 @@ $i++;
                 <tr >
                     <td >Higher Learning</td>
                     <td >{{$higWatche['provider']}}</td>
+                    <td >{{$hig_sub_count}}</td>
                     <td >{{$higWatche['count']}}</td>
                     <td >
                     </td>
@@ -772,6 +801,7 @@ $i++;
                 <tr >
                     <td >Coding</td>
                     <td >{{$codWatche['provider']}}</td>
+                    <td >{{$cod_sub_count}}</td>
                     <td >{{$codWatche['count']}}</td>
                     <td >
                     <?php $codWatchep = 100; echo round($codWatchep,2); ?>
@@ -833,6 +863,7 @@ $i++;
                 <tr >
                     <td >Siyavula</td>
                     <td >Siyavula</td>
+                    <td >{{$siy_sub_count}}</td>
                     <td >{{$siyWatchesTotal}}</td>
                     <td >
                     <?php $siyWatchep = ($siyWatchesTotal>0)?100:0; echo round($siyWatchep,2); ?>
@@ -899,6 +930,7 @@ $i++;
             <tr >
                 <th >Category</th>
                 <th >Provider</th>
+                <th >Sub</th>
                 <th >Watches</th>
                 <th >Watches (%)</th>
                 <th >Subs Revenue (Incl VAT)</th>
@@ -917,6 +949,7 @@ $i++;
                 <tr >
                     <td >Video on Demand</td>
                     <td ></td>
+                    <td >{{$vod_sub_count}}</td>
                     <td >0</td>
                     <td >0</td>
                     <td >{{ $vod_sub_rev }}</td>
@@ -941,6 +974,7 @@ $i++;
                 <tr >
                     <td >Eros Now</td>
                     <td >Erosnow</td>
+                    <td >{{$ero_sub_count}}</td>
                     <td >{{$erosnowWatches}}</td>
                     <td >
                     </td>
@@ -995,6 +1029,7 @@ $i++;
                 <tr >
                     <td >Games</td>
                     <td >{{$gameWatche['provider']}}</td>
+                    <td >{{$gam_sub_count}}</td>
                     <td >{{$gameWatche['count']}}</td>
                     <td >
                     <?php $gameWatchep = ($gameWatche['count']/$gameWatchesTotal)*100; echo round($gameWatchep,2); ?>
@@ -1057,6 +1092,7 @@ $i++;
                 <tr >
                     <td >Games</td>
                     <td ></td>
+                    <td >{{$gam_sub_count}}</td>
                     <td ></td>
                     <td >
                     <?php $gameWatchep = 0; echo round($gameWatchep,2); ?>
@@ -1121,6 +1157,7 @@ $i++;
                 <tr >
                     <td >Kids</td>
                     <td >{{$kidWatche['provider']}}</td>
+                    <td >{{$kid_sub_count}}</td>
                     <td >{{$kidWatche['count']}}</td>
                     <td >
                     <?php $kidWatchep = ($kidWatche['count']/$kidWatchesTotal)*100; echo round($kidWatchep,2); ?>
@@ -1183,6 +1220,7 @@ $i++;
                 <tr >
                     <td >Kids</td>
                     <td ></td>
+                    <td >{{$kid_sub_count}}</td>
                     <td ></td>
                     <td >
                     <?php $kidWatchep = 0; echo round($kidWatchep,2); ?>
@@ -1244,6 +1282,7 @@ $i++;
                 <tr >
                     <td >Fun & Learning</td>
                     <td >{{$funWatche['provider']}}</td>
+                    <td >{{$fun_sub_count}}</td>
                     <td >{{$funWatche['count']}}</td>
                     <td >
                     <?php $funWatchep = ($funWatche['count']/$funWatchesTotal)*100; echo round($funWatchep,2); ?>
@@ -1306,6 +1345,7 @@ $i++;
                 <tr >
                     <td >Fun & Learning</td>
                     <td ></td>
+                    <td >{{$fun_sub_count}}</td>
                     <td ></td>
                     <td >
                     <?php $funWatchep = 0; echo round($funWatchep,2); ?>
@@ -1367,6 +1407,7 @@ $i++;
                 <tr >
                     <td >Higher Learning</td>
                     <td >{{$higWatche['provider']}}</td>
+                    <td >{{$hig_sub_count}}</td>
                     <td >{{$higWatche['count']}}</td>
                     <td >
                     </td>
@@ -1423,6 +1464,7 @@ $i++;
                 <tr >
                     <td >Coding</td>
                     <td >{{$codWatche['provider']}}</td>
+                    <td >{{$cod_sub_count}}</td>
                     <td >{{$codWatche['count']}}</td>
                     <td >
                     <?php $codWatchep = 100; echo round($codWatchep,2); ?>
@@ -1482,6 +1524,7 @@ $i++;
                 <tr >
                     <td >Siyavula</td>
                     <td >Siyavula</td>
+                    <td >{{$siy_sub_count}}</td>
                     <td >{{$siyWatchesTotal}}</td>
                     <td >
                     <?php $siyWatchep = ($siyWatchesTotal>0)?100:0; echo round($siyWatchep,2); ?>
@@ -1538,6 +1581,7 @@ $i++;
             <tr >
                 <td >Total</td>   
                 <td ></td>
+                <td >{{$total_sub_count}}</td>
                 <td ></td> 
                 <td ></td>
                 <td >{{ $total_sub_rev }}</td>
@@ -1644,7 +1688,7 @@ $i++;
     $(document).ready(function() {
         $('#example').DataTable( {
             dom: 'Bfrtip',
-            searching: false, paging: false, info: false, "aaSorting": [],
+            paging: false, info: false, "aaSorting": [],
             buttons: [
             {
                 extend: 'excel',
@@ -1660,7 +1704,7 @@ $i++;
     $(document).ready(function() {
         $('#example2').DataTable( {
             dom: 'Bfrtip',
-            searching: false, paging: false, info: false, "aaSorting": [],
+            paging: false, info: false, "aaSorting": [],
             buttons: [
             {
                 extend: 'excel',
@@ -1676,7 +1720,7 @@ $i++;
     $(document).ready(function() {
         $('#cp-table').DataTable( {
             dom: 'Bfrtip',
-            searching: false, paging: false, info: false, "aaSorting": [],
+            paging: false, info: false, "aaSorting": [],
             buttons: [
             {
                 extend: 'excel',

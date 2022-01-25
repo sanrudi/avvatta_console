@@ -107,7 +107,7 @@ $(document).ready(function() {
    
     $('#loggedInUsersMonthly').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: false, info: false, ordering: false, "aaSorting": [],
+        paging: false, info: false, ordering: false, "aaSorting": [],
         buttons: [
             {
             extend: 'excel',
@@ -120,7 +120,7 @@ $(document).ready(function() {
     
     $('#loggedInUsersDaily').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: false, info: false, ordering: false, "aaSorting": [],
+        paging: false, info: false, ordering: false, "aaSorting": [],
         buttons: [
             {
             extend: 'excel',
