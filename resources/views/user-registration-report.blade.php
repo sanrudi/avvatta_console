@@ -147,7 +147,7 @@ $(document).ready(function() {
    
     $('#registerUsersMonthly').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: false, info: false, ordering: false, "aaSorting": [],
+        paging: false, info: false, ordering: false, "aaSorting": [],
         buttons: [
             {
             extend: 'excel',
@@ -160,7 +160,7 @@ $(document).ready(function() {
     
     $('#registerUsersDaily').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+        paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
         buttons: [
             {
             extend: 'excel',
@@ -173,7 +173,7 @@ $(document).ready(function() {
 
     $('#signedUpOnWeb').DataTable( {
         dom: 'Bfrtip',
-        searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+        paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
         buttons: [
             {
             extend: 'excel',

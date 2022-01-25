@@ -57,7 +57,7 @@
       <a class="nav-link" id="RegisteredNonsubscribedCustomers-tab" data-toggle="tab" href="#RegisteredNonsubscribedCustomers" role="tab" aria-controls="profile" aria-selected="false">Registered & Non subscribed Customers</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="NumberofSubscriptions-tab" data-toggle="tab" href="#NumberofSubscriptions" role="tab" aria-controls="profile" aria-selected="false">Number of Subscriptions</a>
+      <a class="nav-link" id="NumberofSubscriptions-tab" data-toggle="tab" href="#NumberofSubscriptions" role="tab" aria-controls="profile" aria-selected="false">List of Subscriptions</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="CancelledSubscriptions-tab" data-toggle="tab" href="#CancelledSubscriptions" role="tab" aria-controls="profile" aria-selected="false">Cancelled Subscriptions</a>
@@ -301,7 +301,7 @@
   $(document).ready(function() {
     $('#dataTableId').DataTable( {
       dom: 'Bfrtip',
-      searching: false, paging: false, info: false, "aaSorting": [],
+      paging: false, info: false, "aaSorting": [],
       buttons: [
       {
         extend: 'excel',
@@ -313,7 +313,7 @@
     } );
     $('#registeredUsers').DataTable( {
       dom: 'Bfrtip',
-      searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
       buttons: [
       {
         extend: 'excel',
@@ -325,7 +325,7 @@
     } );
     $('#subscribedUsers').DataTable( {
       dom: 'Bfrtip',
-      searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
       buttons: [
       {
         extend: 'excel',
@@ -337,7 +337,7 @@
     } );
     $('#avvattaNSUsers').DataTable( {
       dom: 'Bfrtip',
-      searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
       buttons: [
       {
         extend: 'excel',
@@ -349,7 +349,7 @@
     } );
     $('#noOfSubscriptions').DataTable( {
       dom: 'Bfrtip',
-      searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
       buttons: [
       {
         extend: 'excel',
@@ -361,7 +361,7 @@
     } );
     $('#cancelled').DataTable( {
       dom: 'Bfrtip',
-      searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
       buttons: [
       {
         extend: 'excel',
@@ -373,7 +373,7 @@
     } );
     $('#newSubscriptions').DataTable( {
       dom: 'Bfrtip',
-      searching: false, paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
       buttons: [
       {
         extend: 'excel',
