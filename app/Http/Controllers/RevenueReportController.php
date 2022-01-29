@@ -39,7 +39,7 @@ class RevenueReportController extends Controller
     
     function index(Request $request)
     {
-        echo "COUNTRY:". $this->country;
+        
         $fromdate = date('Y-m', strtotime('-1 month')).'-01';
         if($request->input('startDate') != null) {
         $fromdate = $request->input('startDate');
