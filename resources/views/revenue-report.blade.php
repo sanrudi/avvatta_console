@@ -930,7 +930,7 @@ $i++;
             <tr >
                 <th >Category</th>
                 <th >Provider</th>
-                <th >Sub</th>
+                <th >Subscription</th>
                 <th >Watches</th>
                 <th >Watches (%)</th>
                 <th >Subs Revenue (Incl VAT)</th>
