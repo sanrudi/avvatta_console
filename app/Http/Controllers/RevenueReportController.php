@@ -39,7 +39,6 @@ class RevenueReportController extends Controller
     
     function index(Request $request)
     {
-        echo "COUNTRY:". $this->country;
         $fromdate = date('Y-m', strtotime('-1 month')).'-01';
         if($request->input('startDate') != null) {
         $fromdate = $request->input('startDate');
@@ -300,37 +299,37 @@ class RevenueReportController extends Controller
             default:
                 break;
         }
-          
-        foreach ($subscription as $value) {  
-        $all[$value->id] = DB::connection('mysql2')->table('user_payments')     
-                ->where('subscription_id','=',$value->id)  
-                ->where('status','=',1) 
-                ->where('user_country','=', $user_country)
-                ->whereBetween('user_payments.created_at',array($fromdate,$todate))
-                ->get()->sum('amount');
         
+        foreach ($subscription as $value) {  
+        $amountQuery = DB::connection('mysql2')->table('user_payments')->where('subscription_id','=',$value->id);
+        if($user_country != 2){
+            $amountQuery->where('status','=',1)->where('user_country','=', $user_country); 
+        }
+        $all[$value->id] = $amountQuery->whereBetween('user_payments.created_at',array($fromdate,$todate))->get()->sum('amount');
+
         // get subs count
-         $subcount[$value->id] = DB::connection('mysql2')->table('user_payments')
-                 ->where('subscription_id','=',$value->id)
-                 ->where('status','=',1) 
-                 ->where('user_country','=', $user_country)
-                 ->whereBetween('user_payments.created_at',array($fromdate,$todate))
-                 ->count();
+        $countQuery = DB::connection('mysql2')->table('user_payments')->where('subscription_id','=',$value->id);
+        if($user_country != 2){
+            $countQuery->where('status','=',1)->where('user_country','=', $user_country);
+        }
+        $subcount[$value->id] = $countQuery->whereBetween('user_payments.created_at',array($fromdate,$todate))->count();
+
         }
         
-         $all['total'] = DB::connection('mysql2')->table('user_payments')
-         ->where('status','=',1) 
-         ->where('user_country','=', $user_country)
-                  ->whereBetween('user_payments.created_at',array($fromdate,$todate))
-                            ->get()->sum('amount');
+        $allTotalQuery = DB::connection('mysql2')->table('user_payments');
+        if($user_country != 2){
+        $allTotalQuery->where('status','=',1)->where('user_country','=', $user_country); 
+        }
+        $all['total'] = $allTotalQuery->whereBetween('user_payments.created_at',array($fromdate,$todate))->get()->sum('amount');
+         
+        $allCountQuery = DB::connection('mysql2')->table('user_payments');
+        if($user_country != 2){
+        $allCountQuery->where('status','=',1)->where('user_country','=', $user_country);
+        }
+        $all['count'] = $allCountQuery->whereBetween('user_payments.created_at',array($fromdate,$todate))->get()->count();
         
-         $all['count'] = DB::connection('mysql2')->table('user_payments')
-         ->where('status','=',1) 
-         ->where('user_country','=', $user_country)
-                  ->whereBetween('user_payments.created_at',array($fromdate,$todate))
-                            ->get()->count();
-         $all['fromdate'] = Carbon::parse($fromdate);     
-         $all['todate'] = Carbon::parse($todate);
+        $all['fromdate'] = Carbon::parse($fromdate);     
+        $all['todate'] = Carbon::parse($todate);
        // var_dump($all);
         return view('revenue-report',['cat'=>$cat,
                                 'frequency'=>$frequency,
