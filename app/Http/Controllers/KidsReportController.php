@@ -70,7 +70,7 @@ class KidsReportController extends Controller
         $kidsQuery->groupBy('user_logs.user_id')
         ->orderBy('count','desc')
         ->havingRaw("count > 1");
-        
+        echo $this->country;
         
         switch ($this->country) {
             
