@@ -66,7 +66,7 @@ class KidsReportController extends Controller
         ->join('sub_categories as sc', 'sc.id', '=', 'video_content.sub_id')
         ->where('type', 'video')
         ->where('category', 'kids')
-        ->select('users.firstname', 'users.lastname', 'users.email', 'users.mobile', 'video_content.content_name', 'sub_categories.name as category_name','sc.name as sub_cat_name','user_logs.date_time',DB::raw("GROUP_CONCAT( DISTINCT sub_categories.name) as category_list"),DB::raw("COUNT(DISTINCT(sub_categories.id)) as count"));
+        ->select('users.firstname','user_logs.user_country', 'users.lastname', 'users.email', 'users.mobile', 'video_content.content_name', 'sub_categories.name as category_name','sc.name as sub_cat_name','user_logs.date_time',DB::raw("GROUP_CONCAT( DISTINCT sub_categories.name) as category_list"),DB::raw("COUNT(DISTINCT(sub_categories.id)) as count"));
         $kidsQuery->groupBy('user_logs.user_id')
         ->orderBy('count','desc')
         ->havingRaw("count > 1");
