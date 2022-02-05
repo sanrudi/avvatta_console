@@ -122,7 +122,7 @@ class KidsReportController extends Controller
         if($multiDate){
             $kids_contents = $kidsQuery->get();
         }
-        
+        var_dump($kids_contents);
         return view('kid-report', ['kids_contents' => $kids_contents]);
 
     }
