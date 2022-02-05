@@ -69,8 +69,7 @@ class KidsReportController extends Controller
         $kidsQuery->groupBy('user_logs.user_id')
         ->orderBy('count','desc')
         ->havingRaw("count > 1");
-        echo $this->country;
-        
+       
         switch ($this->country) {
             
            case 'SA':
@@ -121,7 +120,7 @@ class KidsReportController extends Controller
         if($multiDate){
             $kids_contents = $kidsQuery->get();
         }
-        var_dump($kids_contents);
+      
         return view('kid-report', ['kids_contents' => $kids_contents]);
 
     }
