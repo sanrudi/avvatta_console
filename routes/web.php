@@ -76,9 +76,13 @@ Route::get('user-registration-report',[App\Http\Controllers\UserReportController
 Route::get('user-sub-profile-report',[App\Http\Controllers\UserReportController::class, 'userSubProfileReport'])->name('user-sub-profile-report');
 Route::get('user-login-report',[App\Http\Controllers\UserReportController::class, 'userLoginReport'])->name('user-login-report');   
 Route::get('user-idle-subscribers',[App\Http\Controllers\UserReportController::class, 'idleSubscribers'])->name('user-idle-subscribers');   
-//Error Report
+//Error Api Report
 Route::get('error-report',[App\Http\Controllers\ErrorReportController::class, 'errorReport'])->name('error-report');
 Route::get('error-report/show-error/',[App\Http\Controllers\ErrorReportController::class, 'showError'])->name('show-error');
+
+//ErosNow Feed Report
+Route::get('erosnow-error-report',[App\Http\Controllers\ErrorReportController::class, 'erosnowerrorReport'])->name('erosnow-feed-reports');
+
 // Elearning
 Route::get('most-watched-elearn-content',[App\Http\Controllers\ElearnContentReportController::class, 'mostWatchedElearnContent'])->name('most-watched-elearn-content');
 Route::get('top-ten-elearn-content',[App\Http\Controllers\ElearnContentReportController::class, 'topTenElearnContent'])->name('top-ten-elearn-content');

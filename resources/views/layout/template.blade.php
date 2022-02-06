@@ -249,13 +249,13 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled" id="error-reports" data-parent="#accordionExample">
-                            <li>
-                                <a href="{{ route('error-report') }}">Api Error Reports</a>
-                            </li>
+                                <li>
+                                    <a href="{{ route('error-report') }}">Api Error Reports</a>
+                                </li>
                         </ul>
                         <ul class="collapse submenu list-unstyled" id="error-reports" data-parent="#accordionExample">
                             <li>
-                                <a href="{{ route('error-report') }}">Eros Now Error Reports</a>
+                                <a href="{{ route('erosnow-error-report') }}">Eros Now Reports</a>
                             </li>
                         </ul>
                     </li>
