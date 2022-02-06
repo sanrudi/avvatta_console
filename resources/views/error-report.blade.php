@@ -9,7 +9,7 @@
 @endpush
 @section('content')
 <div class="container">
-  <h6>Error Report</h6><hr>
+  <h6>Api Error Report</h6><hr>
   <form autocomplete="off" action="" method="GET">
     <div class="form-row">
       <div class="form-group col-md-2">
