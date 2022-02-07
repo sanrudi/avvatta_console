@@ -81,7 +81,7 @@ Route::get('error-report',[App\Http\Controllers\ErrorReportController::class, 'e
 Route::get('error-report/show-error/',[App\Http\Controllers\ErrorReportController::class, 'showError'])->name('show-error');
 
 //ErosNow Feed Report
-Route::get('erosnow-error-report',[App\Http\Controllers\ErrorReportController::class, 'erosnowerrorReport'])->name('erosnow-feed-reports');
+Route::get('erosnow-error-report',[App\Http\Controllers\ErosNowErrorReportController::class, 'missingImage'])->name('erosnow-error-report');
 
 // Elearning
 Route::get('most-watched-elearn-content',[App\Http\Controllers\ElearnContentReportController::class, 'mostWatchedElearnContent'])->name('most-watched-elearn-content');
