@@ -151,20 +151,15 @@ class UserReportController extends Controller
             }
             $content_name = !empty($content_name)?$content_name:"-";
             $username ="";
-            log::info($username);
             if(!empty($user->firstname) && !empty($user->lastname)){
                 $username =$user->firstname." ".$user->lastname;
             }
-            log::info($username);
             if(empty($username) && !empty($userData->email)){
                 $username =$user->email;
             }
-            log::info($username);
             if(empty($username) && !empty($user->mobile)){
                 $username =$user->mobile;
             }
-            log::info($username);
-            log::info("-----------");
             $username = !empty($username)?$username:"-";
             $user_contents[$i]['id'] = $user->id;
             $user_contents[$i]['user_name'] = $username;
