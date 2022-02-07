@@ -14,6 +14,7 @@ use App\Models\UserPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Log;
 
 
 class UserReportController extends Controller
@@ -47,6 +48,7 @@ class UserReportController extends Controller
     {
         $paginateSize = 20;$export = 0;$report = "erosnow";$reportFrom="";$startDate="";$endDate="";
         $export = ($request->input('export'))?1:0;
+        $search = ($request->input('search'))?$request->input('search'):"";
         $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
@@ -63,21 +65,22 @@ class UserReportController extends Controller
         switch ($request->input('type'))
         {
             case "game":
-                $userReport = UserLog::where('category', '=', 'game');
+                $userReport = UserLog::where('user_logs.category', '=', 'game');
                 break;
             case "erosnow":
-                $userReport = UserLog::where('category', '=', 'erosnow');
+                $userReport = UserLog::where('user_logs.category', '=', 'erosnow');
                 break;
             case "kids":
-                $userReport = UserLog::where('category', '=', 'kids');
+                $userReport = UserLog::where('user_logs.category', '=', 'kids');
                 break;
             default:
-                $userReport = UserLog::select('user_id', 'loggable_id', 'content_id', 'type', 'category', 'action', 'date_time','device','os','age');
+                $userReport = UserLog::select('users.firstname','users.lastname','users.email','users.mobile','user_logs.user_id', 'user_logs.loggable_id', 'user_logs.content_id', 'user_logs.type', 'user_logs.category', 'user_logs.action', 'user_logs.date_time','user_logs.device','user_logs.os','user_logs.age');
         }
+        $userReport->join('users', 'users.id', '=','user_logs.user_id');
         if($startDate && $request->input('reportFrom') != "custom"){
-            $userReport->whereBetween('date_time', [$startDate, $today]);
+            $userReport->whereBetween('user_logs.date_time', [$startDate, $today]);
         } elseif($request->input('reportFrom') == "custom") {
-            $userReport->whereBetween('date_time', [$startDate, $endDate]);
+            $userReport->whereBetween('user_logs.date_time', [$startDate, $endDate]);
         }
         
         switch ($this->country) {
@@ -93,6 +96,16 @@ class UserReportController extends Controller
                break;
            default:
                break;
+        }
+
+        
+        if($search){
+            $userReport->where(function ($query) use ($search) {
+                $query->where('users.firstname', 'like', "%$search%");
+                $query->orWhere('users.lastname', 'like', "%$search%");
+                $query->orWhere('users.email', 'like', "%$search%");
+                $query->orWhere('users.mobile', 'like', "%$search%");
+            });
         }
         
         if($device){
@@ -137,16 +150,15 @@ class UserReportController extends Controller
                 $content_name = "-";
             }
             $content_name = !empty($content_name)?$content_name:"-";
-            $userData = AvvattaUser::find($user->user_id);
             $username ="";
-            if(!empty($userData->firstname) && !empty($userData->lastname)){
-                $username =$userData->firstname." ".$userData->lastname;
+            if(!empty($user->firstname) && !empty($user->lastname)){
+                $username =$user->firstname." ".$user->lastname;
             }
             if(empty($username) && !empty($userData->email)){
-                $username =$userData->email;
+                $username =$user->email;
             }
-            if(empty($username) && !empty($userData->mobile)){
-                $username =$userData->mobile;
+            if(empty($username) && !empty($user->mobile)){
+                $username =$user->mobile;
             }
             $username = !empty($username)?$username:"-";
             $user_contents[$i]['id'] = $user->id;
@@ -344,6 +356,7 @@ class UserReportController extends Controller
     {
         $paginateSize = 20;$export = 0;$reportFrom="";$startDate="";$endDate="";
         $export = ($request->input('export'))?1:0;
+        $search = ($request->input('search'))?$request->input('search'):"";
         $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
@@ -357,6 +370,17 @@ class UserReportController extends Controller
         // Subscription Data
         $tranQuery = UserPayment::with('user_payments_avvatta_users');
         $tranQuery->join('user_logs','user_logs.user_id','=','user_payments.user_id');
+        $tranQuery->join('users', 'users.id', '=','user_payments.user_id');
+        
+        if($search){
+            $tranQuery->where(function ($query) use ($search) {
+                $query->where('users.firstname', 'like', "%$search%");
+                $query->orWhere('users.lastname', 'like', "%$search%");
+                $query->orWhere('users.email', 'like', "%$search%");
+                $query->orWhere('users.mobile', 'like', "%$search%");
+            });
+        }
+
         if($startDate){
             $tranQuery->whereDate('user_logs.date_time', '>=', $startDate);
         }

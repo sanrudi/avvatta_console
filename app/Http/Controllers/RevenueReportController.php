@@ -58,8 +58,7 @@ class RevenueReportController extends Controller
         $erosnowQuery->where('type','=', 'video');
         $erosnowQuery->where(function ($query) {
                 $query->where('category', '=', "erosnow");
-                      //->orWhere('d', '=', 1);
-            });
+        });
             
             
         switch ($this->country) {
