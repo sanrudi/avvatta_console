@@ -29,6 +29,10 @@
           <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
         <div class="form-group col-md-2">
+          <label for="search">Search</label>
+          <input id="search" name="search" type="text" class="form-control"  value="{!! Request::get('search') !!}" placeholder="type customer name .. " />
+        </div>
+        <div class="form-group col-md-2">
           <label for="page">&nbsp;</label>
           <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
         </div>
@@ -54,7 +58,15 @@
         @foreach($transactions as $key => $data)
         <tr>
           <td>{{ $data->created_at }}</td>
-          <td>{{ $data->user_payments_avvatta_users->firstname ?? ''}} {{ $data->user_payments_avvatta_users->lastname ?? '' }}</td>
+          <td>
+            @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
+            {{$data->user_payments_avvatta_users->firstname}}&nbsp;{{$data->user_payments_avvatta_users->lastname}}
+            @elseif(!empty($data->user_payments_avvatta_users->email))
+            {{$data->user_payments_avvatta_users->email}}
+            @elseif(!empty($data->user_payments_avvatta_users->mobile))
+            {{$data->user_payments_avvatta_users->mobile}}
+            @endif
+          </td>
           <td>{{ $data->user_payments_subscriptions->title ?? ''}}</td>
           <td>{{ $data->amount }}</td>
           <td>{{ $data->payment_mode }}</td>          

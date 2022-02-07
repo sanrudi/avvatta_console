@@ -38,6 +38,10 @@
                     </select>
                 </div>
                 <div class="form-group col-md-2">
+                <label for="search">Search</label>
+                <input id="search" name="search" type="text" class="form-control"  value="{!! Request::get('search') !!}" placeholder="type customer name .. " />
+                </div>
+                <div class="form-group col-md-2">
                     <label for="device">Device Type</label>
                     <select name="device" id="device" class="form-control">
                         <option value="" @if(Request::get('device') == "") selected="selected" @endif >All</option>

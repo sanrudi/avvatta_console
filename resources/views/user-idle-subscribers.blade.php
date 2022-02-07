@@ -29,6 +29,10 @@
           <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
         <div class="form-group col-md-2">
+          <label for="search">Search</label>
+          <input id="search" name="search" type="text" class="form-control"  value="{!! Request::get('search') !!}" placeholder="type customer name .. " />
+        </div>
+        <div class="form-group col-md-2">
           <label for="page">&nbsp;</label>
           <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
         </div>
