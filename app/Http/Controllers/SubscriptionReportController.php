@@ -284,6 +284,7 @@ class SubscriptionReportController extends Controller
     {
         $paginateSize = 20;$export = 0;$reportFrom="";$startDate="";$endDate="";
         $export = ($request->input('export'))?1:0;
+        $search = ($request->input('search'))?$request->input('search'):"";
         $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
@@ -295,7 +296,8 @@ class SubscriptionReportController extends Controller
         }
 
         // Subscription Data
-        $tranQuery = UserPayment::with('user_payments_subscriptions','user_payments_avvatta_users');
+        $tranQuery = UserPayment::select('user_payments.*')->with('user_payments_subscriptions','user_payments_avvatta_users');
+        $tranQuery->join('users', 'users.id', '=','user_payments.user_id');
         
         switch ($this->country) {
             
@@ -311,14 +313,20 @@ class SubscriptionReportController extends Controller
            default:
                break;
         }
-        
+
+        if($search){
+            $tranQuery->where('users.firstname', 'like', "%$search%");
+            $tranQuery->orWhere('users.lastname', 'like', "%$search%");
+            $tranQuery->orWhere('users.email', 'like', "%$search%");
+            $tranQuery->orWhere('users.mobile', 'like', "%$search%");
+        }
         if($startDate){
-            $tranQuery->whereDate('created_at', '>=', $startDate);
+            $tranQuery->whereDate('user_payments.created_at', '>=', $startDate);
         }
         if($endDate){
-            $tranQuery->whereDate('created_at', '<=', $endDate);
+            $tranQuery->whereDate('user_payments.created_at', '<=', $endDate);
         }
-        $tranQuery->orderBy('created_at','desc');
+        $tranQuery->orderBy('user_payments.created_at','desc');
         
         if($export){
             $transactions = $tranQuery->get()->toArray();
