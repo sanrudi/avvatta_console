@@ -197,10 +197,27 @@ class UserReportController extends Controller
             $startDate = date('Y-m-d', strtotime($today.'-'.$reportFrom.' day'));
         }
 
+       
+        
         // Registered User By Monthly
         $registerUsersMonthlyQuery = AvvattaUser::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month'),DB::raw('count(Date(created_at)) as count'));
         $registerUsersMonthlyQuery->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'));
         $registerUsersMonthlyQuery->orderBy('created_at','desc');
+         switch ($this->country) {
+            
+           case 'SA':
+               $registerUsersMonthlyQuery->where('ghana_user','=', 0);
+               break;
+           case 'GH':
+               $registerUsersMonthlyQuery->where('ghana_user','=', 1);
+               break;
+           case 'NG':
+               $registerUsersMonthlyQuery->where('ghana_user','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($startDate){
             $registerUsersMonthlyQuery->whereDate('users.created_at', '>=', $startDate);
         }
@@ -213,6 +230,22 @@ class UserReportController extends Controller
         $registerUsersDailyQuery = AvvattaUser::select(DB::raw('Date(created_at) as date, count(Date(created_at)) as count'));
         $registerUsersDailyQuery->groupBy(DB::raw('Date(created_at)'));
         $registerUsersDailyQuery->orderBy('created_at','desc');
+        
+         switch ($this->country) {
+            
+           case 'SA':
+               $registerUsersDailyQuery->where('ghana_user','=', 0);
+               break;
+           case 'GH':
+               $registerUsersDailyQuery->where('ghana_user','=', 1);
+               break;
+           case 'NG':
+               $registerUsersDailyQuery->where('ghana_user','=', 2);
+               break;
+           default:
+               break;
+        }
+        
         if($startDate){
             $registerUsersDailyQuery->whereDate('users.created_at', '>=', $startDate);
         }
@@ -226,6 +259,23 @@ class UserReportController extends Controller
         $signedupQuery->where('device_type','=','web');
         $signedupQuery->groupBy(DB::raw('Date(created_at)'));
         $signedupQuery->orderBy('created_at','desc');
+        
+         switch ($this->country) {
+            
+           case 'SA':
+               $signedupQuery->where('ghana_user','=', 0);
+               break;
+           case 'GH':
+               $signedupQuery->where('ghana_user','=', 1);
+               break;
+           case 'NG':
+               $signedupQuery->where('ghana_user','=', 2);
+               break;
+           default:
+               break;
+        }
+        
+        
         if($startDate){
             $signedupQuery->whereDate('users.created_at', '>=', $startDate);
         }
