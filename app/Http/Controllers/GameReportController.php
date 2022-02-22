@@ -369,6 +369,23 @@ class GameReportController extends Controller
             if(!is_null($provider)){
                 $gameArticlesQuery->where('game_content.play_for_free', '=', $provider);
             }
+            
+            switch ($this->country) {
+            
+           case 'SA':
+               $gameArticlesQuery->where('user_logs.user_country','=', 0);
+               break;
+           case 'GH':
+               $gameArticlesQuery->where('user_logs.user_country','=', 1);
+               break;
+           case 'NG':
+               $gameArticlesQuery->where('user_logs.user_country','=', 2);
+               break;
+           default:
+               break;
+        }
+            
+            
             $gameArticlesQuery->with('wishlist');
             $gameArticlesQuery->leftjoin('sub_categories','sub_categories.id','=','game_content.sub_cat_id');
             $gameArticlesQuery->leftjoin('user_logs','user_logs.loggable_id','=','game_content.id');
