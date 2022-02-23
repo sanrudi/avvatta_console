@@ -218,6 +218,7 @@ class SubscriptionReportController extends Controller
         if($endDate){
             $cancelledQuery->whereDate('created_at', '<=', $endDate);
         }
+        $cancelledQuery->orderBy('created_at','desc');
         $cancelled = $cancelledQuery->get();
 
         $newSubscriptionQuery = UserPayment::whereNotNull('id')

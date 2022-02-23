@@ -21,6 +21,7 @@
   <form autocomplete="off" action="" method="GET">
     <div class="form-row">
       <div class="form-group col-md-2">
+        <label for="reportFrom">Report From </label>
         <select name="reportFrom" id="reportFrom" class="form-control">
           <option value="7" @if(Request::get('reportFrom') == "" || Request::get('reportFrom') == "7") selected="selected" @endif >Last 7 Days</option>
           <option value="14" @if(Request::get('reportFrom') == "14") selected="selected" @endif>Last 14 Days</option>
@@ -38,6 +39,7 @@
         <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
       </div>
       <div class="form-group col-md-2">
+                    <label for="page">&nbsp;</label>
         <button type="submit" class="form-control btn btn-info" name="page" value="Generate">Generate</button>
       </div>
     </div>
