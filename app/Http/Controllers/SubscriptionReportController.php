@@ -326,6 +326,7 @@ class SubscriptionReportController extends Controller
         if($endDate){
             $tranQuery->whereDate('user_payments.created_at', '<=', $endDate);
         }
+        $tranQuery->where('user_payments.status', '=', 1);
         $tranQuery->orderBy('user_payments.created_at','desc');
         
         if($export){
