@@ -8,6 +8,8 @@ use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
 use Illuminate\Support\Arr; 
+use App\Mail\NotifyCpCreateMail;
+use Mail;
 
 class UserController extends Controller
 {
@@ -38,6 +40,9 @@ class UserController extends Controller
         $input['is_cp'] = isset($input['is_cp'])?1:0;
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
+        // Notifying Cp - New Account
+        $adminMailAddress = $input['email'];
+        Mail::to($adminMailAddress)->send(new NotifyCpCreateMail($request->all()));
         return redirect()->route('users.index')->with('success','User created successfully');
     }
 
