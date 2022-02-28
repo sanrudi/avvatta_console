@@ -102,6 +102,7 @@
 <script>
   $(document).ready(function(){
     $(".custom-date").hide();
+    $(".multiple-date").hide();
     $("#reportFrom").change(function(){
       $(this).find("option:selected").each(function(){
         var optionValue = $(this).attr("value");
@@ -111,6 +112,11 @@
           $(".custom-date").show();
         } else{
           $(".custom-date").hide();
+        }
+        if(optionValue == "multiple"){
+            $(".multiple-date").show();
+        } else{
+            $(".multiple-date").hide();
         }
       });
     }).change();
