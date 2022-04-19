@@ -69,7 +69,7 @@ class SubscriptionReportController extends Controller
         
          // get the list of subscriptions 
             
-            $list =  UserPayment::distinct('subscription_id')->get();
+            $list =  UserPayment::groupBy('subscription_id')->get();
             
             var_dump($list);
             
