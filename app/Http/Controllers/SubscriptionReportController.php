@@ -67,6 +67,12 @@ class SubscriptionReportController extends Controller
                    break;
             }
         
+         $subscriptions = UserPayment::select('subscription_id,count(*)') 
+                        ->group_by('subscription_id')
+                        ->where('user_country',$uc)
+                        ->get();
+            
+       /*     
        
         $subscriptionsQuery = Subscription::select('subscriptions.*');
         $subscriptionsQuery->with(['user_payments' => function ($query) use ($request,$startDate,$endDate,$uc) {
@@ -80,12 +86,12 @@ class SubscriptionReportController extends Controller
         }]);
        
         $subscriptions = $subscriptionsQuery->get();
+        */
         
-        
-     //   return view('subscription-total')
-     //   ->with([
-    //        'subscriptions'=>$subscriptions
-      //  ]);
+        return view('subscription-total')
+        ->with([
+            'subscriptions'=>$subscriptions
+        ]);
 
     }
 
