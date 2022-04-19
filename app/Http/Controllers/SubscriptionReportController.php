@@ -79,7 +79,7 @@ class SubscriptionReportController extends Controller
             }
         }]);
        
-        $subscriptions = $subscriptionsQuery->get();
+        $subscriptions = $subscriptionsQuery->first();
      //   return view('subscription-total')
      //   ->with([
     //        'subscriptions'=>$subscriptions
