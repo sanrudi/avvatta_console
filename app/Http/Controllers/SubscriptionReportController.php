@@ -64,7 +64,6 @@ class SubscriptionReportController extends Controller
                case 'NG':
                    $uc= 2;
                default:
-                   $uc= 0;
                    break;
             }
         
