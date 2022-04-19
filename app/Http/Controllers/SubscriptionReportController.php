@@ -71,14 +71,17 @@ class SubscriptionReportController extends Controller
             
             $list =  UserPayment::select('subscription_id')->distinct()->get();
             foreach ($list as $value) {
-                var_dump($value->subscription_id);
+               
+                 $subscriptions[] = UserPayment::select('subscription_id') 
+                        ->groupBy('subscription_id')
+                         ->where('subscription_id',$value->subscription_id)
+                        ->where('user_country',$uc)
+                        ->count();
+                
             }
             
             
-         $subscriptions = UserPayment::select('subscription_id') 
-                        ->groupBy('subscription_id')
-                        ->where('user_country',$uc)
-                        ->count();
+         
          var_dump($subscriptions);
             
        /*     
