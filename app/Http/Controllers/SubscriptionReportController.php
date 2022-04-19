@@ -84,7 +84,7 @@ class SubscriptionReportController extends Controller
                 $index++;
             }
             
-            
+            var_dump($subscriptions);
          
         
             
@@ -104,10 +104,10 @@ class SubscriptionReportController extends Controller
         $subscriptions = $subscriptionsQuery->get();
         */
         
-        return view('subscription-total')
-        ->with([
-            'subscriptions'=>$subscriptions
-        ]);
+ //       return view('subscription-total')
+  //      ->with([
+   //         'subscriptions'=>$subscriptions
+    //    ]);
 
     }
 
