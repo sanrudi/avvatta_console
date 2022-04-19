@@ -71,6 +71,7 @@ class SubscriptionReportController extends Controller
                         ->groupByRaw('subscription_id')
                         ->where('user_country',$uc)
                         ->count();
+         var_dump($subscriptions);
             
        /*     
        
