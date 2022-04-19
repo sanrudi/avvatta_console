@@ -83,10 +83,7 @@ class SubscriptionReportController extends Controller
                 $subscriptions[$index]['count'] = $count;
                 $index++;
             }
-            
-            var_dump($subscriptions);
-         
-        
+          
             
        /*     
        
