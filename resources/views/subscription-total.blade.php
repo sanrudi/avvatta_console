@@ -51,7 +51,7 @@
         @foreach($subscriptions as $subscription)
         <tr>
             <td>{{$subscription['title']}}</td>
-            <td>{{$subscription->['count']}}</td>
+            <td>{{$subscription['count']}}</td>
         </tr>
         @endforeach 
     </tbody>
