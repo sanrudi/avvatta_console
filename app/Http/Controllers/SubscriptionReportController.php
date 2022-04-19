@@ -67,8 +67,7 @@ class SubscriptionReportController extends Controller
                    break;
             }
         
-        
-        echo $uc,$this->country;
+       
         $subscriptionsQuery = Subscription::select('subscriptions.*');
         $subscriptionsQuery->with(['user_payments' => function ($query) use ($request,$startDate,$endDate,$uc) {
             $query->where('user_country',$uc);
