@@ -53,29 +53,32 @@ class SubscriptionReportController extends Controller
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         }
         
+        switch ($this->country) {
+
+               case 'SA':
+                   $uc = 0;
+                   break;
+               case 'GH':
+                   $uc= 1;
+                   break;
+               case 'NG':
+                   $uc= 2;
+               default:
+                   $uc= 0;
+                   break;
+            }
+        
+        
+        
         $subscriptionsQuery = Subscription::select('subscriptions.*');
         $subscriptionsQuery->with(['user_payments' => function ($query) use ($request,$startDate,$endDate) {
+            $query->where('user_country',$uc);
             if($startDate){
                 $query->whereDate('created_at', '>=', $startDate);
             }
             if($endDate){
                 $query->whereDate('created_at', '<=', $endDate);
             }
-            switch ($this->country) {
-
-               case 'SA':
-                   $query->where('user_payments.user_country','=', 0);
-                   break;
-               case 'GH':
-                   $query->where('user_payments.user_country','=', 1);
-                   break;
-               case 'NG':
-                   $query->where('user_payments.user_country','=', 2);
-                   break;
-               default:
-                   break;
-            }
-            
         }]);
        
         $subscriptions = $subscriptionsQuery->get();
