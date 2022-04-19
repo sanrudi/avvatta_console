@@ -68,7 +68,7 @@ class SubscriptionReportController extends Controller
             }
         
          $subscriptions = UserPayment::select('subscription_id,count(*)') 
-                        ->group_by('subscription_id')
+                        ->groupBy('subscription_id')
                         ->where('user_country',$uc)
                         ->get();
             
