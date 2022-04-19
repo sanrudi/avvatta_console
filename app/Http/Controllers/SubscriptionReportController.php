@@ -69,9 +69,9 @@ class SubscriptionReportController extends Controller
         
          // get the list of subscriptions 
             
-            $list =  UserPayment::groupBy('subscription_id')->get();
+            $list =  UserPayment::select('subscription_id')->groupBy('subscription_id')->get();
             
-            var_dump($list);
+            var_dump($list->subscription_id);
             
          $subscriptions = UserPayment::select('subscription_id') 
                         ->groupBy('subscription_id')
@@ -95,10 +95,10 @@ class SubscriptionReportController extends Controller
         $subscriptions = $subscriptionsQuery->get();
         */
         
-        return view('subscription-total')
-        ->with([
-            'subscriptions'=>$subscriptions
-        ]);
+     //   return view('subscription-total')
+      //  ->with([
+      //      'subscriptions'=>$subscriptions
+      //  ]);
 
     }
 
