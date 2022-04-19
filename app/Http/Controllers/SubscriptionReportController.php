@@ -70,19 +70,22 @@ class SubscriptionReportController extends Controller
          // get the list of subscriptions 
             
             $list =  UserPayment::select('subscription_id')->distinct()->get();
+            $index = 0;
             foreach ($list as $value) {
-               
-                 $subscriptions[] = UserPayment::select('subscription_id') 
+               // get title
+                $title = Subscription::select('title')->where('id',$value->subscription_id)->first();
+                $subscriptions[$index]['title'] = $title;
+                 $count = UserPayment::select('subscription_id') 
                         ->groupBy('subscription_id')
                          ->where('subscription_id',$value->subscription_id)
                         ->where('user_country',$uc)
                         ->count();
-                
+                $subscriptions[$index]['count'] = $count;
             }
             
             
          
-         var_dump($subscriptions);
+        
             
        /*     
        
@@ -100,10 +103,10 @@ class SubscriptionReportController extends Controller
         $subscriptions = $subscriptionsQuery->get();
         */
         
-     //   return view('subscription-total')
-      //  ->with([
-      //      'subscriptions'=>$subscriptions
-      //  ]);
+        return view('subscription-total')
+        ->with([
+            'subscriptions'=>$subscriptions
+        ]);
 
     }
 
