@@ -81,6 +81,7 @@ class SubscriptionReportController extends Controller
                         ->where('user_country',$uc)
                         ->count();
                 $subscriptions[$index]['count'] = $count;
+                $index++;
             }
             
             
