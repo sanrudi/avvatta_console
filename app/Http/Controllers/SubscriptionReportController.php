@@ -74,7 +74,7 @@ class SubscriptionReportController extends Controller
             foreach ($list as $value) {
                // get title
                 $title = Subscription::select('title')->where('id',$value->subscription_id)->first();
-                if(!title) continue;
+                if(!$title) continue;
                 $subscriptions[$index]['title'] = $title->title;
                  $count = UserPayment::select('subscription_id') 
                         ->groupBy('subscription_id')
