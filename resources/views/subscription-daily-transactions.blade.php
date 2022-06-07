@@ -51,6 +51,7 @@
           <th scope="col">Customer</th>
           <th scope="col">Title</th>
           <th scope="col">Amount</th>
+          <th scope="col">Is Renewal</th>
           <th scope="col">Mode</th>
         </tr>
       </thead>
@@ -69,6 +70,7 @@
           </td>
           <td>{{ $data->user_payments_subscriptions->title ?? ''}}</td>
           <td>{{ $data->amount }}</td>
+          <td>Is Renewal</td>
           <td>{{ $data->payment_mode }}</td>          
         </tr>
         @endforeach
