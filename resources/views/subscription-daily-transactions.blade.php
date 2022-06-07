@@ -51,7 +51,7 @@
           <th scope="col">Customer</th>
           <th scope="col">Title</th>
           <th scope="col">Amount</th>
-          <th scope="col">Is Renewal</th>
+          <th scope="col">Payment Process</th>
           <th scope="col">Mode</th>
         </tr>
       </thead>
