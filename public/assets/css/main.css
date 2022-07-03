@@ -1546,6 +1546,10 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f1f2f3 !important; }
 
+.table-success, .table-success>td, .table-success>th {
+    background-color: #b7cb1a !important;
+  }
+
 .table > tbody > tr > td {
   vertical-align: middle;
   color: #515365;
@@ -1553,11 +1557,11 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   letter-spacing: 1px; }
 
 .table > thead > tr > th {
-  color: #ed0676;
+  color: #000000;
   font-weight: 700;
   font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase; }
+  letter-spacing: 0.5px;
+  text-transform: capitalize; }
 
 .table > tbody > tr > td .usr-img-frame {
   background-color: #ebedf2;
