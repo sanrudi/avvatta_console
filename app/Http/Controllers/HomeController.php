@@ -82,7 +82,7 @@ class HomeController extends Controller
                 ->with('user_payments_subscriptions','user_payments_avvatta_users')
                 ->join('users', 'users.id', '=','user_payments.user_id')
                 ->where('user_payments.user_country','=', $uc)       
-                ->whereDate('created_at',$date->format('Y-m-d'))
+                ->whereDate('user_payments.created_at',$date->format('Y-m-d'))
                 ->count();
                 $userPaymentData[] = $userPayment;
             }
