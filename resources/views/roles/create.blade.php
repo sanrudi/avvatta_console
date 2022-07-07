@@ -20,11 +20,11 @@
             {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
         </div>
     </div>
-    <strong>Permission:</strong>
+  
     <div class="row">
-
+    <strong>Permission:</strong>
        @foreach($permission as $value)  
-        <div class="col-md-3">        
+        <div class="col-md-3 float-left">        
           <div class="form-group">
            
             <br/>

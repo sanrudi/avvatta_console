@@ -801,7 +801,7 @@ code {
     fill: rgba(172, 176, 195, 0.278431); }
   #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded="true"]:hover svg {
     fill: rgba(37, 213, 228, 0.239216);
-    color: #fe3838; }
+    color: #b7cb1a; }
   #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded="true"] span {
     color: #ebedf2; }
   #sidebar ul.menu-categories li.menu:not(.active) > .dropdown-toggle[aria-expanded="true"] {
@@ -847,26 +847,26 @@ code {
 #sidebar ul.menu-categories ul.submenu > li.active {
   position: relative; }
   #sidebar ul.menu-categories ul.submenu > li.active a {
-    color: #fe3838;
+    color: #b7cb1a;
     padding: 10px 12px 10px 61px; }
 
 #sidebar ul.menu-categories ul.submenu > li a:hover {
-  color: #fe3838; }
+  color: #b7cb1a; }
   #sidebar ul.menu-categories ul.submenu > li a:hover:before {
-    background-color: #fe3838 !important; }
+    background-color: #b7cb1a !important; }
 
 #sidebar ul.menu-categories ul.submenu > li a i {
   align-self: center;
   font-size: 9px; }
 
 #sidebar ul.menu-categories ul.submenu li > [aria-expanded="true"] i {
-  color: #fe3838; }
+  color: #b7cb1a; }
 
 #sidebar ul.menu-categories ul.submenu li > [aria-expanded="true"]:before {
-  background-color: #fe3838 !important; }
+  background-color: #b7cb1a !important; }
 
 #sidebar ul.menu-categories ul.submenu li > a[aria-expanded="true"] {
-  color: #fe3838; 
+  color: #b7cb1a; 
   background: transparent;}
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a {
@@ -878,13 +878,13 @@ code {
   color: #fff; }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a {
-  color: #fe3838; 
+  color: #b7cb1a; 
   background: transparent;}
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover {
-  color: #fe3838; }
+  color: #b7cb1a; }
   #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:hover:before {
-    background-color: #fe3838; }
+    background-color: #b7cb1a; }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li a:before {
   content: '';
@@ -895,7 +895,7 @@ code {
   left: 0; }
 
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a:before {
-  background-color: #fe3838; }
+  background-color: #b7cb1a; }
 
 .overlay {
   display: none;
@@ -1153,14 +1153,14 @@ code {
   font-size: 12px;
 }
 .table-action a .fa{
-  color: #fe3838;
-  border: 1px solid #fe3838;
+  color: #b7cb1a;
+  border: 1px solid #b7cb1a;
   padding: 5px 8px;
   border-radius: 5px;
 }
 .table-action a:hover .fa{
-  background-color: #fe3838;
-  border: 1px solid #fe3838;
+  background-color: #b7cb1a;
+  border: 1px solid #b7cb1a;
   color: #fff;
   border-radius: 5px;
 }
@@ -1238,7 +1238,7 @@ figure img {
   width: 8rem;
   height: 8rem;
   border-radius: 15%;
-  border: 1.5px solid #fe3838;
+  border: 1.5px solid #b7cb1a;
   margin-right: 1.5rem;
   padding:1rem;
 }
@@ -1263,7 +1263,7 @@ figure img {
 .track .order-track {
   margin-top: 2rem;
   padding: 0 1rem;
-  border-top: 1px dashed #fe3838;
+  border-top: 1px dashed #b7cb1a;
   padding-top: 2.5rem;
   display: flex;
   flex-direction: column;
@@ -1288,14 +1288,14 @@ figure img {
   width: 2.2rem;
   height: 2.2rem;
   border-radius: 50%;
-  background: #fe3838;
+  background: #b7cb1a;
 }
 .track .order-track-status-line {
   display: block;
   margin: 0 auto;
   width: 2px;
   height: 7rem;
-  background: #fe3838;
+  background: #b7cb1a;
 }
 .track .order-track-text-stat {
   font-size: 1.3rem;

@@ -224,7 +224,7 @@ dataLabels: {
     enabled: false
 },
 stroke: {
-    curve: 'stepline'
+    curve: 'smooth'
 },
 series: [
 @foreach($subscriptions as $subscription)
