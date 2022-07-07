@@ -79,6 +79,8 @@ class HomeController extends Controller
                 
                   
                 $userPayment = UserPayment::where('subscription_id','=',$subscription->id)
+                ->with('user_payments_subscriptions','user_payments_avvatta_users')
+                ->join('users', 'users.id', '=','user_payments.user_id')
                 ->where('user_payments.user_country','=', $uc)       
                 ->whereDate('created_at',$date->format('Y-m-d'))
                 ->count();
