@@ -9,11 +9,24 @@
 <div class="container">
     <h6>DashBoard</h6><hr>
     <!-- chart -->
-    @if(Auth::user()->is_cp == 0)
+    @if(Auth::user()->is_cp == 0 && false)
     <div id="chartArea" class="col-xl-12 layout-spacing">
         <div class="statbox widget box">
             <div class="widget-content widget-content-area">
                 <div id="s-line-area" class=""></div>
+
+            </div>
+        </div>
+    </div>
+    @endif
+    <!-- Pie chart -->
+    @if(Auth::user()->is_cp == 0)
+    <div id="pieChartArea" class="col-xl-12 layout-spacing">
+        <div class="statbox widget box">
+            <div class="widget-content widget-content-area">
+                <input type="date" class="chart-date" value="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d'); ?>" />
+                <button type="button" class="btn btn-success js-get-day-chart" >Get Data</button> <br/>
+                <div id="s-pie-chart" class=""></div>
 
             </div>
         </div>
@@ -272,6 +285,71 @@ var chart = new ApexCharts(
     );
 
 chart.render();
+
+// Start - Day wise subscription count
+var PieChart;
+function loadPieCart(dayWiseSubscriptions, dayWiseTitles, isRefresh = false) {
+    var options = {
+        series: dayWiseSubscriptions,
+        chart: {
+        width: 800,
+        type: 'pie',
+    },
+    labels: dayWiseTitles,
+    responsive: [{
+        breakpoint: 480,
+        options: {
+        chart: {
+            width: 200
+        },
+        legend: {
+            position: 'bottom'
+        }
+        }
+    }],
+    title: {
+        text: "Subscriptions",
+        align: 'left',
+        margin: 10,
+        offsetX: 0,
+        offsetY: 0,
+        floating: false,
+        style: {
+        fontSize:  '14px',
+        fontWeight:  'bold',
+        fontFamily:  undefined,
+        color:  '#263238'
+        },
+    }
+    };
+
+    if(!isRefresh) {
+        PieChart = new ApexCharts(document.querySelector("#s-pie-chart"), options);
+        PieChart.render();
+    } else {
+        PieChart.updateOptions(options);
+    }
+}
+var dayWiseSubscriptions = @json($dayWiseSubscriptions);
+var dayWiseTitles = @json($dayWiseTitles);
+loadPieCart(dayWiseSubscriptions, dayWiseTitles);
+$(document).on('click', '.js-get-day-chart', function(e) {
+    var chartDate = $('.chart-date').val();
+    var $btnGetData = $(this);
+    $btnGetData.html("Loading...").attr('disabled', true);
+    $.ajax({
+        url: "{{ route('home') }}",
+        context: document.body,
+        dataType: 'json',
+        data: {chartDate : chartDate}
+    }).done(function(result) {
+        console.log(result);
+        loadPieCart(result['dayWiseSubscriptions'], result['dayWiseTitles'], true);
+        $btnGetData.html("Get Data").attr('disabled', false);
+    });
+});
+// End - Day wise subscription count
+
 </script>
 @endif
 @endsection
