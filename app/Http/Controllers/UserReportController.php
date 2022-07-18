@@ -470,4 +470,35 @@ class UserReportController extends Controller
         }
     }
     
+    
+    public function updateRenewal() {
+        
+        
+        // check the renewal and update
+        
+        $payment_list = UserPayment::get();
+        
+        foreach($payment_list as $value){
+            
+            $sub_id = $value->subscription_id;
+            $uid =  $value->user_id;
+            $cdate = $value->created_at;
+            
+            $renewal_check = UserPayment::where('subscription_id',$sub_id)
+                    ->where('user_id',$uid)
+                    ->where('created_at','<',$cdate)
+                    ->first();
+            if($renewal_check) 
+            {
+                
+                $renewal_check->is_renewal = 1;
+                $renewal_check->save();
+                
+            }
+            
+        }
+    
+        
+    }
+    
 }
