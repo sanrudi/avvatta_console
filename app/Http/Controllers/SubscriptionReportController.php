@@ -352,6 +352,18 @@ class SubscriptionReportController extends Controller
         }
         $tranQuery->where('user_payments.status', '=', 1);
         $tranQuery->orderBy('user_payments.created_at','desc');
+        switch ($request->input('type'))
+        {
+            case "New":
+                $tranQuery->where('user_payments.is_renewal', '=', 0);
+                break;
+            case "Renewal":
+                $tranQuery->where('user_payments.is_renewal', '=', 1);
+                break;
+            default:
+               break;
+        }
+        
         
         if($export){
             $transactions = $tranQuery->get()->toArray();

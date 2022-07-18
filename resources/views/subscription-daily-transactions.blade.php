@@ -28,6 +28,14 @@
           <label for="endDate">End Date</label>
           <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
+          <div class="form-group col-md-2">
+                    <label for="type">Renewal</label>
+                    <select name="type" id="type" class="form-control">
+                        <option value="" selected="selected">Select</option>
+                        <option value="New" @if(Request::get('type') == "New") selected="selected" @endif >New</option>
+                        <option value="Renewal" @if(Request::get('type') == "Renewal") selected="selected" @endif>Renewal</option>
+                    </select>
+                </div>
         <div class="form-group col-md-2">
           <label for="search">Search</label>
           <input id="search" name="search" type="text" class="form-control"  value="{!! Request::get('search') !!}" placeholder="type customer name .. " />
