@@ -148,7 +148,7 @@ class SubscriptionReportController extends Controller
         if($endDate){
             $userPaymentQuery->whereDate('user_payments.created_at', '<=', $endDate);
         }
-        $noOfSubscriptions = $userPaymentQuery->get(); 
+        $noOfSubscriptions = $userPaymentQuery->orderBy('id', 'DESC')->get(); 
          
         $subscriptionList = [];
         foreach($noOfSubscriptions as $noOfSubscription){
