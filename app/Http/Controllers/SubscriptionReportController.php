@@ -288,7 +288,7 @@ class SubscriptionReportController extends Controller
             }
             $newSubscriptionQuery->groupBy('user_id');
         }
-        $newSubscriptions = $newSubscriptionQuery->get();
+        $newSubscriptions = $newSubscriptionQuery->orderBy('id', 'DESC')->get();
         
         return view('subscription-customer')
         ->with([
