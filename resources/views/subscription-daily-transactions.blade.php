@@ -71,7 +71,7 @@
           </td>
           <td>{{ $data->user_payments_subscriptions->title ?? ''}}</td>
           <td>{{ $data->amount }}</td>
-          <td>{{ $data->is_renewal ? "New" : "Renewal" }} </td>
+          <td>{{ $data->is_renewal ? "Renewal" : "New" }} </td>
            <td>{{ $data->expiry_date}}</td>        
           <td>{{ $data->payment_mode }}</td>          
         </tr>
