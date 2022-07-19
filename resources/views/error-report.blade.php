@@ -55,7 +55,7 @@
       <tbody>
         @foreach($errorReport as $key => $data)
         <tr>
-          <td><a href="#" onclick="show_error({{ $data['id'] }});">#{{ $data['id'] }}</a></td>
+          <td><a href="#" onclick="show_error({{ $data['id'] }});">AVA-{{ $data['id'] }}</a></td>
           <td>{{ $data['date_time'] }}</td>
           <td>{{ $data['status'] }}</td>
           <td>{{ $data['url'] }}</td>
