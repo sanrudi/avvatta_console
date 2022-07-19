@@ -364,6 +364,22 @@ class SubscriptionReportController extends Controller
                break;
         }
         
+        switch ($request->input('packagetype'))
+        {
+            case "game":
+                $userReport = UserLog::where('user_logs.category', '=', 'game');
+                break;
+            case "erosnow":
+                $userReport = UserLog::where('user_logs.category', '=', 'erosnow');
+                break;
+            case "kids":
+                $userReport = UserLog::where('user_logs.category', '=', 'kids');
+                break;
+            default:
+                $userReport = UserLog::select('users.firstname','users.lastname','users.email','users.mobile','user_logs.user_id', 'user_logs.loggable_id', 'user_logs.content_id', 'user_logs.type', 'user_logs.category', 'user_logs.action', 'user_logs.date_time','user_logs.device','user_logs.os','user_logs.age');
+        }
+        
+        
         
         if($export){
             $transactions = $tranQuery->get()->toArray();

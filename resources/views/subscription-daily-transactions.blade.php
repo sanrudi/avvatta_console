@@ -29,6 +29,17 @@
           <input id="endDate" name="endDate" type="text" class="form-control"  value="" placeholder="yyyy-mm-dd" />
         </div>
           <div class="form-group col-md-2">
+                    <label for="packagetype">Package Type</label>
+                    <select name="packagetype" id="packagetype" class="form-control">
+                        <option value="" selected="selected">Select</option>
+                        <option value="erosnow" @if(Request::get('packagetype') == "erosnow") selected="selected" @endif >Erosnow</option>
+                        <option value="kids" @if(Request::get('packagetype') == "kids") selected="selected" @endif>Kids</option>
+                        <option value="game" @if(Request::get('packagetype') == "game") selected="selected" @endif>Games</option>
+                    </select>
+                </div>
+          
+          
+          <div class="form-group col-md-2">
                     <label for="type">Renewal</label>
                     <select name="type" id="type" class="form-control">
                         <option value="" selected="selected">Select</option>

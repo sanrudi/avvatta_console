@@ -476,7 +476,7 @@ class UserReportController extends Controller
         
         // check the renewal and update
         
-        $payment_list = UserPayment::get();
+        $payment_list = UserPayment::limit(1000)->get();
         
         foreach($payment_list as $value){
             
@@ -490,10 +490,15 @@ class UserReportController extends Controller
                     ->first();
             if($renewal_check) 
             {
-                
+                $renewal_check->renewal_at = 1;
                 $renewal_check->is_renewal = 1;
                 $renewal_check->save();
                 
+            }
+            else
+            {
+                $renewal_check->renewal_at = 1; 
+                $renewal_check->save();
             }
             
         }
