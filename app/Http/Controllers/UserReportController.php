@@ -490,7 +490,7 @@ class UserReportController extends Controller
                     ->first();
             if($renewal_check) 
             {
-                $renewal_check->renewal_at = 1;
+                $renewal_check->renewed_at = 1;
                 $renewal_check->is_renewal = 1;
                 $renewal_check->save();
                 
@@ -498,7 +498,7 @@ class UserReportController extends Controller
             else
             {
                 $renewal_check = UserPayment::where('id',$value->id)->first();
-                $renewal_check->renewal_at = 1; 
+                $renewal_check->renewed_at = 1; 
                 $renewal_check->save();
             }
             
