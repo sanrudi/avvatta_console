@@ -476,7 +476,7 @@ class UserReportController extends Controller
         
         // check the renewal and update
         
-        $payment_list = UserPayment::limit(1000)->get();
+        $payment_list = UserPayment::limit(1000)->where('renewed_at',0)->get();
         
         foreach($payment_list as $value){
             
