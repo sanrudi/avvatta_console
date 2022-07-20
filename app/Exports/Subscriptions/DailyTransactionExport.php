@@ -31,6 +31,10 @@ class DailyTransactionExport implements  FromArray,WithHeadings, WithTitle, Shou
         $create_at = date('Y-m-d H:i:s', strtotime($transactions['created_at']));
         $firstname = isset($transactions['user_payments_avvatta_users']['firstname']) ? $transactions['user_payments_avvatta_users']['firstname']:"";
         $lastname = isset($transactions['user_payments_avvatta_users']['lastname'])?$transactions['user_payments_avvatta_users']['lastname']:"";
+        $emailid = isset($transactions['user_payments_avvatta_users']['email'])?$transactions['user_payments_avvatta_users']['email']:"";
+        $mobile = isset($transactions['user_payments_avvatta_users']['mobile'])?$transactions['user_payments_avvatta_users']['mobile']:"";
+        $product_id = isset($transactions['user_payments_avvatta_users']['subscription_id'])?$transactions['user_payments_avvatta_users']['subscription_id']:"";
+ 
         $customer = $firstname." ".$lastname;
         $title = isset($transactions['user_payments_subscriptions']['title'])?$transactions['user_payments_subscriptions']['title']:"";
         $amount = $transactions['amount'];
@@ -40,6 +44,9 @@ class DailyTransactionExport implements  FromArray,WithHeadings, WithTitle, Shou
             $customer,
             $title,
             $amount,
+            $emailid,
+            $mobile,
+            $product_id,
             $mode
         ];
     }
@@ -51,6 +58,9 @@ class DailyTransactionExport implements  FromArray,WithHeadings, WithTitle, Shou
             'Customer',
             'Title',
             'Amount',
+            'Email',
+            'Mobile',
+            'Product',
             'Mode'
         ];
     }
