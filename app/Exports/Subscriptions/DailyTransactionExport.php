@@ -36,7 +36,7 @@ class DailyTransactionExport implements  FromArray,WithHeadings, WithTitle, Shou
         $product_id = isset($transactions['user_payments_avvatta_users']['subscription_id'])?$transactions['user_payments_avvatta_users']['subscription_id']:"";
         $is_renewal = isset($transactions['user_payments_avvatta_users']['is_renewal'])?$transactions['user_payments_avvatta_users']['is_renewal']:0;
         
-        if($is_renewal == 1 )
+        if($is_renewal == "1" )
             $renewal = 'Renewal';
         else 
             $renewal = 'New';
