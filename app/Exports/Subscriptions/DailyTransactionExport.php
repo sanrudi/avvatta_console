@@ -34,11 +34,13 @@ class DailyTransactionExport implements  FromArray,WithHeadings, WithTitle, Shou
         $emailid = isset($transactions['user_payments_avvatta_users']['email'])?$transactions['user_payments_avvatta_users']['email']:"";
         $mobile = isset($transactions['user_payments_avvatta_users']['mobile'])?$transactions['user_payments_avvatta_users']['mobile']:"";
         $product_id = isset($transactions['user_payments_avvatta_users']['subscription_id'])?$transactions['user_payments_avvatta_users']['subscription_id']:"";
-        $is_renewal = isset($transactions['user_payments_avvatta_users']['is_renewal'])?$transactions['user_payments_avvatta_users']['is_renewal']:"";
-        $renewal = 'New';
+        $is_renewal = isset($transactions['user_payments_avvatta_users']['is_renewal'])?$transactions['user_payments_avvatta_users']['is_renewal']:0;
+        
         if($is_renewal == 1 )
             $renewal = 'Renewal';
-        
+        else 
+            $renewal = 'New';
+            
         $customer = $firstname." ".$lastname;
         $title = isset($transactions['user_payments_subscriptions']['title'])?$transactions['user_payments_subscriptions']['title']:"";
         $amount = $transactions['amount'];
