@@ -66,7 +66,8 @@
     <table class="table table-bordered mb-5">
       <thead>
         <tr class="table-success">
-          <th scope="col">Date</th>
+          <th scope="col">Transaction Id</th>
+          <th scope="col">Subscribed Date</th>
           <th scope="col">Customer</th>
           <th scope="col">Title</th>
           <th scope="col">Amount</th>
@@ -78,6 +79,7 @@
       <tbody>
         @foreach($transactions as $key => $data)
         <tr>
+          <td>#{{$data->pay_request_id}}</td>
           <td>{{ $data->created_at }}</td>
           <td>
             @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
