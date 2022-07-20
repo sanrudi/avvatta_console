@@ -47,7 +47,7 @@ class DailyTransactionExport implements  FromArray,WithHeadings, WithTitle, Shou
             $emailid,
             $mobile,
             $product_id,
-            $renewal,
+            $is_renewal,
             $mode
         ];
     }
