@@ -7,6 +7,7 @@ use DB;
 use App\Models\Subscription;
 use App\Models\UserPayment;
 use App\Models\AvvattaUser;
+use App\Models\UserLog;
 use App\Exports\Subscriptions\DailyTransactionExport;
 use Maatwebsite\Excel\Facades\Excel;
 
