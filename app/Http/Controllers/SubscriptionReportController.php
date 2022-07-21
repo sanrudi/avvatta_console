@@ -383,8 +383,8 @@ class SubscriptionReportController extends Controller
         
         
         if($export){
-            $transactions = $tranQuery->limit(10)->get()->toArray();
-            var_dump($transactions); exit;
+            $transactions = $tranQuery->get()->toArray();
+           
             return Excel::download(new DailyTransactionExport($transactions), 'transactions-export.xlsx');
         }
 
