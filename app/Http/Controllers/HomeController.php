@@ -62,7 +62,7 @@ class HomeController extends Controller
         $subscriptionsQuery = Subscription::select('subscriptions.*');
         $subscriptions = $subscriptionsQuery->get();
         $i = 1;
-        
+        $uc = 0;
         switch ($this->country) {
 
                case 'SA':
