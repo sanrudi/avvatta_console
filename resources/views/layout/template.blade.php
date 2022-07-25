@@ -283,7 +283,7 @@
                         </a>
                     </li>
                     @endcan
-                    @if($country != 'ZM')
+                   
                     @can('cms-editor')
                     <li class="menu">
                         <a href="#cms" data-toggle="collapse" aria-expanded="{{ (request()->is('cms-editor-erosnow')||request()->is('game-promotion')||request()->is('kid-promotion')||request()->is('elearn-promotion')) ? 'true' : 'false' }}" class="dropdown-toggle">
@@ -311,7 +311,7 @@
                         </ul>
                     </li>
                     @endcan
-                    @endif
+                    
                 </ul>
             </nav>
         </div>
