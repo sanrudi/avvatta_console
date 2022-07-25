@@ -52,7 +52,7 @@
                             </div>
                         </a>
                     </li>
-                    @if($country != 'ZM')
+                    
                     @can('games')
                     <li class="menu">
                         <a href="#games" data-toggle="collapse" aria-expanded="{{ (request()->is('game-articles-report')||request()->is('game-report')||request()->is('repeated-game-by-user')||request()->is('most-played-games')) ? 'true' : 'false' }}" class="dropdown-toggle">
@@ -80,7 +80,7 @@
                         </ul>
                     </li>
                     @endcan
-                    @endif
+                   
                     @can('kids')
                     <li class="menu">
                         <a href="#kids" data-toggle="collapse" aria-expanded="{{ (request()->is('kids-report')||request()->is('most-watched-kids-content')||request()->is('repeated-kidscontent-by-user')) ? 'true' : 'false' }}" class="dropdown-toggle">
@@ -105,7 +105,7 @@
                         </ul>
                     </li>
                     @endcan
-                     @if($country != 'ZM')
+                     
                     @can('elearn')
                     <li class="menu">
                         <a href="#elearning" data-toggle="collapse" aria-expanded="{{ (request()->is('elearn-report')||request()->is('top-ten-elearn-content')||request()->is('elearn-top-repeat-user-report')||request()->is('elearn-top-genre-watched-report')||request()->is('most-watched-elearn-content')) ? 'true' : 'false' }}" class="dropdown-toggle">
@@ -168,7 +168,7 @@
                         </ul>
                     </li>
                     @endcan
-                    @endif
+                    
                     @can('users')
                     <li class="menu">
                         <a href="#user-reports" data-toggle="collapse" aria-expanded="{{ (request()->is('user-report')||request()->is('user-registration-report')||request()->is('user-sub-profile-report')||request()->is('user-login-report')||request()->is('user-idle-subscribers')) ? 'true' : 'false' }}" class="dropdown-toggle">
