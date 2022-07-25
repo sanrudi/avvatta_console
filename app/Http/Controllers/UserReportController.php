@@ -476,8 +476,8 @@ class UserReportController extends Controller
         
         // check the renewal and update
         
-        $payment_list = UserPayment::limit(1000)->where('renewed_at',0)->get();
-        
+        $payment_list = UserPayment::limit(10000)->where('renewed_at',0)->get();
+        $count =  0;
         foreach($payment_list as $value){
             
             $sub_id = $value->subscription_id;
@@ -490,21 +490,23 @@ class UserReportController extends Controller
                     ->first();
             if($renewal_check) 
             {
-                $renewal_check->renewed_at = 1;
-                $renewal_check->is_renewal = 1;
-                $renewal_check->save();
+                $value->renewed_at = 1;
+                $value->is_renewal = 1;
+                $value->save();
+                $count++;
                 
             }
             else
             {
-                $renewal_check = UserPayment::where('id',$value->id)->first();
-                $renewal_check->renewed_at = 1; 
-                $renewal_check->save();
+                $value->renewed_at = 1;
+                
+                $value->save();
+                $count++;  
             }
             
         }
-    
-        
+    echo $count;
+        echo "Done";
     }
     
 }
