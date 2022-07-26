@@ -84,10 +84,10 @@ class SubscriptionReportController extends Controller
                         
                  
                   if($startDate){
-            $userPaymentQuery->whereDate('user_payments.created_at', '>=', $startDate);
+            $count->whereDate('user_payments.created_at', '>=', $startDate);
         }
         if($endDate){
-            $userPaymentQuery->whereDate('user_payments.created_at', '<=', $endDate);
+            $count->whereDate('user_payments.created_at', '<=', $endDate);
         }
                $count->count();
                 $subscriptions[$index]['count'] = $count;
