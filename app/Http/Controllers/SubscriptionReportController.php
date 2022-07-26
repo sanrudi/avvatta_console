@@ -53,7 +53,7 @@ class SubscriptionReportController extends Controller
         if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
         }
-        
+        $uc = 0;
         switch ($this->country) {
 
                case 'SA':
