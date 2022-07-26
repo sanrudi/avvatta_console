@@ -80,8 +80,16 @@ class SubscriptionReportController extends Controller
                  $count = UserPayment::select('subscription_id') 
                         ->groupBy('subscription_id')
                          ->where('subscription_id',$value->subscription_id)
-                        ->where('user_country',$uc)
-                        ->count();
+                        ->where('user_country',$uc);
+                        
+                 
+                  if($startDate){
+            $userPaymentQuery->whereDate('user_payments.created_at', '>=', $startDate);
+        }
+        if($endDate){
+            $userPaymentQuery->whereDate('user_payments.created_at', '<=', $endDate);
+        }
+               $count->count();
                 $subscriptions[$index]['count'] = $count;
                 $index++;
             }
