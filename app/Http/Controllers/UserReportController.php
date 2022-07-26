@@ -476,7 +476,7 @@ class UserReportController extends Controller
         
         // check the renewal and update
         
-        $payment_list = UserPayment::limit(10000)
+        $payment_list = UserPayment::limit(50000)
                 ->where('renewed_at',0)
                 ->orderBy('id' , 'desc')
                 ->get();
