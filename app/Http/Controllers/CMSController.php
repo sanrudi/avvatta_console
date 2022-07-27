@@ -22,11 +22,14 @@ class CMSController extends Controller
         $contenttype = "movies";
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
+        if($contenttype == '')
         $data = AvErosNowsPrefer::with('erosnow_data')
         ->where('category', '=' , $category)
         ->where('content_type', '=' , $contenttype)
         ->orderBy('prefer','DESC')->get();
         return view('cms-editor-eros.index',compact('data','category','contenttype'));
+        
+        
     }
 
     public function store(Request $request)
@@ -74,8 +77,10 @@ class CMSController extends Controller
         }
         if($contenttype == "series"){ 
             $autocomplateQuery->where(function ($query) use ($search) {
-                $query->where('title', 'like', '%' .$search . '%')
-                    ->orWhere('serial_title', 'like', '%' .$search . '%');
+                $query->where('serial_title', 'like', '%' .$search . '%');
+                $query->distinct('serial_title');
+             //   $query->where('title', 'like', '%' .$search . '%')
+             //       ->orWhere('serial_title', 'like', '%' .$search . '%');
             });
             $autocomplateQuery->where('categories', '=', $category);
             $autocomplateQuery->Where('content_type','like','ORIGINAL%');
