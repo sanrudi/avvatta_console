@@ -58,11 +58,11 @@
     <li class="nav-item">
       <a class="nav-link" id="RegisteredNonsubscribedCustomers-tab" data-toggle="tab" href="#RegisteredNonsubscribedCustomers" role="tab" aria-controls="profile" aria-selected="false">Registered & Non subscribed Customers</a>
     </li>
-    <!--
+    
     <li class="nav-item">
       <a class="nav-link" id="NumberofSubscriptions-tab" data-toggle="tab" href="#NumberofSubscriptions" role="tab" aria-controls="profile" aria-selected="false">List of Subscriptions</a>
     </li>
-    -->
+    
     <li class="nav-item">
       <a class="nav-link" id="CancelledSubscriptions-tab" data-toggle="tab" href="#CancelledSubscriptions" role="tab" aria-controls="profile" aria-selected="false">Cancelled Subscriptions</a>
     </li>
@@ -185,7 +185,7 @@
       </table>
       <!-- tab -->
     </div>
-      <!--
+      
     <div class="tab-pane fade" id="NumberofSubscriptions" role="tabpanel" aria-labelledby="NumberofSubscriptions-tab">
      
       <table id="noOfSubscriptions" class="table table-striped table-bordered " style="width:100%">
@@ -217,7 +217,7 @@
       
     </div>
       
-      -->
+      
       
     <div class="tab-pane fade" id="CancelledSubscriptions" role="tabpanel" aria-labelledby="CancelledSubscriptions-tab">
       <!-- tab -->
