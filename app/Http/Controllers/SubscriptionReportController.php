@@ -133,7 +133,7 @@ class SubscriptionReportController extends Controller
         
         $sevenDays = date('Y-m-d H:i:s', strtotime($today.'-7 day'));
         $fourteenDays = date('Y-m-d H:i:s', strtotime($today.'-14 day'));
-
+/*
         $userPaymentQuery = UserPayment::select('user_payments.*')
         ->with('user_payments_avvatta_users')
         ->with('user_payments_subscriptions');
@@ -163,7 +163,7 @@ class SubscriptionReportController extends Controller
         foreach($noOfSubscriptions as $noOfSubscription){
             $subscriptionList[] = $noOfSubscription->user_id;
         }
-
+*/
         // Registered Users
         $avvattaActiveUsersQuery = AvvattaUser::whereNotNull('id');
         if($startDate){
