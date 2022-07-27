@@ -77,10 +77,10 @@ class CMSController extends Controller
         }
         if($contenttype == "series"){ 
             $autocomplateQuery->where(function ($query) use ($search) {
-                $query->where('serial_title', 'like', '%' .$search . '%');
-                $query->distinct('serial_title');
-             //   $query->where('title', 'like', '%' .$search . '%')
-             //       ->orWhere('serial_title', 'like', '%' .$search . '%');
+            //    $query->where('serial_title', 'like', '%' .$search . '%');
+            //    $query->distinct('serial_title');
+                $query->where('title', 'like', '%' .$search . '%')
+                    ->orWhere('serial_title', 'like', '%' .$search . '%');
             });
             $autocomplateQuery->where('categories', '=', $category);
             $autocomplateQuery->Where('content_type','like','ORIGINAL%');
