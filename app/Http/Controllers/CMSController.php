@@ -22,7 +22,7 @@ class CMSController extends Controller
         $contenttype = "movies";
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
-        if($contenttype == '')
+        if($contenttype != '')
         $data = AvErosNowsPrefer::with('erosnow_data')
         ->where('category', '=' , $category)
         ->where('content_type', '=' , $contenttype)
