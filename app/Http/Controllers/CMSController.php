@@ -27,9 +27,7 @@ class CMSController extends Controller
         ->where('category', '=' , $category)
         ->where('content_type', '=' , $contenttype)
         ->orderBy('prefer','DESC')->get();
-        
-        var_dump($data);
-      //  return view('cms-editor-eros.index',compact('data','category','contenttype'));
+        return view('cms-editor-eros.index',compact('data','category','contenttype'));
         
         
     }
