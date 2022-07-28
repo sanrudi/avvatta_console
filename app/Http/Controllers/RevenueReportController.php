@@ -48,6 +48,8 @@ class RevenueReportController extends Controller
         if($request->input('endDate') != null) {
         $todate = $request->input('endDate'); 
         }
+       
+        $todate = date('Y-m-d H:i:s', strtotime($todate . ' +1 day'));
         // last month
         // Firstday
         // get catogories
