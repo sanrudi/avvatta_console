@@ -49,7 +49,7 @@ class RevenueReportController extends Controller
         $todate = $request->input('endDate'); 
         }
        
-        $todate = date('Y-m-d', strtotime($todate . ' +1 day'));
+        $todate = date('Y-m-d H:i:s', strtotime($todate . ' +1 day'));
         // last month
         // Firstday
         // get catogories
