@@ -75,16 +75,6 @@ class CMSController extends Controller
         $autocomplateQuery->where('categories', '=', $category);
         $autocomplateQuery->where('content_type','like','MUSIC%');
         }
-        if($contenttype == "series"){ 
-            $autocomplateQuery->where(function ($query) use ($search) {
-            //    $query->where('serial_title', 'like', '%' .$search . '%');
-            //    $query->distinct('serial_title');
-                $query->where('title', 'like', '%' .$search . '%')
-                    ->orWhere('serial_title', 'like', '%' .$search . '%');
-            });
-            $autocomplateQuery->where('categories', '=', $category);
-            $autocomplateQuery->Where('content_type','like','ORIGINAL%');
-        }
         if($contenttype == "movies"){ 
         $autocomplateQuery->where('title', 'like', '%' .$search . '%');
         $autocomplateQuery->where('categories', '=', $category);
@@ -113,6 +103,41 @@ class CMSController extends Controller
                 "category"=>$category
                 );
         }
+         if($contenttype == "series"){ 
+            $autocomplateQuery->where(function ($query) use ($search) {
+            //    $query->where('serial_title', 'like', '%' .$search . '%');
+            //    $query->distinct('serial_title');
+                    Where('serial_title', 'like', '%' .$search . '%');
+            
+            $autocomplateQuery->where('categories', '=', $category);
+            $autocomplateQuery->Where('content_type','like','ORIGINAL%');
+            $autocomplateQuery->GroupBY('serial_title');
+            $autocomplateQuery->OrderBy('content_id'); 
+            $autocomplate = $autocomplateQuery->limit(10)->get();
+            });  
+            $response = array();
+            foreach($autocomplate as $autocomplate){
+            $title = "";$title = $autocomplate->title;
+            if($contenttype == "series"){ 
+                $title = $autocomplate->serial_title." (".$autocomplate->title.")";
+            }
+            $label = "";$label = $title." (".$autocomplate->duration." sec) ".$autocomplate->release_year." ".$autocomplate->categories." ";
+            
+            $response[] = array(
+                "value"=>$autocomplate->content_id,
+                "label"=>$label,
+                "content_id"=>$autocomplate->content_id,
+                "title"=>$title,
+                "small_url"=>$autocomplate->small_url,
+                "duration"=>$autocomplate->duration,
+                "release_year"=>$autocomplate->release_year,
+                "categories"=>$autocomplate->categories,
+                "category"=>$category
+                );
+        }
+            
+        }
+        
         echo json_encode($response);
         exit;
      }
