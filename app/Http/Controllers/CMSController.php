@@ -107,14 +107,14 @@ class CMSController extends Controller
             $autocomplateQuery->where(function ($query) use ($search) {
             //    $query->where('serial_title', 'like', '%' .$search . '%');
             //    $query->distinct('serial_title');
-                    Where('serial_title', 'like', '%' .$search . '%');
-            
+                    $query->Where('serial_title', 'like', '%' .$search . '%');
+            }); 
             $autocomplateQuery->where('categories', '=', $category);
             $autocomplateQuery->Where('content_type','like','ORIGINAL%');
             $autocomplateQuery->GroupBY('serial_title');
             $autocomplateQuery->OrderBy('content_id'); 
             $autocomplate = $autocomplateQuery->limit(10)->get();
-            });  
+            } 
             $response = array();
             foreach($autocomplate as $autocomplate){
             $title = "";$title = $autocomplate->title;
