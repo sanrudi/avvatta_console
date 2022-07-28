@@ -136,8 +136,6 @@ class CMSController extends Controller
                 );
         }
             
-        }
-        
         echo json_encode($response);
         exit;
      }
