@@ -47,7 +47,7 @@ class HomeController extends Controller
         $fromdate = date('Y-m-d', strtotime('-10 day'));
         $todate = date('Y-m-d', strtotime('+1 day'));
         $period = CarbonPeriod::create($fromdate, $todate);
-        $chartDate = !empty($request['chartDate']) ? $request['chartDate'] : date('Y-m-d',strtotime('-1 day'));
+        $chartDate = !empty($request['chartDate']) ? $request['chartDate'] : date('Y-m-d');
         $dayWiseSubscriptions = [];
         $subscriptionData = [];
         if(Auth::user()->is_cp){
