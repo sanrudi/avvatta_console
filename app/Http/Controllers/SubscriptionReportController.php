@@ -79,6 +79,7 @@ class SubscriptionReportController extends Controller
                 $subscriptions[$index]['title'] = $title->title;
                  $count = UserPayment::select('subscription_id') 
                         ->groupBy('subscription_id')
+                         ->groupBy('is_renewal')
                          ->where('subscription_id',$value->subscription_id)
                         ->where('user_country',$uc);
                         
