@@ -46,6 +46,7 @@
         <th>Plan</th>
         <th>Received New</th>
         <th>Received Renew</th>
+        <th>Total</th>
     </tr>
     </thead>
     <tbody>
@@ -54,6 +55,7 @@
             <td>{{$subscription['title']}}</td>
             <td>{{$subscription['count']}}</td>
             <td>{{$subscription['count_renew']}}</td>
+            <td>{{$subscription['count'] + $subscription['count_renew']}}</td>
         </tr>
         @endforeach 
     </tbody>
