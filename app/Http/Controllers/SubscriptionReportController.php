@@ -77,10 +77,15 @@ class SubscriptionReportController extends Controller
                 $title = Subscription::select('title')->where('id',$value->subscription_id)->first();
                 if(!$title) continue;
                 $subscriptions[$index]['title'] = $title->title;
-                 $count = UserPayment::select('subscription_id') 
+                 $count_new = UserPayment::select('subscription_id') 
                         ->groupBy('subscription_id')
-                         ->groupBy('is_renewal')
                          ->where('subscription_id',$value->subscription_id)
+                         ->where('is_renewal','0')
+                        ->where('user_country',$uc);
+                 $count_renew = UserPayment::select('subscription_id') 
+                        ->groupBy('subscription_id')
+                         ->where('subscription_id',$value->subscription_id)
+                         ->where('is_renewal','1')
                         ->where('user_country',$uc);
                         
                  
@@ -90,8 +95,10 @@ class SubscriptionReportController extends Controller
         if($endDate){
             $count->whereDate('user_payments.created_at', '<=', $endDate);
         }
-               $counts = $count->count();
+               $counts = $count_new->count();
                 $subscriptions[$index]['count'] = $counts;
+                $counts_renew = $count_renew->count();
+                $subscriptions[$index]['count_renew'] = $counts_renew;
                 $index++;
             }
           
