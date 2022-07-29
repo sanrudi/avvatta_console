@@ -90,10 +90,13 @@ class SubscriptionReportController extends Controller
                         
                  
                   if($startDate){
-            $count->whereDate('user_payments.created_at', '>=', $startDate);
+            $count_new->whereDate('user_payments.created_at', '>=', $startDate);
+            $count_renew->whereDate('user_payments.created_at', '>=', $startDate);
         }
+        
         if($endDate){
-            $count->whereDate('user_payments.created_at', '<=', $endDate);
+            $count_new->whereDate('user_payments.created_at', '<=', $endDate);
+            $count_renew->whereDate('user_payments.created_at', '<=', $endDate);
         }
                $counts = $count_new->count();
                 $subscriptions[$index]['count'] = $counts;
