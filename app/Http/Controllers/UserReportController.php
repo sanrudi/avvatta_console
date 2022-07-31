@@ -520,18 +520,18 @@ class UserReportController extends Controller
          $renewal_raw = DB::table('rawdata')->where('payment_type','renewal');
          
          foreach ($renewal_raw as $value) {
-             
+             $update = array('is_renewal'=>1);
             UserPayment::where('pay_request_id',$value->txnid)
-                    ->update('is_renewal',1);
+                    ->update($update);
              
          }
          
           $renewal_raw = DB::table('rawdata')->where('payment_type','subscription');
          
          foreach ($renewal_raw as $value) {
-             
+             $update = array('is_renewal'=>0);
             UserPayment::where('pay_request_id',$value->txnid)
-                    ->update('is_renewal',0);
+                    ->update($update);
              
          }
          
