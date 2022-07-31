@@ -44,6 +44,12 @@ Route::post('elearn-promotion', [App\Http\Controllers\CMSController::class, 'ele
 Route::post('elearn-promotion-search',[App\Http\Controllers\CMSController::class, 'searchElearn'])->name('elearn-promotion-search');
 // Subscription Report
 Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');
+Route::get('getRegisteredCustomer', [App\Http\Controllers\SubscriptionReportController::class, 'getRegisteredCustomer'])->name('getRegisteredCustomer');
+Route::get('getRegisteredSubscribedCustomer', [App\Http\Controllers\SubscriptionReportController::class, 'getRegisteredSubscribedCustomer'])->name('getRegisteredSubscribedCustomer');
+Route::get('getRegisteredNotSubscribedCustomer', [App\Http\Controllers\SubscriptionReportController::class, 'getRegisteredNotSubscribedCustomer'])->name('getRegisteredNotSubscribedCustomer');
+Route::get('getSubscriberList', [App\Http\Controllers\SubscriptionReportController::class, 'getSubscriberList'])->name('getSubscriberList');
+Route::get('getSubscriberCancelledList', [App\Http\Controllers\SubscriptionReportController::class, 'getSubscriberCancelledList'])->name('getSubscriberCancelledList');
+Route::get('getNewSubscriberList', [App\Http\Controllers\SubscriptionReportController::class, 'getNewSubscriberList'])->name('getNewSubscriberList');
 Route::get('subscription-total', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionTotal'])->name('subscription-total');
 Route::get('daily-transactions', [App\Http\Controllers\SubscriptionReportController::class, 'dailyTransactions'])->name('daily-transactions');
 // Video Content Report
