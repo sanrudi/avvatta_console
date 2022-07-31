@@ -512,4 +512,31 @@ class UserReportController extends Controller
         echo "Done";
     }
     
+     public function rawdataRenewal() {
+         
+         // updating is_renewal = 1 if matches with rawdata
+         
+         
+         $renewal_raw = DB::table('rawdata')->where('payment_type','renewal');
+         
+         foreach ($renewal_raw as $value) {
+             
+            UserPayment::where('pay_request_id',$value->txnid)
+                    ->update('is_renewal',1);
+             
+         }
+         
+          $renewal_raw = DB::table('rawdata')->where('payment_type','subscription');
+         
+         foreach ($renewal_raw as $value) {
+             
+            UserPayment::where('pay_request_id',$value->txnid)
+                    ->update('is_renewal',0);
+             
+         }
+         
+         
+     }
+        
+    
 }

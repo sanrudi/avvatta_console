@@ -77,6 +77,7 @@ Route::get('user-sub-profile-report',[App\Http\Controllers\UserReportController:
 Route::get('user-login-report',[App\Http\Controllers\UserReportController::class, 'userLoginReport'])->name('user-login-report');   
 Route::get('user-idle-subscribers',[App\Http\Controllers\UserReportController::class, 'idleSubscribers'])->name('user-idle-subscribers');   
 Route::get('renewal_update',[App\Http\Controllers\UserReportController::class, 'updateRenewal'])->name('updateRenewal');   
+Route::get('rawdata_update',[App\Http\Controllers\UserReportController::class, 'rawdataRenewal'])->name('updateRenewal');   
 
 //Error Api Report
 Route::get('error-report',[App\Http\Controllers\ErrorReportController::class, 'errorReport'])->name('error-report');
