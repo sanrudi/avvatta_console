@@ -132,6 +132,7 @@ class SubscriptionReportController extends Controller
     
     public function subscriptionCustomer(Request $request)
     {
+        
         $reportFrom="";$startDate="";$endDate="";
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
@@ -140,190 +141,580 @@ class SubscriptionReportController extends Controller
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+            $endDate = date('Y-m-d H:i:s');
         } 
-        
+             
         $sevenDays = date('Y-m-d H:i:s', strtotime($today.'-7 day'));
         $fourteenDays = date('Y-m-d H:i:s', strtotime($today.'-14 day'));
+        $thirtyDays = date('Y-m-d H:i:s', strtotime($today.'-30 day'));
+        $request->session()->put('subscriptionCustomerReport.startDate',$startDate);
+        $request->session()->put('subscriptionCustomerReport.endDate',$endDate);
+        $noOfSubscriptionsCount = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                            ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                            //->whereDate('user_payments.expiry_date','>=', $today)
+                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                            ->count();
 
-        $userPaymentQuery = UserPayment::select('user_payments.*')
-        ->with('user_payments_avvatta_users')
-        ->with('user_payments_subscriptions');
-        switch ($this->country) {
-            
-           case 'SA':
-               $userPaymentQuery->where('user_payments.user_country','=', 0);
-               break;
-           case 'GH':
-               $userPaymentQuery->where('user_payments.user_country','=', 1);
-               break;
-           case 'NG':
-               $userPaymentQuery->where('user_payments.user_country','=', 2);
-               break;
-           default:
-               break;
-        }
-        if($startDate){
-            $userPaymentQuery->whereDate('user_payments.created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $userPaymentQuery->whereDate('user_payments.created_at', '<=', $endDate);
-        }
-        $noOfSubscriptions = $userPaymentQuery->orderBy('id', 'DESC')->get(); 
-         
-        $subscriptionList = [];
-        foreach($noOfSubscriptions as $noOfSubscription){
-            $subscriptionList[] = $noOfSubscription->user_id;
-        }
+        $registerCustomerCount = AvvattaUser::whereBetween('created_at', [$startDate, $endDate])
+                                             ->where('status',1)->count(); 
 
-        // Registered Users
-        $avvattaActiveUsersQuery = AvvattaUser::whereNotNull('id');
-        if($startDate){
-            $avvattaActiveUsersQuery->whereDate('created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $avvattaActiveUsersQuery->whereDate('created_at', '<=', $endDate);
-        }
-        $avvattaUsers = $avvattaActiveUsersQuery->orderBy('created_at','desc')->get();
+        $registerSubscriptionCustomerCount = AvvattaUser::join('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                                        ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                                        //->whereDate('user_payments.expiry_date','>=', $today)
+                                                        ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                        ->where('users.status',1)->groupBy('users.id')->get();
 
-        $avvattaUserList = [];
-        foreach($avvattaUsers as $avvattaUser){
-            $avvattaUserList[] = $avvattaUser->id;
-        }
+        $registerNotSubscriptionCustomerCount = AvvattaUser::leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                                        ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                                        ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                        //->whereDate('user_payments.expiry_date','>=', $today)
+                                                        ->whereNull('user_payments.user_id')
+                                                        ->where('users.status',1)->groupBy('users.id')->get();  
+
+        $cancelledSevenDaysCount = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                                ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                                ->where('user_payments.is_cancelled','=',1)
+                                                ->whereBetween('user_payments.created_at', [$sevenDays, $endDate])
+                                                ->count();
+        $cancelledfourteenDaysCount = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                                    ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                                    //->whereDate('user_payments.expiry_date','>=', $today)
+                                                    ->where('user_payments.is_cancelled','=',1)
+                                                    ->whereBetween('user_payments.created_at', [$fourteenDays, $endDate])
+                                                    ->count();
+        $cancelledthirtyDaysCount = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                                ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                                ->where('user_payments.is_cancelled','=',1)
+                                                ->whereBetween('user_payments.created_at', [$thirtyDays, $endDate])
+                                                ->count();
+        // \DB::connection('mysql2')->enableQueryLog();
+        // UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+        //                             ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+        //                             //->whereDate('user_payments.expiry_date','>=', $today)
+        //                             ->where('user_payments.is_cancelled','=',1)
+        //                             ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+        //                             ->count();
+        // $queries = \DB::connection('mysql2')->getQueryLog();
+        // dd($queries);
         
-        // Registered & Subscribed Users
-        $subscribedUsersQuery = AvvattaUser::whereIn('id',$subscriptionList);
-        if($startDate){
-            $subscribedUsersQuery->whereDate('created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $subscribedUsersQuery->whereDate('created_at', '<=', $endDate);
-        }
-        $subscribedUsers = $subscribedUsersQuery->orderBy('created_at','desc')->get();
-
-        // Registered & Not Subscribed Users
-        $avvattaNSUsersQuery = AvvattaUser::whereNotIn('id',$subscriptionList);
-        if($startDate){
-            $avvattaNSUsersQuery->whereDate('created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $avvattaNSUsersQuery->whereDate('created_at', '<=', $endDate);
-        }
-        $avvattaNSUsers = $avvattaNSUsersQuery->get(); 
-
-        $avvattaNSUsersQuery = AvvattaUser::whereNotIn('id',$subscriptionList);
-        if($startDate){
-            $avvattaNSUsersQuery->whereDate('created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $avvattaNSUsersQuery->whereDate('created_at', '<=', $endDate);
-        }
-        $avvattaNSUsers = $avvattaNSUsersQuery->get(); 
-        
-        // Registered & Not Subscribed Users
-        $cancelledSevenQuery = UserPayment::where('is_cancelled','=',1)->whereDate('created_at', '>=', $sevenDays);
-        if($startDate){
-            $cancelledSevenQuery->whereDate('created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $cancelledSevenQuery->whereDate('created_at', '<=', $endDate);
-        }
-        $cancelledSeven = $cancelledSevenQuery->get();
-
-        $cancelledFourteenQuery = UserPayment::where('is_cancelled','=',1)->whereDate('created_at', '>=', $fourteenDays);
-        if($startDate){
-            $cancelledFourteenQuery->whereDate('created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $cancelledFourteenQuery->whereDate('created_at', '<=', $endDate);
-        }
-        $cancelledFourteen = $cancelledFourteenQuery->get();
-        
-        $cancelledQuery = UserPayment::where('is_cancelled','=',1)
-        ->with('user_payments_avvatta_users')
-        ->with('user_payments_subscriptions');
-        switch ($this->country) {
-            
-           case 'SA':
-               $cancelledQuery->where('user_payments.user_country','=', 0);
-               break;
-           case 'GH':
-               $cancelledQuery->where('user_payments.user_country','=', 1);
-               break;
-           case 'NG':
-               $cancelledQuery->where('user_payments.user_country','=', 2);
-               break;
-           default:
-               break;
-        }
-        if($startDate){
-            $cancelledQuery->whereDate('created_at', '>=', $startDate);
-        }
-        if($endDate){
-            $cancelledQuery->whereDate('created_at', '<=', $endDate);
-        }
-        $cancelledQuery->orderBy('created_at','desc');
-        $cancelled = $cancelledQuery->get();
-
-        $newSubscriptionQuery = UserPayment::whereNotNull('id')
-        ->with('user_payments_avvatta_users')
-        ->with('user_payments_subscriptions');
-        switch ($this->country) {
-            
-           case 'SA':
-               $newSubscriptionQuery->where('user_payments.user_country','=', 0);
-               break;
-           case 'GH':
-               $newSubscriptionQuery->where('user_payments.user_country','=', 1);
-               break;
-           case 'NG':
-               $newSubscriptionQuery->where('user_payments.user_country','=', 2);
-               break;
-           default:
-               break;
-        }
-        if(empty($startDate) && empty($endDate)  || empty($startDate) && !empty($endDate)){
-            $newSubscriptionQuery->whereIn('id', function($query) use ($request,$startDate,$endDate){
-                $query->select(DB::raw("MIN(id)"))
-                ->from(with(new UserPayment)->getTable());
-                if($endDate){
-                    $newSubscriptionQuery->whereDate('created_at', '<=', $endDate);
-                }
-                $query->groupBy('user_id');
-            });
-        }
-        if(!empty($startDate) || !empty($endDate)){
-            $newSubscriptionQuery->whereNotIn('user_id', function($query) use ($request,$startDate,$endDate){
-                $query->select(DB::raw("user_id"))
-                ->from(with(new UserPayment)->getTable());
-                if($startDate){
-                    $query->whereDate('created_at', '<', $startDate);
-                }
-                $query->groupBy('user_id');
-            });
-            if($startDate){
-                $newSubscriptionQuery->whereDate('created_at', '>=', $startDate);
-            }
-            if($endDate){
-                $newSubscriptionQuery->whereDate('created_at', '<=', $endDate);
-            }
-            $newSubscriptionQuery->groupBy('user_id');
-        }
-        $newSubscriptions = $newSubscriptionQuery->orderBy('id', 'DESC')->get();
         
         return view('subscription-customer')
         ->with([
-            'subscribedUsers'=>$subscribedUsers,
-            'avvattaUsers'=>$avvattaUsers,
-            'noOfSubscriptions'=>$noOfSubscriptions,
-            'avvattaNSUsers'=>$avvattaNSUsers,
-            'cancelledSeven'=>$cancelledSeven,
-            'cancelledFourteen'=>$cancelledFourteen,
-            'cancelled'=>$cancelled,
-            'newSubscriptions'=>$newSubscriptions,
+            'noOfSubscriptionsCount'=>$noOfSubscriptionsCount,
+            'registerCustomerCount'=>$registerCustomerCount,
+            'registerSubscriptionCustomerCount'=>count($registerSubscriptionCustomerCount),
+            'registerNotSubscriptionCustomerCount'=>count($registerNotSubscriptionCustomerCount),
+            'cancelledSevenDaysCount'=>$cancelledSevenDaysCount,
+            'cancelledfourteenDaysCount'=>$cancelledfourteenDaysCount,
+            'cancelledthirtyDaysCount'=>$cancelledthirtyDaysCount
         ]);
 
     }
 
+    
+    /* Process ajax request for Get Registered Customer*/
+    public function getRegisteredCustomer(Request $request)
+    {
+        $startDate = $request->session()->get('subscriptionCustomerReport.startDate');
+        $endDate   = $request->session()->get('subscriptionCustomerReport.endDate');
+                
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // total number of rows per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        // Total records
+        $totalRecords = AvvattaUser::select('count(*) as allcount')
+                                    ->whereBetween('created_at', [$startDate, $endDate])
+                                    ->where('status',1)->count();
+                                
+        $totalRecordswithFilter = AvvattaUser::select('count(*) as allcount')->whereBetween('created_at', [$startDate, $endDate])
+                                                ->where('status',1);
+        if($searchValue){
+            $totalRecordswithFilter = $totalRecordswithFilter->where('firstname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('lastname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('email', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('mobile', 'like', '%' . $searchValue . '%');
+        }                                        
+                                                
+        $totalRecordswithFilter = $totalRecordswithFilter->count();
+
+        // Get records, also we have included search filter as well
+        $records = AvvattaUser::orderBy($columnName, $columnSortOrder)
+                            ->whereBetween('created_at', [$startDate, $endDate])
+                            ->where('status',1);
+        if($searchValue){
+            $records = $records->where('firstname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('lastname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('email', 'like', '%' . $searchValue . '%')
+                                ->orWhere('mobile', 'like', '%' . $searchValue . '%');
+        }
+                            
+        $records = $records->select('firstname','lastname','email','mobile','created_at')
+                            ->skip($start)
+                            ->take($rowperpage)
+                            ->get();
+
+        $data_arr = array();
+
+        foreach ($records as $record) {
+
+            $data_arr[] = array(
+                "name" => $record->firstname.' '.$record->lastname,
+                "email" => $record->email,
+                "mobile" => $record->mobile,
+                "created_at" => date("Y-m-d H:i:s", strtotime($record->created_at)),
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr,
+        );
+        echo json_encode($response);
+    }
+    
+    /* Process ajax request for Get Registered Subscribed Customer*/
+    public function getRegisteredSubscribedCustomer(Request $request)
+    {
+        $startDate = $request->session()->get('subscriptionCustomerReport.startDate');
+        $endDate   = $request->session()->get('subscriptionCustomerReport.endDate');
+                
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // total number of rows per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        // Total records
+        $totalRecords = AvvattaUser::select(DB::raw('count(*) as total'))
+                                    ->join('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                    ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                    //->whereDate('user_payments.expiry_date','>=', $today)
+                                    ->whereBetween('users.created_at', [$startDate, $endDate])
+                                    ->where('users.status',1)
+                                    ->groupBy('users.id')
+                                    ->get();
+                               
+        $totalRecordswithFilter = AvvattaUser::select(DB::raw('count(*) as total'))
+                                                ->join('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                                ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                ->where('users.status',1);
+        if($searchValue){
+            $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                                        
+                                                
+        $totalRecordswithFilter = $totalRecordswithFilter->groupBy('users.id')
+                                                         ->get();
+
+        // Get records, also we have included search filter as well
+        $records = AvvattaUser::orderBy($columnName, $columnSortOrder)
+                                ->join('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                ->where('users.status',1);
+        if($searchValue){
+            $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                        
+                                
+        $records = $records->select('users.firstname','users.lastname','users.email','users.mobile','users.created_at')
+                            ->skip($start)
+                            ->take($rowperpage)
+                            ->groupBy('users.id')
+                            ->get();
+
+                            
+        $data_arr = array();
+
+        foreach ($records as $record) {
+            $data_arr[] = array(
+                "firstname" => $record->firstname.' '.$record->lastname,
+                "email" => $record->email,
+                "mobile" => $record->mobile,
+                "created_at" => date("Y-m-d H:i:s", strtotime($record->created_at)),
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => count($totalRecords),
+            "iTotalDisplayRecords" => count($totalRecordswithFilter),
+            "aaData" => $data_arr,
+        );
+        echo json_encode($response);
+    }
+
+    /* Process ajax request for Get Registered Not Subscribed Customer*/
+    public function getRegisteredNotSubscribedCustomer(Request $request)
+    {
+        $startDate = $request->session()->get('subscriptionCustomerReport.startDate');
+        $endDate   = $request->session()->get('subscriptionCustomerReport.endDate');
+                
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // total number of rows per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        // Total records
+        $totalRecords = AvvattaUser::select(DB::raw('count(*) as total'))
+                                    ->leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                    ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                    //->whereDate('user_payments.expiry_date','>=', $today)
+                                    ->whereBetween('users.created_at', [$startDate, $endDate])
+                                    ->whereNull('user_payments.user_id')
+                                    ->where('users.status',1)
+                                    ->groupBy('users.id')
+                                    ->get();
+                               
+        $totalRecordswithFilter = AvvattaUser::select(DB::raw('count(*) as total'))
+                                                ->leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                                ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                ->whereNull('user_payments.user_id')
+                                                ->where('users.status',1);
+        if($searchValue){
+            $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                                        
+                                                
+        $totalRecordswithFilter = $totalRecordswithFilter->groupBy('users.id')
+                                                         ->get();
+
+        // Get records, also we have included search filter as well
+        $records = AvvattaUser::orderBy($columnName, $columnSortOrder)
+                                ->leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
+                                ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                ->whereNull('user_payments.user_id')
+                                ->where('users.status',1);
+        if($searchValue){
+            $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                        
+                                
+        $records = $records->select('users.firstname','users.lastname','users.email','users.mobile','users.created_at')
+                            ->skip($start)
+                            ->take($rowperpage)
+                            ->groupBy('users.id')
+                            ->get();
+
+                            
+        $data_arr = array();
+
+        foreach ($records as $record) {
+            $data_arr[] = array(
+                "firstname" => $record->firstname.' '.$record->lastname,
+                "email" => $record->email,
+                "mobile" => $record->mobile,
+                "created_at" => date("Y-m-d H:i:s", strtotime($record->created_at)),
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => count($totalRecords),
+            "iTotalDisplayRecords" => count($totalRecordswithFilter),
+            "aaData" => $data_arr,
+        );
+        echo json_encode($response);
+    }
+
+    /* Process ajax request for Get Subscriber List*/
+    public function getSubscriberList(Request $request)
+    {
+        $startDate = $request->session()->get('subscriptionCustomerReport.startDate');
+        $endDate   = $request->session()->get('subscriptionCustomerReport.endDate');
+                
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // total number of rows per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        // Total records
+        $totalRecords = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                    ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                    //->whereDate('user_payments.expiry_date','>=', $today)
+                                    ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                    ->count();
+                               
+        $totalRecordswithFilter = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                            ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                            //->whereDate('user_payments.expiry_date','>=', $today)
+                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+        if($searchValue){
+            $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                                        
+                                                
+        $totalRecordswithFilter = $totalRecordswithFilter->count();
+
+        // Get records, also we have included search filter as well
+        $records = UserPayment::orderBy($columnName, $columnSortOrder)
+                                ->join('users', 'users.id', '=', 'user_payments.user_id')
+                                ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+        if($searchValue){
+            $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                        
+                                
+        $records = $records->select('subscriptions.title','users.firstname','users.lastname','users.email','users.mobile','user_payments.created_at')
+                            ->skip($start)
+                            ->take($rowperpage)
+                            ->get();
+
+                            
+        $data_arr = array();
+
+        foreach ($records as $record) {
+            $data_arr[] = array(
+                "title" => $record->title,
+                "name" => $record->firstname.' '.$record->lastname.' '.$record->email.' '.$record->mobile,
+                "created_at" => date("Y-m-d H:i:s", strtotime($record->created_at)),
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr,
+        );
+        echo json_encode($response);
+    }
+    
+    /* Process ajax request for Get Subscriber Cancelled List*/
+    public function getSubscriberCancelledList(Request $request)
+    {
+        $startDate = $request->session()->get('subscriptionCustomerReport.startDate');
+        $endDate   = $request->session()->get('subscriptionCustomerReport.endDate');
+                
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // total number of rows per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        // Total records
+        $totalRecords = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                    ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                    //->whereDate('user_payments.expiry_date','>=', $today)
+                                    ->where('user_payments.is_cancelled','=',1)
+                                    ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                    ->count();
+                               
+        $totalRecordswithFilter = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                            ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                            //->whereDate('user_payments.expiry_date','>=', $today)
+                                            ->where('user_payments.is_cancelled','=',1)
+                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+        if($searchValue){
+            $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('user_payments.cancel_reason', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                                        
+                                                
+        $totalRecordswithFilter = $totalRecordswithFilter->count();
+
+        // Get records, also we have included search filter as well
+        $records = UserPayment::orderBy($columnName, $columnSortOrder)
+                                ->join('users', 'users.id', '=', 'user_payments.user_id')
+                                ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                ->where('user_payments.is_cancelled','=',1)
+                                ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+        if($searchValue){
+            $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
+                                ->orWhere('user_payments.cancel_reason', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                        
+                                
+        $records = $records->select('subscriptions.title','users.firstname','users.lastname','users.email','users.mobile','user_payments.created_at','user_payments.cancel_reason')
+                            ->skip($start)
+                            ->take($rowperpage)
+                            ->get();
+
+                            
+        $data_arr = array();
+
+        foreach ($records as $record) {
+            $data_arr[] = array(
+                "title" => $record->title,
+                "name" => $record->firstname.' '.$record->lastname.' '.$record->email.' '.$record->mobile,
+                "days" =>($record->created_at)?$record->created_at->diffForHumans():'',
+                "created_at" => date("Y-m-d H:i:s", strtotime($record->created_at)),
+                "reason" =>($record->cancel_reason)?$record->cancel_reason:'',
+                
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr,
+        );
+        echo json_encode($response);
+    }
+    
+    
+    /* Process ajax request for Get New Subscriber List*/
+    public function getNewSubscriberList(Request $request)
+    {
+        $startDate = $request->session()->get('subscriptionCustomerReport.startDate');
+        $endDate   = $request->session()->get('subscriptionCustomerReport.endDate');
+                
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // total number of rows per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        // Total records
+        $totalRecords = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                    ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                    //->whereDate('user_payments.expiry_date','>=', $today)
+                                    ->whereBetween('users.created_at', [$startDate, $endDate])
+                                    ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                    ->count();
+                               
+        $totalRecordswithFilter = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
+                                            ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                            //->whereDate('user_payments.expiry_date','>=', $today)
+                                            ->whereBetween('users.created_at', [$startDate, $endDate])
+                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+        if($searchValue){
+            $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                                            ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                                        
+                                                
+        $totalRecordswithFilter = $totalRecordswithFilter->count();
+
+        // Get records, also we have included search filter as well
+        $records = UserPayment::orderBy($columnName, $columnSortOrder)
+                                ->join('users', 'users.id', '=', 'user_payments.user_id')
+                                ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                //->whereDate('user_payments.expiry_date','>=', $today)
+                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+        if($searchValue){
+            $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.lastname', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.email', 'like', '%' . $searchValue . '%')
+                                ->orWhere('users.mobile', 'like', '%' . $searchValue . '%');
+        }                        
+                                
+        $records = $records->select('subscriptions.title','users.firstname','users.lastname','users.email','users.mobile','user_payments.created_at')
+                            ->skip($start)
+                            ->take($rowperpage)
+                            ->get();
+
+                            
+        $data_arr = array();
+
+        foreach ($records as $record) {
+            $data_arr[] = array(
+                "name" => $record->firstname.' '.$record->lastname.' '.$record->email.' '.$record->mobile,
+                "title" => $record->title,
+                "created_at" => date("Y-m-d H:i:s", strtotime($record->created_at)),
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr,
+        );
+        echo json_encode($response);
+    }
     public function dailyTransactions(Request $request)
     {
         $paginateSize = 20;$export = 0;$reportFrom="";$startDate="";$endDate="";

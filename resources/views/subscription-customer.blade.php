@@ -83,31 +83,31 @@
         <tbody>
           <tr>
             <td>Registered Customers</td>
-            <td>{{count($avvattaUsers)}}</td>
+            <td>{{$registerCustomerCount}}</td>
           </tr>
           <tr>
             <td>Registered & Subscribed Customers</td>
-            <td>{{count($subscribedUsers)}}</td>
+            <td>{{$registerSubscriptionCustomerCount}}</td>
           </tr>
           <tr>
             <td>Registered & Non subscribed Customers</td>
-            <td>{{count($avvattaNSUsers)}}</td>
+            <td>{{$registerNotSubscriptionCustomerCount}}</td>
           </tr>
           <tr>
             <td>Number of Subscriptions</td>
-            <td>{{count($noOfSubscriptions)}}</td>
+            <td>{{$noOfSubscriptionsCount}}</td>
           </tr>
           <tr>
             <td>Cancelled in last 7 Days</td>
-            <td>{{count($cancelledSeven)}}</td>
+            <td>{{$cancelledSevenDaysCount}}</td>
           </tr>
           <tr>
             <td>Cancelled in last 14 Days</td>
-            <td>{{count($cancelledFourteen)}}</td>
+            <td>{{$cancelledfourteenDaysCount}}</td>
           </tr>
           <tr>
             <td>Cancelled in last 30+ Days</td>
-            <td>{{count($cancelled)}}</td>
+            <td>{{$cancelledthirtyDaysCount}}</td>
           </tr>
         </tbody>
       </table>
@@ -125,14 +125,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($avvattaUsers as $key => $data)
-          <tr>
-            <td>{{isset($data->firstname)?$data->firstname:''}} {{isset($data->lastname)?$data->lastname:''}}</td>
-            <td>{{isset($data->email)?$data->email:''}}</td>
-            <td>{{isset($data->mobile)?$data->mobile:''}}</td>
-            <td>{{ $data->created_at }}</td>        
-          </tr>
-          @endforeach
+         
         </tbody>
       </table>
       <!-- tab -->
@@ -149,14 +142,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($subscribedUsers as $key => $data)
-          <tr>
-            <td>{{isset($data->firstname)?$data->firstname:''}} {{isset($data->lastname)?$data->lastname:''}}</td>
-            <td>{{isset($data->email)?$data->email:''}}</td>
-            <td>{{isset($data->mobile)?$data->mobile:''}}</td>
-            <td>{{ $data->created_at }}</td>        
-          </tr>
-          @endforeach
+         
         </tbody>
       </table>
       <!-- tab -->
@@ -173,14 +159,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($avvattaNSUsers as $key => $data)
-          <tr>
-            <td>{{isset($data->firstname)?$data->firstname:''}} {{isset($data->lastname)?$data->lastname:''}}</td>
-            <td>{{isset($data->email)?$data->email:''}}</td>
-            <td>{{isset($data->mobile)?$data->mobile:''}}</td>
-            <td>{{ $data->created_at }}</td>        
-          </tr>
-          @endforeach
+         
         </tbody>
       </table>
       <!-- tab -->
@@ -197,21 +176,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($noOfSubscriptions as $key => $data)
-          <tr>
-            <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
-            <td>
-              @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
-              {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
-              @elseif(!empty($data->user_payments_avvatta_users->email))
-              {{$data->user_payments_avvatta_users->email}}
-              @elseif(!empty($data->user_payments_avvatta_users->mobile))
-              {{$data->user_payments_avvatta_users->mobile}}
-              @endif
-            </td>    
-            <td>{{isset($data->created_at)?$data->created_at:''}}</td>      
-          </tr>
-          @endforeach
+          
         </tbody>
       </table>
       
@@ -232,23 +197,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($cancelled as $key => $data)
-          <tr>
-            <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
-            <td>
-              @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
-              {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
-              @elseif(!empty($data->user_payments_avvatta_users->email))
-              {{$data->user_payments_avvatta_users->email}}
-              @elseif(!empty($data->user_payments_avvatta_users->mobile))
-              {{$data->user_payments_avvatta_users->mobile}}
-              @endif
-            </td>    
-            <td>{{isset($data->created_at)?$data->created_at->diffForHumans():''}}</td>   
-            <td>{{isset($data->created_at)?$data->created_at:''}}</td>      
-            <td>{{isset($data->cancel_reason)?$data->cancel_reason:''}}</td>     
-          </tr>
-          @endforeach
+         
         </tbody>
       </table>
       <!-- tab -->
@@ -264,21 +213,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($newSubscriptions as $key => $data)
-          <tr>
-            <td>
-              @if(!empty($data->user_payments_avvatta_users->firstname) && !empty($data->user_payments_avvatta_users->lastname))
-              {{$data->user_payments_avvatta_users->firstname}}{{$data->user_payments_avvatta_users->lastname}}
-              @elseif(!empty($data->user_payments_avvatta_users->email))
-              {{$data->user_payments_avvatta_users->email}}
-              @elseif(!empty($data->user_payments_avvatta_users->mobile))
-              {{$data->user_payments_avvatta_users->mobile}}
-              @endif
-            </td>    
-            <td>{{ isset($data->user_payments_subscriptions->title)?$data->user_payments_subscriptions->title:'' }}</td> 
-            <td>{{isset($data->created_at)?$data->created_at:''}}</td>      
-          </tr>
-          @endforeach
+          
         </tbody>
       </table>
       <!-- tab -->
@@ -289,6 +224,7 @@
 @endsection
 @push('js-links')
 <!-- Data Tables -->
+
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 <!-- <script src="https://cdn.datatables.net/1.11.2/js/dataTables.bootstrap4.min.js"></script> -->
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -307,6 +243,7 @@
 @section('js-content')
 <script>
   $(document).ready(function() {
+
     $('#dataTableId').DataTable( {
       dom: 'Bfrtip',
       paging: false, info: false, "aaSorting": [],
@@ -319,78 +256,174 @@
       }
       ]
     } );
-    $('#registeredUsers').DataTable( {
-      dom: 'Bfrtip',
-      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
-      buttons: [
-      {
-        extend: 'excel',
-        text: 'Export Results',
-        className: 'btn btn-default',
-        title: 'Registered Customers'
+    $(document).on('click', '#RegisteredCustomers-tab', function() {
+      var href = $(this).attr('href').substring(1);
+      if ( ! $.fn.DataTable.isDataTable( '#registeredUsers' ) ) {
+        $('#registeredUsers').DataTable( {
+          processing: true,
+          serverSide: true,
+          ajax: "{{route('getRegisteredCustomer')}}",
+          columns: [
+            { data: 'name' },
+            { data: 'email' },
+            { data: 'mobile' },
+            { data: 'created_at'},
+          ],
+          order: [[3, 'desc']],
+          dom: 'Bfrtip',
+          //paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+          buttons: [
+          {
+            extend: 'excel',
+            text: 'Export Results',
+            className: 'btn btn-default',
+            title: 'Registered Customers'
+          }
+          ]
+        } );
       }
-      ]
-    } );
-    $('#subscribedUsers').DataTable( {
-      dom: 'Bfrtip',
-      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
-      buttons: [
-      {
-        extend: 'excel',
-        text: 'Export Results',
-        className: 'btn btn-default',
-        title: 'Registered & Subscribed Customers'
+    });
+
+    $(document).on('click', '#RegisteredSubscribedCustomers-tab', function() {
+      var href = $(this).attr('href').substring(1);
+      if ( ! $.fn.DataTable.isDataTable( '#subscribedUsers' ) ) {
+        $('#subscribedUsers').DataTable( {
+          processing: true,
+          serverSide: true,
+          ajax: "{{route('getRegisteredSubscribedCustomer')}}",
+          columns: [
+            { data: 'firstname' },
+            { data: 'email' },
+            { data: 'mobile' },
+            { data: 'created_at'},
+          ],
+          order: [[3, 'desc']],
+          dom: 'Bfrtip',
+          //paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+          buttons: [
+          {
+            extend: 'excel',
+            text: 'Export Results',
+            className: 'btn btn-default',
+            title: 'Registered & Subscribed Customers'
+          }
+          ]
+        } );
       }
-      ]
-    } );
-    $('#avvattaNSUsers').DataTable( {
-      dom: 'Bfrtip',
-      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
-      buttons: [
-      {
-        extend: 'excel',
-        text: 'Export Results',
-        className: 'btn btn-default',
-        title: 'Registered & Not Subscribed Customers'
+    });
+
+    $(document).on('click', '#RegisteredNonsubscribedCustomers-tab', function() {
+      var href = $(this).attr('href').substring(1);
+      if ( ! $.fn.DataTable.isDataTable( '#avvattaNSUsers' ) ) {
+        $('#avvattaNSUsers').DataTable( {
+          processing: true,
+          serverSide: true,
+          ajax: "{{route('getRegisteredNotSubscribedCustomer')}}",
+          columns: [
+            { data: 'firstname' },
+            { data: 'email' },
+            { data: 'mobile' },
+            { data: 'created_at'},
+          ],
+          order: [[3, 'desc']],
+          dom: 'Bfrtip',
+          //paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+          buttons: [
+          {
+            extend: 'excel',
+            text: 'Export Results',
+            className: 'btn btn-default',
+            title: 'Registered & Not Subscribed Customers'
+          }
+          ]
+        } );
       }
-      ]
-    } );
-    $('#noOfSubscriptions').DataTable( {
-      dom: 'Bfrtip',
-      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
-      buttons: [
-      {
-        extend: 'excel',
-        text: 'Export Results',
-        className: 'btn btn-default',
-        title: 'Subscriptions'
+    });
+
+    $(document).on('click', '#NumberofSubscriptions-tab', function() {
+      var href = $(this).attr('href').substring(1);
+      if ( ! $.fn.DataTable.isDataTable( '#noOfSubscriptions' ) ) {
+        $('#noOfSubscriptions').DataTable( {
+          processing: true,
+          serverSide: true,
+          ajax: "{{route('getSubscriberList')}}",
+          columns: [
+            { data: 'title' },
+            { data: 'name' },
+            { data: 'created_at'},
+          ],
+          order: [[2, 'desc']],
+          dom: 'Bfrtip',
+          //paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+          buttons: [
+          {
+            extend: 'excel',
+            text: 'Export Results',
+            className: 'btn btn-default',
+            title: 'Subscriptions'
+          }
+          ]
+        } );
       }
-      ]
-    } );
-    $('#cancelled').DataTable( {
-      dom: 'Bfrtip',
-      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
-      buttons: [
-      {
-        extend: 'excel',
-        text: 'Export Results',
-        className: 'btn btn-default',
-        title: 'Cancelled Subscriptions'
+    });
+
+    $(document).on('click', '#CancelledSubscriptions-tab', function() {
+      var href = $(this).attr('href').substring(1);
+      if ( ! $.fn.DataTable.isDataTable( '#cancelled' ) ) {
+        $('#cancelled').DataTable( {
+          processing: true,
+          serverSide: true,
+          ajax: "{{route('getSubscriberCancelledList')}}",
+          columns: [
+            { data: 'title' },
+            { data: 'name' },
+            { data: 'days' },
+            { data: 'created_at'},
+            { data: 'reason' },
+          ],
+          order: [[3, 'desc']],
+          dom: 'Bfrtip',
+          //paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+          buttons: [
+          {
+            extend: 'excel',
+            text: 'Export Results',
+            className: 'btn btn-default',
+            title: 'Cancelled Subscriptions'
+          }
+          ]
+        } );
       }
-      ]
-    } );
-    $('#newSubscriptions').DataTable( {
-      dom: 'Bfrtip',
-      paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
-      buttons: [
-      {
-        extend: 'excel',
-        text: 'Export Results',
-        className: 'btn btn-default',
-        title: 'New Subscriptions'
+    });   
+    
+    $(document).on('click', '#NewSubscriptions-tab', function() {
+      var href = $(this).attr('href').substring(1);
+      if ( ! $.fn.DataTable.isDataTable( '#newSubscriptions' ) ) {
+        $('#newSubscriptions').DataTable( {
+          processing: true,
+          serverSide: true,
+          ajax: "{{route('getNewSubscriberList')}}",
+          columns: [
+            { data: 'name' },
+            { data: 'title' },
+            { data: 'created_at'},
+          ],
+          order: [[2, 'desc']],
+          dom: 'Bfrtip',
+          //paging: true, info: false, ordering: false, pageLength: 10, "aaSorting": [],
+          buttons: [
+          {
+            extend: 'excel',
+            text: 'Export Results',
+            className: 'btn btn-default',
+            title: 'New Subscriptions'
+          }
+          ]
+        } );
       }
-      ]
-    } );
+    });
+
+    
   } );
 </script>
 <script>
