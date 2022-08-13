@@ -9,24 +9,11 @@
 <div class="container">
     <h6>DashBoard</h6><hr>
     <!-- chart -->
-    @if(Auth::user()->is_cp == 0 && false)
+    @if(Auth::user()->is_cp == 0)
     <div id="chartArea" class="col-xl-12 layout-spacing">
         <div class="statbox widget box">
             <div class="widget-content widget-content-area">
                 <div id="s-line-area" class=""></div>
-
-            </div>
-        </div>
-    </div>
-    @endif
-    <!-- Pie chart -->
-    @if(Auth::user()->is_cp == 0)
-    <div id="pieChartArea" class="col-xl-12 layout-spacing">
-        <div class="statbox widget box">
-            <div class="widget-content widget-content-area">
-                <input type="date" class="chart-date" value="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d'); ?>" />
-                <button type="button" class="btn btn-success js-get-day-chart" >Get Data</button> <br/>
-                <div id="s-pie-chart" class=""></div>
 
             </div>
         </div>
@@ -42,7 +29,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Game Article</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Game Article</h6>
                         </div>
                     </div>
                     </a>
@@ -54,7 +41,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">All Game Categories</h6>
+                            <h6 class="mt-3 text-capitalize text-white">All Game Categories</h6>
                         </div>
                     </div>
                     </a>
@@ -66,7 +53,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top repeat played games by a single user account </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top repeat played games by a single user account </h6>
                         </div>
                     </div>
                     </a>
@@ -78,7 +65,7 @@
                             <div class="rotate">
                                 <i class="fa fa-gamepad fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top 10 most played Games</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top 10 most played Games</h6>
                         </div>
                     </div>
                     </a>
@@ -92,7 +79,7 @@
                             <div class="rotate">
                                 <i class="fa fa-tv fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">All Kids Categories</h6>
+                            <h6 class="mt-3 text-capitalize text-white">All Kids Categories</h6>
                         </div>
                     </div>
                     </a>
@@ -104,7 +91,7 @@
                             <div class="rotate">
                                 <i class="fa fa-tv fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Most Watched Kids Content By Single User </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Most Watched Kids Content By Single User </h6>
                         </div>
                     </div>
                     </a>
@@ -116,7 +103,7 @@
                             <div class="rotate">
                                 <i class="fa fa-tv fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top 10 watched Kids Category </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top 10 watched Kids Category </h6>
                         </div>
                     </div>
                     </a>
@@ -130,7 +117,7 @@
                             <div class="rotate">
                                 <i class="fa fa-book fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top E-Learn Genre watched</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top E-Learn Genre watched</h6>
                         </div>
                     </div>
                     </a>
@@ -142,7 +129,7 @@
                             <div class="rotate">
                                 <i class="fa fa-book fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Most Watched E-learn By Single User</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Most Watched E-learn By Single User</h6>
                         </div>
                     </div>
                     </a>
@@ -154,7 +141,7 @@
                             <div class="rotate">
                                 <i class="fa fa-book fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top repeat E-Learn watched</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top repeat E-Learn watched</h6>
                         </div>
                     </div>
                     </a>
@@ -168,7 +155,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Video Article</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Video Article</h6>
                         </div>
                     </div>
                     </a>
@@ -180,7 +167,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">All Category Users</h6>
+                            <h6 class="mt-3 text-capitalize text-white">All Category Users</h6>
                         </div>
                     </div>
                     </a>
@@ -192,7 +179,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top repeat watched</h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top repeat watched</h6>
                         </div>
                     </div>
                     </a>
@@ -204,7 +191,7 @@
                             <div class="rotate">
                                 <i class="fa fa-film fa-5x"></i>
                             </div>
-                            <h6 class="text-uppercase">Top 10 most watched </h6>
+                            <h6 class="mt-3 text-capitalize text-white">Top 10 most watched </h6>
                         </div>
                     </div>
                     </a>
@@ -237,7 +224,7 @@ dataLabels: {
     enabled: false
 },
 stroke: {
-    curve: 'smooth'
+    curve: 'stepline'
 },
 series: [
 @foreach($subscriptions as $subscription)
@@ -285,71 +272,6 @@ var chart = new ApexCharts(
     );
 
 chart.render();
-
-// Start - Day wise subscription count
-var PieChart;
-function loadPieCart(dayWiseSubscriptions, dayWiseTitles, isRefresh = false) {
-    var options = {
-        series: dayWiseSubscriptions,
-        chart: {
-        width: 800,
-        type: 'pie',
-    },
-    labels: dayWiseTitles,
-    responsive: [{
-        breakpoint: 480,
-        options: {
-        chart: {
-            width: 200
-        },
-        legend: {
-            position: 'bottom'
-        }
-        }
-    }],
-    title: {
-        text: "Subscriptions",
-        align: 'left',
-        margin: 10,
-        offsetX: 0,
-        offsetY: 0,
-        floating: false,
-        style: {
-        fontSize:  '14px',
-        fontWeight:  'bold',
-        fontFamily:  undefined,
-        color:  '#263238'
-        },
-    }
-    };
-
-    if(!isRefresh) {
-        PieChart = new ApexCharts(document.querySelector("#s-pie-chart"), options);
-        PieChart.render();
-    } else {
-        PieChart.updateOptions(options);
-    }
-}
-var dayWiseSubscriptions = @json($dayWiseSubscriptions);
-var dayWiseTitles = @json($dayWiseTitles);
-loadPieCart(dayWiseSubscriptions, dayWiseTitles);
-$(document).on('click', '.js-get-day-chart', function(e) {
-    var chartDate = $('.chart-date').val();
-    var $btnGetData = $(this);
-    $btnGetData.html("Loading...").attr('disabled', true);
-    $.ajax({
-        url: "{{ route('home') }}",
-        context: document.body,
-        dataType: 'json',
-        data: {chartDate : chartDate}
-    }).done(function(result) {
-        console.log(result);
-        loadPieCart(result['dayWiseSubscriptions'], result['dayWiseTitles'], true);
-        $btnGetData.html("Get Data").attr('disabled', false);
-    });
-});
-// End - Day wise subscription count
-
 </script>
 @endif
 @endsection
