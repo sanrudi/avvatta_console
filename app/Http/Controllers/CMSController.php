@@ -158,7 +158,7 @@ class CMSController extends Controller
         ->where('content_type', '=' , $contenttype)
         ->orderBy('prefer','DESC')->get();
         
-        return view('fimdoo-promotions.index',compact('subCategories','data','category','contenttype','subCategotyData'));
+        return view('filmdoo-promotion.index',compact('subCategories','data','category','contenttype','subCategotyData'));
      }
      
      public function searchFilmdoo(Request $request)
