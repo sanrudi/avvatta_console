@@ -148,8 +148,8 @@ class CMSController extends Controller
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
 
-        $subCategories = SubCategory::where('category_id','=',3)->select('id','name')->get();
-        $subCategotyData = SubCategory::where('category_id','=',3)
+        $subCategories = SubCategory::where('category_id','=',2)->select('id','name')->get();
+        $subCategotyData = SubCategory::where('category_id','=',2)
         ->where('id','=',$category)
         ->select('id','name')->first();
 
