@@ -140,6 +140,82 @@ class CMSController extends Controller
         exit;
      }
 
+     public function filmdooPromotion(Request $request)
+     {
+        $category = 240; // Arcade
+        $contenttype = "games";
+        $category = ($request->category=="")?$category:$request->category;
+        $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
+
+        $subCategories = SubCategory::where('category_id','=',3)->select('id','name')->get();
+        $subCategotyData = SubCategory::where('category_id','=',3)
+        ->where('id','=',$category)
+        ->select('id','name')->first();
+
+        $data = PromotionFimdoo::with('game_data')
+        ->where('category', '=' , $category)
+        ->where('content_type', '=' , $contenttype)
+        ->orderBy('prefer','DESC')->get();
+        
+        return view('fimdoo-promotions.index',compact('subCategories','data','category','contenttype','subCategotyData'));
+     }
+     
+     public function searchFilmdoo(Request $request)
+    {
+        $search = $request->search;
+        $category = 27; // Arcade
+        $contenttype = "filmdoo";
+        $category = ($request->category=="")?$category:$request->category;
+        $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
+        $autocomplateQuery = GameContent::orderby('title','asc')
+        ->select('id','title','img')
+        ->where('title', 'like', '%' .$search . '%')
+        ->where('sub_cat_id', '=', $category);
+        $autocomplate = $autocomplateQuery->limit(10)->get();
+        $response = array();
+        foreach($autocomplate as $autocomplate){
+            $label = "";$label = $autocomplate->game_name;
+           $response[] = array(
+               "value"=>$autocomplate->id,
+               "label"=>$label,
+               "content_id"=>$autocomplate->id,
+               "title"=>$autocomplate->game_name,
+               "small_url"=>$autocomplate->img
+            );
+        }
+        echo json_encode($response);
+        exit;
+     }
+      public function filmdooPromotionStore(Request $request)
+     {
+         $max = 100;
+         $prefer = $max;
+         $removedMovies = ($request['removed-movie-cards'])?explode("|", $request['removed-movie-cards']):[];
+         $category = $request['card-category'];
+         $contenttype = $request['card-content'];
+         $movieCards = ($request['latest-movie-cards'])?explode("|", $request['latest-movie-cards']):[];
+         $latestMovieCards = [];
+         foreach($movieCards as $key => $movieCard){
+             $prefer = $max - $key;
+             $latestMovieCards[] = array(
+                 'prefer_content_id'=>$movieCard,
+                 'prefer'=>$prefer,
+                 'category'=>$category,
+                 'content_type'=>$contenttype
+             );
+         }
+         if(count($removedMovies) > 0){
+            PromotionFimdoo::where('category', '=' , $category)
+             ->where('content_type', '=' , $contenttype)
+             ->delete();
+         }
+         if(count($latestMovieCards) > 0){
+            PromotionFimdoo::upsert($latestMovieCards, ['prefer_content_id', 'category','content_type'], ['prefer']);
+         }
+         return redirect()->route('filmdoo-promotion',['category'=>$category,'contenttype'=>$contenttype])->with('success','Content Applied successfully.');
+     }
+     
+     
      public function gamePromotion(Request $request)
      {
         $category = 27; // Arcade

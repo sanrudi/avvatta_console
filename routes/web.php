@@ -42,6 +42,10 @@ Route::post('kid-promotion-search',[App\Http\Controllers\CMSController::class, '
 Route::get('elearn-promotion', [App\Http\Controllers\CMSController::class, 'elearnPromotion'])->name('elearn-promotion');
 Route::post('elearn-promotion', [App\Http\Controllers\CMSController::class, 'elearnPromotionStore'])->name('elearn-promotion');
 Route::post('elearn-promotion-search',[App\Http\Controllers\CMSController::class, 'searchElearn'])->name('elearn-promotion-search');
+Route::get('filmdoo-promotion', [App\Http\Controllers\CMSController::class, 'filmdooPromotion'])->name('filmdoo-promotion');
+Route::post('filmdoo-promotion', [App\Http\Controllers\CMSController::class, 'filmdooPromotionStore'])->name('filmdoo-promotion');
+Route::post('filmdoo-promotion-search',[App\Http\Controllers\CMSController::class, 'searchFilmdoo'])->name('filmdoo-promotion-search');
+
 // Subscription Report
 Route::get('subscription-customer', [App\Http\Controllers\SubscriptionReportController::class, 'subscriptionCustomer'])->name('subscription-customer');
 Route::get('getRegisteredCustomer', [App\Http\Controllers\SubscriptionReportController::class, 'getRegisteredCustomer'])->name('getRegisteredCustomer');

@@ -308,6 +308,9 @@
                             <li class="{{ request()->is('elearn-promotion') ? 'active' : '' }}">
                                 <a href="{{ route('elearn-promotion') }}"> Elearn Promotion</a>
                             </li>
+                            <li class="{{ request()->is('filmdoo-promotion') ? 'active' : '' }}">
+                                <a href="{{ route('elearn-promotion') }}"> Filmdoo Promotion</a>
+                            </li>
                         </ul>
                     </li>
                     @endcan
