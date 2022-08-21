@@ -11,6 +11,7 @@ use App\Models\VideoContent;
 use App\Models\PromotionGame;
 use App\Models\PromotionKid;
 use App\Models\PromotionElearn;
+use App\Models\PromotionFimdoo;
 use Log;
 
 
