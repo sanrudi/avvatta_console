@@ -58,16 +58,16 @@ class SubscriptionReportController extends Controller
             $startDate = $this->convertTimeToZone($startDate);
             $endDate = $this->convertTimeToZone(date('Y-m-d H:i:s'));
         }
-        //\DB::connection('mysql2')->enableQueryLog();
+        // \DB::connection('mysql2')->enableQueryLog();
         $subscriptionsQuery = Subscription::join('user_payments', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                             ->selectRaw("subscriptions.title,SUM(CASE WHEN user_payments.is_renewal=0 THEN 1 ELSE 0 END) as count,SUM(CASE WHEN user_payments.is_renewal=1 THEN 1 ELSE 0 END) as count_renew");
         if(!empty($startDate) && !empty($endDate)){
-            $subscriptionsQuery = $subscriptionsQuery->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+            $subscriptionsQuery = $subscriptionsQuery->whereBetween(DB::raw('DATE(user_payments.created_at)'),[$startDate, $endDate]);
         }
         $subscriptions = $subscriptionsQuery->groupBY('user_payments.subscription_id')
                                             ->orderBY('subscriptions.title','ASC')->get();
-       // $queries = \DB::connection('mysql2')->getQueryLog();
-        //dd($queries);
+        // $queries = \DB::connection('mysql2')->getQueryLog();
+        // dd($queries);
              
         return view('subscription-total')
         ->with([
@@ -100,21 +100,21 @@ class SubscriptionReportController extends Controller
         $noOfSubscriptionsCount = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                             ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                             //->whereDate('user_payments.expiry_date','>=', $today)
-                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                            ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate])
                                             ->count();
 
-        $registerCustomerCount = AvvattaUser::whereBetween('created_at', [$startDate, $endDate])
+        $registerCustomerCount = AvvattaUser::whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate])
                                              ->where('status',1)->count(); 
 
         $registerSubscriptionCustomerCount = AvvattaUser::join('user_payments', 'users.id', '=', 'user_payments.user_id')
                                                         ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                                         //->whereDate('user_payments.expiry_date','>=', $today)
-                                                        ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                        ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                                         ->where('users.status',1)->groupBy('users.id')->get();
 
         $registerNotSubscriptionCustomerCount = AvvattaUser::leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
                                                         ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
-                                                        ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                        ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                                         //->whereDate('user_payments.expiry_date','>=', $today)
                                                         ->whereNull('user_payments.user_id')
                                                         ->where('users.status',1)->groupBy('users.id')->get();  
@@ -123,19 +123,19 @@ class SubscriptionReportController extends Controller
                                                 ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                                 //->whereDate('user_payments.expiry_date','>=', $today)
                                                 ->where('user_payments.is_cancelled','=',1)
-                                                ->whereBetween('user_payments.created_at', [$sevenDays, $endDate])
+                                                ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$sevenDays, $endDate])
                                                 ->count();
         $cancelledfourteenDaysCount = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                                     ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                                     //->whereDate('user_payments.expiry_date','>=', $today)
                                                     ->where('user_payments.is_cancelled','=',1)
-                                                    ->whereBetween('user_payments.created_at', [$fourteenDays, $endDate])
+                                                    ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$fourteenDays, $endDate])
                                                     ->count();
         $cancelledthirtyDaysCount = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                                 ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                                 //->whereDate('user_payments.expiry_date','>=', $today)
                                                 ->where('user_payments.is_cancelled','=',1)
-                                                ->whereBetween('user_payments.created_at', [$thirtyDays, $endDate])
+                                                ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$thirtyDays, $endDate])
                                                 ->count();
         // \DB::connection('mysql2')->enableQueryLog();
         // UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
@@ -184,10 +184,10 @@ class SubscriptionReportController extends Controller
         
         // Total records
         $totalRecords = AvvattaUser::select('count(*) as allcount')
-                                    ->whereBetween('created_at', [$startDate, $endDate])
+                                    ->whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate])
                                     ->where('status',1)->count();
                                 
-        $totalRecordswithFilter = AvvattaUser::select('count(*) as allcount')->whereBetween('created_at', [$startDate, $endDate])
+        $totalRecordswithFilter = AvvattaUser::select('count(*) as allcount')->whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate])
                                                 ->where('status',1);
         if($searchValue){
             $totalRecordswithFilter = $totalRecordswithFilter->where('firstname', 'like', '%' . $searchValue . '%')
@@ -200,7 +200,7 @@ class SubscriptionReportController extends Controller
 
         // Get records, also we have included search filter as well
         $records = AvvattaUser::orderBy($columnName, $columnSortOrder)
-                            ->whereBetween('created_at', [$startDate, $endDate])
+                            ->whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate])
                             ->where('status',1);
         if($searchValue){
             $records = $records->where('firstname', 'like', '%' . $searchValue . '%')
@@ -260,7 +260,7 @@ class SubscriptionReportController extends Controller
                                     ->join('user_payments', 'users.id', '=', 'user_payments.user_id')
                                     ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                     //->whereDate('user_payments.expiry_date','>=', $today)
-                                    ->whereBetween('users.created_at', [$startDate, $endDate])
+                                    ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                     ->where('users.status',1)
                                     ->groupBy('users.id')
                                     ->get();
@@ -269,7 +269,7 @@ class SubscriptionReportController extends Controller
                                                 ->join('user_payments', 'users.id', '=', 'user_payments.user_id')
                                                 ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                                 //->whereDate('user_payments.expiry_date','>=', $today)
-                                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                                 ->where('users.status',1);
         if($searchValue){
             $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
@@ -286,7 +286,7 @@ class SubscriptionReportController extends Controller
                                 ->join('user_payments', 'users.id', '=', 'user_payments.user_id')
                                 ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                 //->whereDate('user_payments.expiry_date','>=', $today)
-                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                 ->where('users.status',1);
         if($searchValue){
             $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
@@ -347,7 +347,7 @@ class SubscriptionReportController extends Controller
                                     ->leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
                                     ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                     //->whereDate('user_payments.expiry_date','>=', $today)
-                                    ->whereBetween('users.created_at', [$startDate, $endDate])
+                                    ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                     ->whereNull('user_payments.user_id')
                                     ->where('users.status',1)
                                     ->groupBy('users.id')
@@ -357,7 +357,7 @@ class SubscriptionReportController extends Controller
                                                 ->leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
                                                 ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                                 //->whereDate('user_payments.expiry_date','>=', $today)
-                                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                                ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                                 ->whereNull('user_payments.user_id')
                                                 ->where('users.status',1);
         if($searchValue){
@@ -375,7 +375,7 @@ class SubscriptionReportController extends Controller
                                 ->leftjoin('user_payments', 'users.id', '=', 'user_payments.user_id')
                                 ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                 //->whereDate('user_payments.expiry_date','>=', $today)
-                                ->whereBetween('users.created_at', [$startDate, $endDate])
+                                ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
                                 ->whereNull('user_payments.user_id')
                                 ->where('users.status',1);
         if($searchValue){
@@ -436,13 +436,13 @@ class SubscriptionReportController extends Controller
         $totalRecords = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                     ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                     //->whereDate('user_payments.expiry_date','>=', $today)
-                                    ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                    ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate])
                                     ->count();
                                
         $totalRecordswithFilter = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                             ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                             //->whereDate('user_payments.expiry_date','>=', $today)
-                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+                                            ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate]);
         if($searchValue){
             $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
                                                             ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
@@ -458,7 +458,7 @@ class SubscriptionReportController extends Controller
                                 ->join('users', 'users.id', '=', 'user_payments.user_id')
                                 ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                 //->whereDate('user_payments.expiry_date','>=', $today)
-                                ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+                                ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate]);
         if($searchValue){
             $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
                                 ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
@@ -517,14 +517,14 @@ class SubscriptionReportController extends Controller
                                     ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                     //->whereDate('user_payments.expiry_date','>=', $today)
                                     ->where('user_payments.is_cancelled','=',1)
-                                    ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                    ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate])
                                     ->count();
                                
         $totalRecordswithFilter = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                             ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                             //->whereDate('user_payments.expiry_date','>=', $today)
                                             ->where('user_payments.is_cancelled','=',1)
-                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+                                            ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate]);
         if($searchValue){
             $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
                                                             ->orWhere('user_payments.cancel_reason', 'like', '%' . $searchValue . '%')
@@ -542,7 +542,7 @@ class SubscriptionReportController extends Controller
                                 ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                 //->whereDate('user_payments.expiry_date','>=', $today)
                                 ->where('user_payments.is_cancelled','=',1)
-                                ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+                                ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate]);
         if($searchValue){
             $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
                                 ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
@@ -605,15 +605,15 @@ class SubscriptionReportController extends Controller
         $totalRecords = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                     ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                     //->whereDate('user_payments.expiry_date','>=', $today)
-                                    ->whereBetween('users.created_at', [$startDate, $endDate])
-                                    ->whereBetween('user_payments.created_at', [$startDate, $endDate])
+                                    ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
+                                    ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate])
                                     ->count();
                                
         $totalRecordswithFilter = UserPayment::join('users', 'users.id', '=', 'user_payments.user_id')
                                             ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                             //->whereDate('user_payments.expiry_date','>=', $today)
-                                            ->whereBetween('users.created_at', [$startDate, $endDate])
-                                            ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+                                            ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
+                                            ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate]);
         if($searchValue){
             $totalRecordswithFilter = $totalRecordswithFilter->where('users.firstname', 'like', '%' . $searchValue . '%')
                                                             ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
@@ -629,8 +629,8 @@ class SubscriptionReportController extends Controller
                                 ->join('users', 'users.id', '=', 'user_payments.user_id')
                                 ->join('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
                                 //->whereDate('user_payments.expiry_date','>=', $today)
-                                ->whereBetween('users.created_at', [$startDate, $endDate])
-                                ->whereBetween('user_payments.created_at', [$startDate, $endDate]);
+                                ->whereBetween(DB::raw('DATE(users.created_at)'), [$startDate, $endDate])
+                                ->whereBetween(DB::raw('DATE(user_payments.created_at)'), [$startDate, $endDate]);
         if($searchValue){
             $records = $records->where('users.firstname', 'like', '%' . $searchValue . '%')
                                 ->orWhere('subscriptions.title', 'like', '%' . $searchValue . '%')
