@@ -11,7 +11,7 @@ class FilmdooContent extends Model
     
     protected $connection = 'mysql2';
 
-    protected $table = 'filmdoo';
+    protected $table = 'filmdoos';
 
     public function user_log()
     {
