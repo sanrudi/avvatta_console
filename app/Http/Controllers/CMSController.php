@@ -144,7 +144,7 @@ class CMSController extends Controller
      public function filmdooPromotion(Request $request)
      {
         $category = 240; // Arcade
-        $contenttype = "games";
+        $contenttype = "Filmdoo";
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
 
