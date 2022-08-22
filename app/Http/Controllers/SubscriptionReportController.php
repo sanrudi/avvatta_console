@@ -16,6 +16,8 @@ class SubscriptionReportController extends Controller
     private $country;
     public function __construct(Request $request)
     {
+        $tzFromZone = config('global.TIMEZONEFROM');
+        date_default_timezone_set($tzFromZone);
         // $this->middleware('auth');
         // check the domain and set country
         $this->country = env('COUNTRY','SA');
@@ -43,85 +45,30 @@ class SubscriptionReportController extends Controller
 
     public function subscriptionTotal(Request $request)
     {
+       
         $reportFrom="";$startDate="";$endDate="";
         $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        
-        date_default_timezone_set('Africa/Johannesburg');
+               
         $today = date("Y-m-d H:m:s");
-        if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
+        if($reportFrom != "" && $reportFrom != "custom"){
+            
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+            $startDate = $this->convertTimeToZone($startDate);
+            $endDate = $this->convertTimeToZone(date('Y-m-d H:i:s'));
         }
-        $uc = 0;
-        switch ($this->country) {
-
-               case 'SA':
-                   $uc = 0;
-                   break;
-               case 'GH':
-                   $uc= 1;
-                   break;
-               case 'NG':
-                   $uc= 2;
-               default:
-                   break;
-            }
-        
-         // get the list of subscriptions 
-            
-            $list =  UserPayment::select('subscription_id')->distinct()->get();
-            $index = 0;
-            foreach ($list as $value) {
-               // get title
-                $title = Subscription::select('title')->where('id',$value->subscription_id)->first();
-                if(!$title) continue;
-                $subscriptions[$index]['title'] = $title->title;
-                 $count_new = UserPayment::select('subscription_id') 
-                        ->groupBy('subscription_id')
-                         ->where('subscription_id',$value->subscription_id)
-                         ->where('is_renewal','0')
-                        ->where('user_country',$uc);
-                 $count_renew = UserPayment::select('subscription_id') 
-                        ->groupBy('subscription_id')
-                         ->where('subscription_id',$value->subscription_id)
-                         ->where('is_renewal','1')
-                        ->where('user_country',$uc);
-                        
-                 
-                  if($startDate){
-            $count_new->whereDate('user_payments.created_at', '>=', $startDate);
-            $count_renew->whereDate('user_payments.created_at', '>=', $startDate);
+        //\DB::connection('mysql2')->enableQueryLog();
+        $subscriptionsQuery = Subscription::join('user_payments', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                            ->selectRaw("subscriptions.title,SUM(CASE WHEN user_payments.is_renewal=0 THEN 1 ELSE 0 END) as count,SUM(CASE WHEN user_payments.is_renewal=1 THEN 1 ELSE 0 END) as count_renew");
+        if(!empty($startDate) && !empty($endDate)){
+            $subscriptionsQuery = $subscriptionsQuery->whereBetween('user_payments.created_at', [$startDate, $endDate]);
         }
-        
-        if($endDate){
-            $count_new->whereDate('user_payments.created_at', '<=', $endDate);
-            $count_renew->whereDate('user_payments.created_at', '<=', $endDate);
-        }
-               $counts = $count_new->count();
-                $subscriptions[$index]['count'] = $counts;
-                $counts_renew = $count_renew->count();
-                $subscriptions[$index]['count_renew'] = $counts_renew;
-                $index++;
-            }
-          
-            
-       /*     
-       
-        $subscriptionsQuery = Subscription::select('subscriptions.*');
-        $subscriptionsQuery->with(['user_payments' => function ($query) use ($request,$startDate,$endDate,$uc) {
-          //  $query->where('user_country',$uc);
-            if($startDate){
-                $query->whereDate('created_at', '>=', $startDate);
-            }
-            if($endDate){
-                $query->whereDate('created_at', '<=', $endDate);
-            }
-        }]);
-       
-        $subscriptions = $subscriptionsQuery->get();
-        */
-        
+        $subscriptions = $subscriptionsQuery->groupBY('user_payments.subscription_id')
+                                            ->orderBY('subscriptions.title','ASC')->get();
+       // $queries = \DB::connection('mysql2')->getQueryLog();
+        //dd($queries);
+             
         return view('subscription-total')
         ->with([
             'subscriptions'=>$subscriptions
@@ -137,11 +84,12 @@ class SubscriptionReportController extends Controller
         $reportFrom = ($request->input('reportFrom') == "")?"7":$request->input('reportFrom');
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
         $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
-        date_default_timezone_set('Africa/Johannesburg');
+        
         $today = date("Y-m-d H:m:s");
         if($reportFrom != "" && $reportFrom != "custom"){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
-            $endDate = date('Y-m-d H:i:s');
+            $startDate = $this->convertTimeToZone($startDate);
+            $endDate = $this->convertTimeToZone(date('Y-m-d H:i:s'));
         } 
              
         $sevenDays = date('Y-m-d H:i:s', strtotime($today.'-7 day'));
@@ -722,12 +670,12 @@ class SubscriptionReportController extends Controller
         $search = ($request->input('search'))?$request->input('search'):"";
         $reportFrom = ($request->input('reportFrom') && ($request->input('reportFrom') != "custom"))?$request->input('reportFrom'):"";
         $startDate = ($request->input('startDate'))?$request->input('startDate'):"";
-        $endDate = ($request->input('endDate'))?$request->input('endDate'):"";
+        $endDate = ($request->input('endDate'))?$this->convertTimeToZone($request->input('endDate')):"";
         
-        date_default_timezone_set('Africa/Johannesburg');
         $today = date("Y-m-d H:m:s");
         if($request->input('reportFrom') && ($request->input('reportFrom') != "custom")){
             $startDate = date('Y-m-d H:i:s', strtotime($today.'-'.$reportFrom.' day'));
+            $startDate = $this->convertTimeToZone($startDate);
         }
 
         // Subscription Data
