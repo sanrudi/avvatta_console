@@ -12,7 +12,7 @@
       <input type="text" class="form-control" id='movie_search' placeholder="Search & Add {{ $contenttype  }} here...">
     </div>
     <div class="form-group col-xl-6 col-md-12"> 
-    <form method="get" action="{{ route('game-promotion') }}">
+    <form method="get" action="{{ route('filmdoo-promotion') }}">
   <div class="row">
     <div class="form-group col-xl-6 col-md-6">
       <label for="category">Category</label>
@@ -25,7 +25,7 @@
     <div class="form-group col-xl-6 col-md-6">
       <label for="content">Content Type</label>
         <select name="contenttype" id="contenttype" class="form-control" onchange="this.form.submit()">
-          <option value="games" @if($contenttype == "games") selected="selected" @endif>Games</option>
+          <option value="filmdoo" @if($contenttype == "filmdoo") selected="selected" @endif>Filmdoo</option>
         </select>
     </div>
     </div>
@@ -45,16 +45,16 @@
     </div>
   </div>
   
-  <form method="post" action="{{ route('game-promotion') }}">
+  <form method="post" action="{{ route('filmdoo-promotion') }}">
     @csrf
     <div class="row mr-5" id="sortable">
       @foreach ($data as $key => $content)
       <div class="col-xl-2 col-md-3 col-sm-6 movie-card py-2 ui-state-default">
         <div class="card text-center h-100">
-          <img class="card-img-top handle bg-dark" src="{{ $content->game_data->img  }}" alt="">
+          <img class="card-img-top handle bg-dark" src="{{ $content->filmdoo_data->img  }}" alt="">
           <div class="card-body card-frame handle bg-dark p-1">
-            <h6 class="text-white "><small>{{ $content->game_data->game_name  }}</small></h6>
-            <input type="hidden" name="content_id[]" class="movie-content-id" value="{{ $content->game_data->id  }}">
+            <h6 class="text-white "><small>{{ $content->filmdoo_data->filmdoo_name  }}</small></h6>
+            <input type="hidden" name="content_id[]" class="movie-content-id" value="{{ $content->filmdoo_data->id  }}">
           </div>
           <div class="card-footer p-1">
             <sapn class="card-link remove"><small>Remove</small></span>
@@ -127,7 +127,7 @@
       $( "#movie_search" ).autocomplete({
         source: function( request, response ) {
           $.ajax({
-            url:"{{route('game-promotion-search')}}",
+            url:"{{route('filmdoo-promotion-search')}}",
             type: 'post',
             dataType: "json",
             data: {
