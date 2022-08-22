@@ -168,19 +168,19 @@ class CMSController extends Controller
         $contenttype = "filmdoo";
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
-        $autocomplateQuery = GameContent::orderby('title','asc')
+        $autocomplateQuery = \App\Models\FilmdooContent::orderby('title','asc')
         ->select('id','title','img')
         ->where('title', 'like', '%' .$search . '%')
         ->where('sub_cat_id', '=', $category);
         $autocomplate = $autocomplateQuery->limit(10)->get();
         $response = array();
         foreach($autocomplate as $autocomplate){
-            $label = "";$label = $autocomplate->game_name;
+            $label = "";$label = $autocomplate->filmdoo_name;
            $response[] = array(
                "value"=>$autocomplate->id,
                "label"=>$label,
                "content_id"=>$autocomplate->id,
-               "title"=>$autocomplate->game_name,
+               "title"=>$autocomplate->filmdoo_name,
                "small_url"=>$autocomplate->img
             );
         }
