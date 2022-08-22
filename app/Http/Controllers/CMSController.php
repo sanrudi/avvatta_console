@@ -169,7 +169,7 @@ class CMSController extends Controller
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
         $autocomplateQuery = \App\Models\FilmdooContent::orderby('title','asc')
-        ->select('id','title','img')
+        ->select('id','title','	thumbnail_img')
         ->where('title', 'like', '%' .$search . '%')
         ->where('sub_cat_id', '=', $category);
         $autocomplate = $autocomplateQuery->limit(10)->get();
