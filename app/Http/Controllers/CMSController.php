@@ -153,7 +153,7 @@ class CMSController extends Controller
         ->where('id','=',$category)
         ->select('id','name')->first();
 
-        $data = PromotionFimdoo::with('game_data')
+        $data = PromotionFimdoo::with('filmdoo_data')
         ->where('category', '=' , $category)
         ->where('content_type', '=' , $contenttype)
         ->orderBy('prefer','DESC')->get();
