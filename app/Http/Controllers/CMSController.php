@@ -150,7 +150,7 @@ class CMSController extends Controller
 
         $subCategories = SubCategory::where('category_id','=',240)->select('id','name')->get();
         $subCategotyData = SubCategory::where('category_id','=',240)
-        ->where('id','=',$category)
+        ->where('category_id','=',$category)
         ->select('id','name')->first();
 
         $data = PromotionFimdoo::with('filmdoo_data')
