@@ -164,7 +164,7 @@ class CMSController extends Controller
      public function searchFilmdoo(Request $request)
     {
         $search = $request->search;
-        $category = 27; // Arcade
+        $category = 240; // Arcade
         $contenttype = "filmdoo";
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
