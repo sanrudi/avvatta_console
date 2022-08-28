@@ -143,14 +143,14 @@ class CMSController extends Controller
 
      public function filmdooPromotion(Request $request)
      {
-        $category = 240; // Arcade
+        $category = 241; // Arcade
         $contenttype = "Filmdoo";
         $category = ($request->category=="")?$category:$request->category;
         $contenttype = ($request->contenttype=="")?$contenttype:$request->contenttype;
 
         $subCategories = SubCategory::where('category_id','=',240)->select('id','name')->get();
         $subCategotyData = SubCategory::where('category_id','=',240)
-        ->where('category_id','=',$category)
+        ->where('id','=',$category)
         ->select('id','name')->first();
 
         $data = PromotionFimdoo::with('filmdoo_data')
