@@ -51,7 +51,7 @@
       @foreach ($data as $key => $content)
       <div class="col-xl-2 col-md-3 col-sm-6 movie-card py-2 ui-state-default">
         <div class="card text-center h-100">
-          <img class="card-img-top handle bg-dark" src="{{ $content->filmdoo_data->img  }}" alt="">
+          <img class="card-img-top handle bg-dark" src="src="https://www.avvatta.com:8100/avvata/public/uploads/{{ $content->filmdoo_data->small_url  }}" alt="">
           <div class="card-body card-frame handle bg-dark p-1">
             <h6 class="text-white "><small>{{ $content->filmdoo_data->filmdoo_name  }}</small></h6>
             <input type="hidden" name="content_id[]" class="movie-content-id" value="{{ $content->filmdoo_data->id  }}">
@@ -158,7 +158,7 @@
           if(allowCard){
             movieCard +='<div class="col-xl-2 col-sm-6 movie-card py-2 ui-state-default">';
             movieCard +='<div class="card text-center h-100">';
-            movieCard +='<img class="card-img-top handle bg-dark" src="'+ui.item.small_url+'" alt="">';
+            movieCard +='<img class="card-img-top handle bg-dark" src="https://www.avvatta.com:8100/avvata/public/uploads/'+ui.item.small_url+'" alt="">';
             movieCard +='<div class="card-body card-frame handle bg-dark p-1">';
             movieCard +='<h6 class="text-white "><small>'+ui.item.title+'</small></h6>';
             movieCard +='<input type="hidden" name="content_id[]" class="movie-content-id"  value="'+ui.item.content_id+'">';

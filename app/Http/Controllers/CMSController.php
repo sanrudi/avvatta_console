@@ -173,15 +173,17 @@ class CMSController extends Controller
         ->where('title', 'like', '%' .$search . '%')
         ->where('sub_cat_id', '=', $category);
         $autocomplate = $autocomplateQuery->limit(10)->get();
+      //  echo $category;
+      //  var_dump($autocomplate[0]->id);
         $response = array();
         foreach($autocomplate as $autocomplate){
-            $label = "";$label = $autocomplate->filmdoo_name;
+            $label = "";$label = $autocomplate->title;
            $response[] = array(
                "value"=>$autocomplate->id,
                "label"=>$label,
                "content_id"=>$autocomplate->id,
-               "title"=>$autocomplate->filmdoo_name,
-               "small_url"=>$autocomplate->img
+               "title"=>$autocomplate->title,
+               "small_url"=>$autocomplate->thumbnail_img
             );
         }
         echo json_encode($response);
