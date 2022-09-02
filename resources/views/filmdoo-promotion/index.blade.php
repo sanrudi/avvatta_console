@@ -51,7 +51,7 @@
       @foreach ($data as $key => $content)
       <div class="col-xl-2 col-md-3 col-sm-6 movie-card py-2 ui-state-default">
         <div class="card text-center h-100">
-          <img class="card-img-top handle bg-dark" src="https://www.avvatta.com:8100/video_content/filmdoo/{{ $content->filmdoo_data->folder  }}/{{ $content->filmdoo_data->small_url  }}" alt="">
+          <img class="card-img-top handle bg-dark" src="https://www.avvatta.com:8100/video_content/filmdoo/{{ $content->filmdoo_data->folder  }}/{{ $content->filmdoo_data->thumbnail_img  }}" alt="">
           <div class="card-body card-frame handle bg-dark p-1">
             <h6 class="text-white "><small>{{ $content->filmdoo_data->filmdoo_name  }}</small></h6>
             <input type="hidden" name="content_id[]" class="movie-content-id" value="{{ $content->filmdoo_data->id  }}">
